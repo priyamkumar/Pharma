@@ -28,7 +28,7 @@ app.use(fileUpload());
 app.use(helmet());
 app.use(
   cors({
-    origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
+    origin: [process.env.FRONTEND_URL, "http://localhost:5173", "https://pharma-web.netlify.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

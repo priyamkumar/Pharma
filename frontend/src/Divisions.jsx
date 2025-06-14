@@ -50,7 +50,7 @@ export default function Divisions() {
     {
       name: "AUSPIN",
       description: "autorised",
-      image: `https://vibcaredivisions.s3.ap-south-1.amazonaws.com/1DivisionImage.png?X-Amz-Expires=259200&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIXOEBKWXRBKCIXZQ/20250524/ap-south-1/s3/aws4_request&X-Amz-Date=20250524T085312Z&X-Amz-SignedHeaders=host&X-Amz-Signature=53d909d5b74268c231a9b23ad3ba67ec7cdbdadac0a5213ce11caa6498f0b10e`,
+      image: `https://vibcaredivisions.s3.ap-south-1.amazonaws.com/1DivisionImage.png?X-Amz-Expires=259200&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIXOEBKWXRBKCIXZQ/20250614/ap-south-1/s3/aws4_request&X-Amz-Date=20250614T061709Z&X-Amz-SignedHeaders=host&X-Amz-Signature=afabfc067b024da999e1efe0fab49c3310d323b36ed71a489129c5cca1365af3`,
     },
     {
       name: "CURE",
