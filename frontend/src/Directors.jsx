@@ -66,7 +66,7 @@ const DirectorsSection = () => {
       title: "Director of Research & Development",
       description:
         "Dr. Priya Mehta brings over 20 years of expertise in pharmaceutical research and product development to Suave Healthcare. With a Ph.D. in Pharmaceutical Sciences from IIT Delhi, she leads our R&D initiatives and ensures that all our products meet international quality standards. Her innovative approach to drug formulation and her commitment to scientific excellence have resulted in numerous breakthrough products that have transformed patient care across various therapeutic segments.",
-      image: "https://randomuser.me/api/portraits/men/44.jpg",
+      image: "https://randomuser.me/api/portraits/women/19.jpg",
     },
   ];
 
@@ -99,7 +99,7 @@ const DirectorsSection = () => {
       {/* Directors Carousel */}
       <div ref={scrollContainerRef} className="cursor-grab overflow-x-auto custom-scrollbar pb-4">
         <div className="flex gap-8 min-w-max">
-          {directors.map((director, index) => (
+          {directors.map((director) => (
             <div key={director.id} className="flex-shrink-0 w-[800px]">
               <div className="flex flex-col lg:flex-row gap-8 items-start">
                 {/* Director Image */}
