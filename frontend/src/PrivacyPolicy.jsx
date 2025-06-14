@@ -193,7 +193,7 @@ export default function PrivacyPolicy() {
                         2. Product Liability
                       </h3>
                       <p className="text-gray-700 leading-relaxed pl-4">
-                        Vibcare Pharma Pvt. Ltd. does not assume any
+                        Suave Healthcare Pvt. Ltd. does not assume any
                         responsibility for consequences arising from the use of
                         our products.
                       </p>

@@ -1,13 +1,43 @@
 import React, { useState } from "react";
 import { Facebook, Youtube, Twitter, Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import { server } from "../src/main";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function Footer() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    formType: "contactPage",
+    description: "Business Enquiry",
   });
+
+  const [errors, setErrors] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^[\d\s\-\+\(\)]+$/.test(formData.phone)) {
+      newErrors.phone = "Please enter a valid phone number";
+    }
+
+    return newErrors;
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,10 +47,35 @@ export default function Footer() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission here
+    const newErrors = validateForm();
+
+    if (Object.keys(newErrors).length === 0) {
+      // Simulate form submission
+      setIsSubmitted(true);
+      try {
+        const { data } = await axios.post(
+          `${server}/api/v1/message/`,
+          formData
+        );
+        toast.success(data.message);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          formType: "contactPage",
+          description: "Business Enquiry",
+        });
+      } catch (err) {
+        toast.error("Server Error");
+      } finally {
+        setIsSubmitted(false);
+      }
+    } else {
+      setErrors(newErrors);
+      toast.error(newErrors.name || newErrors.email || newErrors.phone);
+    }
   };
 
   return (
@@ -155,8 +210,10 @@ export default function Footer() {
               </div>
               <div>
                 <p className="text-gray-300 text-sm">
-                  <span className="font-medium">Phone:</span> 9215262669,
-                  9056888801, 9218563669
+                  <span className="font-medium">Phone:</span>{" "}
+                  <Link to="tel:9215262669" className="hover:text-white">9215262669</Link>,{" "}
+                  <Link to="tel:9056888801" className="hover:text-white">9056888801</Link>,{" "}
+                  <Link to="tel:9218563669" className="hover:text-white">9218563669</Link>
                 </p>
               </div>
               <div>

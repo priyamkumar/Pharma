@@ -1,37 +1,80 @@
-import { ChevronRight } from 'lucide-react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { server } from "./main";
+import toast from "react-hot-toast";
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    description: ''
+    name: "",
+    email: "",
+    phone: "",
+    formType: "contactPage",
+    description: "",
   });
-
+  const [errors, setErrors] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^[\d\s\-\+\(\)]+$/.test(formData.phone)) {
+      newErrors.phone = "Please enter a valid phone number";
+    }
+
+    return newErrors;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
-    console.log('Form submitted:', formData);
-    // Handle form submission logic here
-    alert('Thank you for your enquiry! We will get back to you soon.');
-    
-    // Reset form
-    setFormData({
-      fullName: '',
-      email: '',
-      phone: '',
-      description: ''
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = validateForm();
+
+    if (Object.keys(newErrors).length === 0) {
+      // Simulate form submission
+      setIsSubmitted(true);
+      try {
+        const { data } = await axios.post(
+          `${server}/api/v1/message/`,
+          formData
+        );
+        toast.success(data.message);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          formType: "contactPage",
+          description: "",
+        });
+      } catch (err) {
+        toast.error("Server Error");
+      } finally {
+        setIsSubmitted(false);
+      }
+    } else {
+      setErrors(newErrors);
+    }
   };
 
   return (
@@ -40,25 +83,26 @@ export default function ContactUs() {
         {/* Header Section */}
         <div className="mb-8">
           {/* Breadcrumb */}
-         <nav className="flex items-center space-x-2 text-sm text-gray-600">
-              <span
-                className="hover:text-blue-600 transition-colors cursor-pointer"
-                onClick={() => navigate("/")}
-              >
-                Home
-              </span>
-              <ChevronRight className="w-4 h-4" />
-              <span className="font-bold text-blue-800">Contact Us</span>
-            </nav>
-          
+          <nav className="flex items-center space-x-2 text-sm text-gray-600">
+            <span
+              className="hover:text-blue-600 transition-colors cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              Home
+            </span>
+            <ChevronRight className="w-4 h-4" />
+            <span className="font-bold text-blue-800">Contact Us</span>
+          </nav>
+
           {/* Main Heading */}
           <h1 className="text-center text-3xl md:text-4xl font-bold text-gray-800 mb-4 py-8">
             Get in Touch with Us
           </h1>
-          
+
           {/* Subtitle */}
           <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-            Complete the form below, and we'll be in touch soon. Your inquiries matter to us.
+            Complete the form below, and we'll be in touch soon. Your inquiries
+            matter to us.
           </p>
         </div>
 
@@ -67,17 +111,17 @@ export default function ContactUs() {
           <div className="space-y-6">
             {/* Full Name */}
             <div>
-              <label 
-                htmlFor="fullName" 
+              <label
+                htmlFor="name"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Full Name
               </label>
               <input
                 type="text"
-                id="fullName"
-                name="fullName"
-                value={formData.fullName}
+                id="name"
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#129349] focus:border-transparent transition duration-200 ease-in-out"
@@ -87,8 +131,8 @@ export default function ContactUs() {
 
             {/* Email */}
             <div>
-              <label 
-                htmlFor="email" 
+              <label
+                htmlFor="email"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Email
@@ -107,8 +151,8 @@ export default function ContactUs() {
 
             {/* Phone */}
             <div>
-              <label 
-                htmlFor="phone" 
+              <label
+                htmlFor="phone"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Phone
@@ -127,8 +171,8 @@ export default function ContactUs() {
 
             {/* Description */}
             <div>
-              <label 
-                htmlFor="description" 
+              <label
+                htmlFor="description"
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
                 Description
@@ -162,33 +206,75 @@ export default function ContactUs() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto">
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="w-12 h-12 bg-[#ddfbe9] rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-[#129349]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                <svg
+                  className="w-6 h-6 text-[#129349]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
                 </svg>
               </div>
               <h3 className="font-semibold text-gray-800 mb-2">Phone</h3>
-              <p className="text-gray-600">9215262669, 9056888801, 9218563669</p>
+              <p className="text-gray-600">
+                <Link to="tel:9215262669" className="hover:text-[#129349]">9215262669</Link>,{" "}
+                <Link to="tel:9056888801" className="hover:text-[#129349]">9056888801</Link>,{" "}
+                <Link to="tel:9218563669" className="hover:text-[#129349]">9218563669</Link>
+              </p>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="w-12 h-12 bg-[#ddfbe9] rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-[#129349]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <svg
+                  className="w-6 h-6 text-[#129349]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
                 </svg>
               </div>
               <h3 className="font-semibold text-gray-800 mb-2">Email</h3>
-              <p className="text-gray-600">info@company.com</p>
+              <p className="text-gray-600"><Link to="mailTo:suavehealthcare1@gmail.com" className="hover:text-[#129349]">suavehealthcare1@gmail.com</Link></p>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md">
               <div className="w-12 h-12 bg-[#ddfbe9] rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-[#129349]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                <svg
+                  className="w-6 h-6 text-[#129349]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
                 </svg>
               </div>
               <h3 className="font-semibold text-gray-800 mb-2">Address</h3>
-              <p className="text-gray-600">Bci Bearing, Vill. Lower Ambota Sector-5 Parwanoo Teh. Kasauli Distt. Solan (HP)- 173220</p>
+              <p className="text-gray-600">
+                Bci Bearing, Vill. Lower Ambota Sector-5 Parwanoo Teh. Kasauli
+                Distt. Solan (HP)- 173220
+              </p>
             </div>
           </div>
         </div>

@@ -15,8 +15,13 @@ import PtrPtsCalculator from "./PtrPtsCalculator.jsx";
 import MedicineProductCard from "./SingleProduct.jsx";
 import PrivacyPolicy from "./PrivacyPolicy.jsx";
 import TermsAndConditions from "./TermsAndConditions.jsx";
+import NISPage from "./NISPage.jsx";
+import AdminPanel from "./AdminPanel.jsx";
+import UserProvider from "../context/UserContext.jsx";
+import { Toaster } from "react-hot-toast";
+import ProductProvider from "../context/ProductsContext.jsx";
 
-export const server = "http://localhost:5001";
+export const server = "http://localhost:5005";
 
 const router = createBrowserRouter([
   {
@@ -68,14 +73,28 @@ const router = createBrowserRouter([
         path: "/t&c",
         element: <TermsAndConditions />,
       },
+      {
+        path: "/now-in-stock",
+        element: <NISPage />,
+      },
     ],
+  },
+  {
+    path: "/admin",
+    element: (
+      <UserProvider>
+          <AdminPanel />
+          <Toaster/>
+      </UserProvider>
+    ),
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <ProductProvider>
     <EnquiryProvider>
       <RouterProvider router={router} />
-    </EnquiryProvider>
+    </EnquiryProvider></ProductProvider>
   </StrictMode>
 );

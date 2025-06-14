@@ -137,17 +137,11 @@ const WorkCultureSection = () => {
           {/* Placeholder image with meaningful content */}
           <div className="w-full h-96 bg-gradient-to-br from-green-200 via-green-300 to-green-400 flex items-center justify-center relative">
             {/* Decorative elements to simulate a workplace photo */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-            <div className="text-center text-white z-10">
-              <div className="text-6xl mb-4">🏥</div>
-              <div className="text-xl font-semibold mb-2">
-                Healthcare Innovation
-              </div>
-              <div className="text-sm opacity-90">
-                Where passion meets purpose
-              </div>
-            </div>
-
+           <img 
+                src="https://cdn.pixabay.com/photo/2020/07/08/04/12/work-5382501_640.jpg"
+                alt="Healthcare professionals collaborating"
+                className="w-full h-96 object-cover transition-transform duration-700 group-hover:scale-110"
+              />
             {/* Decorative geometric shapes */}
             <div className="absolute top-6 left-6 w-3 h-3 bg-white/30 rounded-full"></div>
             <div className="absolute top-12 right-8 w-2 h-2 bg-white/40 rounded-full"></div>

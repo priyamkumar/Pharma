@@ -1,11 +1,40 @@
 import React, { useState } from "react";
+import { server } from "../src/main";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function PageContactForm() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    formType: "contactPage",
+    description: "Partnership Enquiry",
   });
+  const [errors, setErrors] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else if (!/^[\d\s\-\+\(\)]+$/.test(formData.phone)) {
+      newErrors.phone = "Please enter a valid phone number";
+    }
+
+    return newErrors;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,13 +44,35 @@ export default function PageContactForm() {
     }));
   };
 
-  const handleSubmit = () => {
-    // Handle form submission logic here
-    console.log("Form submitted:", formData);
-    // You would typically send this data to your backend
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newErrors = validateForm();
 
-    // Optional: Reset form after submission
-    setFormData({ name: "", email: "", phone: "" });
+    if (Object.keys(newErrors).length === 0) {
+      // Simulate form submission
+      setIsSubmitted(true);
+      try {
+        const { data } = await axios.post(
+          `${server}/api/v1/message/`,
+          formData
+        );
+        toast.success(data.message);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          formType: "contactPage",
+          description: "Partnership Enquiry",
+        });
+      } catch (err) {
+        toast.error("Server Error");
+      } finally {
+        setIsSubmitted(false);
+      }
+    } else {
+      setErrors(newErrors);
+      toast.error(newErrors.name || newErrors.email || newErrors.phone);
+    }
   };
 
   return (

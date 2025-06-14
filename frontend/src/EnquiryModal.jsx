@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useEnquiry } from "../context/EnquiryContext";
+import { server } from "../src/main";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function EnquiryModal() {
   const { isEnquiryModalOpen, setIsEnquiryModalOpen } = useEnquiry();
@@ -7,6 +10,8 @@ export default function EnquiryModal() {
     name: "",
     email: "",
     phone: "",
+    formType: "popup",
+    description: "For Enquiry",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -33,18 +38,32 @@ export default function EnquiryModal() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateForm();
 
     if (Object.keys(newErrors).length === 0) {
       // Simulate form submission
       setIsSubmitted(true);
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setFormData({ name: "", email: "", phone: "" });
+      try {
+        const { data } = await axios.post(
+          `${server}/api/v1/message/`,
+          formData
+        );
+        toast.success(data.message);
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          formType: "popup",
+          description: "For Enquiry",
+        });
         setIsEnquiryModalOpen(false);
-      }, 2000);
+      } catch (err) {
+        toast.error("Server Error");
+      } finally {
+        setIsSubmitted(false);
+      }
     } else {
       setErrors(newErrors);
     }
@@ -60,7 +79,13 @@ export default function EnquiryModal() {
 
   const closeModal = () => {
     setIsEnquiryModalOpen(false);
-    setFormData({ name: "", email: "", phone: "" });
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      formType: "popup",
+      description: "For Enquiry",
+    });
     setErrors({});
     setIsSubmitted(false);
   };
@@ -80,7 +105,7 @@ export default function EnquiryModal() {
             {/* Close Button */}
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-light transition-colors duration-200"
+              className="cursor-pointer absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl font-light transition-colors duration-200"
             >
               ×
             </button>
@@ -202,7 +227,7 @@ export default function EnquiryModal() {
                   {/* Submit Button */}
                   <button
                     onClick={handleSubmit}
-                    className="w-full mt-6 bg-[#129349] hover:bg-[#015c30] text-white py-2 rounded-md font-semibold transition-colors duration-200 transform"
+                    className="cursor-pointer w-full mt-6 bg-[#129349] hover:bg-[#015c30] text-white py-2 rounded-md font-semibold transition-colors duration-200 transform"
                   >
                     Submit
                   </button>

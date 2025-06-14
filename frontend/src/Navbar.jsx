@@ -6,7 +6,6 @@ import {
   Menu,
   MenuItem,
   IconButton,
-  InputBase,
   Drawer,
   List,
   ListItem,
@@ -17,13 +16,12 @@ import {
 import {
   ArrowDropDown,
   Menu as MenuIcon,
-  Search as SearchIcon,
   Close,
   ExpandMore,
   ExpandLess,
 } from "@mui/icons-material";
 import { useState } from "react";
-import { styled, alpha, useTheme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import SearchModal from "./SearchModal";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -69,48 +67,6 @@ const Navbar = () => {
     setCompanyOpen(!companyOpen);
   };
 
-  const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    border: "1px solid rgb(178, 175, 175)",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  }));
-
-  const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  }));
-
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    width: "100%",
-    "& .MuiInputBase-input": {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create("width"),
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
-    },
-  }));
-
   // Adding noWrap style for buttons with multiple words
   const noWrapButtonStyle = {
     textTransform: "none",
@@ -143,7 +99,6 @@ const Navbar = () => {
 
       <List className="cursor-pointer">
         <ListItem
-          button
           onClick={() => {
             navigate("/");
             setDrawerOpen(false);
@@ -158,7 +113,6 @@ const Navbar = () => {
           />
         </ListItem>
         <ListItem
-          button
           onClick={() => {
             navigate("/franchise");
             setDrawerOpen(false);
@@ -172,7 +126,7 @@ const Navbar = () => {
             }}
           />
         </ListItem>
-        <ListItem button>
+        <ListItem>
           <ListItemText
             primary="Products"
             sx={{
@@ -180,13 +134,13 @@ const Navbar = () => {
               fontWeight: isActiveRoute("/products") ? "600" : "normal",
             }}
             onClick={() => {
-                navigate("/products");
-                setDrawerOpen(false);
-              }}
+              navigate("/products");
+              setDrawerOpen(false);
+            }}
           />
         </ListItem>
 
-        <ListItem button onClick={toggleCompanyMenu}>
+        <ListItem onClick={toggleCompanyMenu}>
           <ListItemText
             primary="Company"
             sx={{
@@ -200,7 +154,6 @@ const Navbar = () => {
         <Collapse in={companyOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
             <ListItem
-              button
               sx={{ pl: 4 }}
               onClick={() => {
                 navigate("/about");
@@ -216,7 +169,6 @@ const Navbar = () => {
               />
             </ListItem>
             <ListItem
-              button
               sx={{ pl: 4 }}
               onClick={() => {
                 navigate("/careers");
@@ -234,7 +186,7 @@ const Navbar = () => {
           </List>
         </Collapse>
 
-        <ListItem button>
+        <ListItem>
           <ListItemText
             primary="Contact&nbsp;Us"
             sx={{
@@ -247,21 +199,18 @@ const Navbar = () => {
             }}
           />
         </ListItem>
-        <ListItem button>
-          <ListItemText primary="Pay&nbsp;Now" sx={{ fontWeight: "bold" }} />
+        <ListItem
+          component="a"
+          href="https://payments-test.cashfree.com/forms/suave-healthcare"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <ListItemText primary="Pay Now" sx={{ fontWeight: "bold" }} />
         </ListItem>
       </List>
 
       <Box sx={{ mt: 2, px: 2 }}>
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ "aria-label": "search" }}
-          />
-        </Search>
+        <SearchModal />
       </Box>
     </Box>
   );
@@ -274,12 +223,7 @@ const Navbar = () => {
       <Toolbar sx={{ justifyContent: "space-between" }}>
         {/* Logo */}
         <Box>
-          <img
-            src="/logo.png"
-            alt="Logo"
-            className="scale-150"
-            style={{ height: "48px" }}
-          />
+          <img src="/logo.png" alt="Logo" className="w-40" />
         </Box>
 
         {/* Mobile menu icon */}
@@ -361,9 +305,11 @@ const Navbar = () => {
               Contact&nbsp;Us
             </Button>
             <Button
-              className="text-gray-950"
               color="inherit"
               variant="outlined"
+              href="https://payments-test.cashfree.com/forms/suave-healthcare"
+              target="_blank"
+              rel="noopener noreferrer"
               sx={{
                 ...noWrapButtonStyle,
                 borderColor: "primary.main",

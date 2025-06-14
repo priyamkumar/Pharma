@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Divisions() {
   const scrollContainerRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -141,6 +142,7 @@ export default function Divisions() {
             <div
               key={index}
               className="cursor-pointer flex flex-col items-center justify-center mr-4"
+              onClick={() => navigate(`/products?division=${division.name}`)}
             >
               <div className="w-32 h-32 rounded-full border border-gray-200 flex items-center justify-center bg-white mb-4">
                 <img

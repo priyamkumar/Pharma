@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { X, ChevronRight } from "lucide-react";
+import ProductCard from "./ProductCard";
+import Pagination from "./Pagination";
+import { ProductState } from "../context/ProductsContext";
 
 function Divisions({
   selectedDivision,
@@ -164,13 +167,13 @@ function Divisions({
                       key={division.id}
                       className="cursor-pointer flex flex-col items-center justify-center mr-4"
                       onClick={() => {
-                        setSelectedDivision(division);
+                        setSelectedDivision(division.name);
                         setFilters({ ...filters, division: [division.name] });
                       }}
                     >
                       <div
                         className={`w-32 h-32 rounded-full border border-gray-200 flex items-center justify-center bg-white mb-4 ${
-                          division.id === selectedDivision?.id
+                          division.name === selectedDivision
                             ? "border-4 border-green-600"
                             : ""
                         }`}
@@ -179,7 +182,7 @@ function Divisions({
                           src={division.image}
                           alt={division.name}
                           draggable={false}
-                          className="w-12 h-12 object-contain scale-250 pointer-events-none"
+                          className="w-12 h-12 object-contain scale-150 pointer-events-none"
                         />
                       </div>
                       <p className="text-gray-700 font-medium pointer-events-none">
@@ -226,53 +229,84 @@ const FilterModalPanel = ({
       id: "form",
       title: "Form",
       options: [
-        { id: "Tablets", label: "Tablets", count: 245 },
-        { id: "Capsules", label: "Capsules", count: 189 },
-        { id: "Syrup", label: "Syrup", count: 67 },
-        { id: "Injection", label: "Injection", count: 123 },
-        { id: "Ointment", label: "Ointment", count: 45 },
-        { id: "Drops", label: "Drops", count: 78 },
+        { id: "TABLETS", label: "TABLETS" },
+        { id: "CAPSULES", label: "CAPSULES" },
+        { id: "SYRUP", label: "SYRUP" },
+        { id: "INJECTION", label: "INJECTION" },
+        { id: "OINTMENT", label: "OINTMENT" },
+        { id: "DROPS", label: "DROPS" },
+        { id: "SUSPENSION", label: "SUSPENSION" },
+        { id: "CREAM", label: "CREAM" },
+        { id: "GEL", label: "GEL" },
+        { id: "POWDER", label: "POWDER" },
+        { id: "OIL", label: "OIL" },
+        { id: "LOTION", label: "LOTION" },
+        { id: "INHALER", label: "INHALER" },
+        { id: "NASAL SPRAY", label: "NASAL SPRAY" },
+        { id: "SUPPOSITORY", label: "SUPPOSITORY" },
+        { id: "INFUSION", label: "INFUSION" },
+        { id: "LIQUID", label: "LIQUID" },
+        { id: "SOAP", label: "SOAP" },
+        { id: "FACE WASH", label: "FACE WASH" },
+        { id: "SHAMPOO", label: "SHAMPOO" },
+        { id: "CHURAN", label: "CHURAN" },
+        { id: "RAS", label: "RAS" },
+        { id: "RESPULES", label: "RESPULES" },
+        { id: "PASTE", label: "PASTE" },
+        { id: "SPRAY", label: "SPRAY" },
       ],
     },
     {
       id: "division",
       title: "Division",
       options: [
-        { id: "AUSPIN", label: "AUSPIN", count: 156 },
-        { id: "CURE", label: "CURE", count: 89 },
-        { id: "GRACE", label: "GRACE", count: 134 },
-        { id: "MIND", label: "MIND", count: 98 },
-        { id: "PRIMA", label: "PRIMA", count: 76 },
-        { id: "OPTHO", label: "OPTHO", count: 112 },
-        { id: "NURALZ", label: "NURALZ", count: 112 },
-        { id: "EVERMED", label: "EVERMED", count: 112 },
-        { id: "GENVIMAX", label: "GENVIMAX", count: 112 },
-        { id: "MEDANOR", label: "MEDANOR", count: 112 },
-        { id: "VENTILA", label: "VENTILA", count: 112 },
+        { id: "AUSPIN", label: "AUSPIN" },
+        { id: "CURE", label: "CURE" },
+        { id: "GRACE", label: "GRACE" },
+        { id: "MIND", label: "MIND" },
+        { id: "PRIMA", label: "PRIMA" },
+        { id: "OPTHO", label: "OPTHO" },
+        { id: "NURALZ", label: "NURALZ" },
+        { id: "EVERMED", label: "EVERMED" },
+        { id: "GENVIMAX", label: "GENVIMAX" },
+        { id: "MEDANOR", label: "MEDANOR" },
+        { id: "VENTILA", label: "VENTILA" },
       ],
     },
     {
       id: "therapeutic",
       title: "Therapeutic",
       options: [
-        { id: "antibiotics", label: "Antibiotics", count: 203 },
-        { id: "analgesics", label: "Analgesics", count: 167 },
-        { id: "antacids", label: "Antacids", count: 89 },
-        { id: "vitamins", label: "Vitamins", count: 145 },
-        { id: "antiseptics", label: "Antiseptics", count: 67 },
-        { id: "antihistamines", label: "Antihistamines", count: 91 },
+        { id: "NSAID'S", label: "NSAID'S" },
+        { id: "ANTIBIOTICS", label: "ANTIBIOTICS" },
+        { id: "ALKALIZER", label: "ALKALIZER" },
+        { id: "ANTI-HELMINTIC", label: "ANTI-HELMINTIC" },
+        { id: "ANTI-MALARIA", label: "ANTI-MALARIA" },
+        { id: "ANTIALLERGIC", label: "ANTIALLERGIC" },
+        { id: "ANTIFUNGAL", label: "ANTIFUNGAL" },
+        { id: "ANTI-INFECTIVE", label: "ANTI-INFECTIVE" },
+        { id: "ANTIVARICOSE", label: "ANTIVARICOSE" },
+        { id: "ANTIVIRAL", label: "ANTIVIRAL" },
+        { id: "CORTICOSTEROIDS", label: "CORTICOSTEROIDS" },
+        { id: "ANTI-ULCERANTS", label: "ANTI-ULCERANTS" },
+        { id: "HEPATO PROTECTIVES", label: "HEPATO PROTECTIVES" },
+        { id: "GENERAL", label: "GENERAL" },
+        { id: "LAXATIVES", label: "LAXATIVES" },
+        { id: "NUTRITIONAL", label: "NUTRITIONAL" },
+        { id: "PARENTERAL", label: "PARENTERAL" },
+        { id: "RESPULES", label: "RESPULES" },
+        { id: "ANTISPASMODIC", label: "ANTISPASMODIC" },
+        { id: "HORMONES & RELATED DRUGS", label: "HORMONES & RELATED DRUGS" },
+        { id: "WOMEN'S HEALTH GENERAL", label: "WOMEN'S HEALTH GENERAL" },
       ],
     },
     {
       id: "packingType",
       title: "Packing Type",
       options: [
-        { id: "Blister", label: "Blister", count: 298 },
-        { id: "Bottle", label: "Bottle", count: 187 },
-        { id: "Tube", label: "Tube", count: 156 },
-        { id: "Vial", label: "Vial", count: 134 },
-        { id: "Sachet", label: "Sachet", count: 89 },
-        { id: "Strip", label: "Strip", count: 145 },
+        { id: "BLISTER", label: "BLISTER" },
+        { id: "ALU ALU", label: "ALU ALU" },
+        { id: "ALU STRIP", label: "ALU STRIP" },
       ],
     },
   ];
@@ -398,12 +432,6 @@ const FilterModalPanel = ({
                               {option.label}
                             </span>
                           </div>
-                          <span
-                            id={`${option.id}-count`}
-                            className="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-1 rounded-full"
-                          >
-                            {option.count}
-                          </span>
                         </label>
                       );
                     })}
@@ -430,287 +458,6 @@ const FilterModalPanel = ({
   );
 };
 
-const products = [
-  {
-    id: 1,
-    brand: "PRIMA",
-    name: "ACRIMOL MR (BLISTER)",
-    composition:
-      "ACELOFENAC 100mg. IP + PARACETAMOL 325mg. IP + CHLORZOXAZONE 250mg. IP",
-    packaging: "Blister | 10×10",
-    mrp: "₹93.00",
-    ptr: "₹66.43",
-    pts: "₹59.79",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=1",
-  },
-  {
-    id: 2,
-    brand: "GENVIMAX",
-    name: "PARACETAMOL TABLETS",
-    composition: "PARACETAMOL 500mg. IP",
-    packaging: "Alu Alu | 10×10",
-    mrp: "₹45.50",
-    ptr: "₹32.50",
-    pts: "₹29.25",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=2",
-  },
-  {
-    id: 3,
-    brand: "MEDLINE",
-    name: "AMOXICILLIN CAPSULES",
-    composition: "AMOXICILLIN 250mg. IP",
-    packaging: "Strip | 10×1",
-    mrp: "₹78.90",
-    ptr: "₹56.35",
-    pts: "₹50.72",
-    type: "Capsules",
-    image: "https://picsum.photos/80/80?random=3",
-  },
-  {
-    id: 4,
-    brand: "HEALTHMAX",
-    name: "CEFIXIME TABLETS",
-    composition: "CEFIXIME 200mg. IP",
-    packaging: "Blister | 6×1",
-    mrp: "₹156.00",
-    ptr: "₹111.45",
-    pts: "₹100.31",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=4",
-  },
-  {
-    id: 5,
-    brand: "BIOCARE",
-    name: "VITAMIN D3 CAPSULES",
-    composition: "CHOLECALCIFEROL 60000 I.U.",
-    packaging: "Strip | 4×1",
-    mrp: "₹89.75",
-    ptr: "₹64.12",
-    pts: "₹57.71",
-    type: "Capsules",
-    image: "https://picsum.photos/80/80?random=5",
-  },
-  {
-    id: 6,
-    brand: "PHARMEX",
-    name: "AZITHROMYCIN TABLETS",
-    composition: "AZITHROMYCIN 500mg. IP",
-    packaging: "Blister | 3×1",
-    mrp: "₹134.25",
-    ptr: "₹95.89",
-    pts: "₹86.30",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=6",
-  },
-  {
-    id: 7,
-    brand: "LIFELINE",
-    name: "OMEPRAZOLE CAPSULES",
-    composition: "OMEPRAZOLE 20mg. IP",
-    packaging: "Strip | 10×1",
-    mrp: "₹67.80",
-    ptr: "₹48.43",
-    pts: "₹43.59",
-    type: "Capsules",
-    image: "https://picsum.photos/80/80?random=7",
-  },
-  {
-    id: 8,
-    brand: "MEDTECH",
-    name: "METFORMIN TABLETS",
-    composition: "METFORMIN HCL 500mg. IP",
-    packaging: "Strip | 20×1",
-    mrp: "₹52.30",
-    ptr: "₹37.36",
-    pts: "₹33.62",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=8",
-  },
-  {
-    id: 9,
-    brand: "ZENITH",
-    name: "DICLOFENAC TABLETS",
-    composition: "DICLOFENAC SODIUM 50mg. IP",
-    packaging: "Blister | 10×10",
-    mrp: "₹73.45",
-    ptr: "₹52.47",
-    pts: "₹47.22",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=9",
-  },
-  {
-    id: 10,
-    brand: "APOLLO",
-    name: "CIPROFLOXACIN TABLETS",
-    composition: "CIPROFLOXACIN 500mg. IP",
-    packaging: "Strip | 10×1",
-    mrp: "₹98.60",
-    ptr: "₹70.43",
-    pts: "₹63.39",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=10",
-  },
-  {
-    id: 11,
-    brand: "NOVEX",
-    name: "LEVOCETIRIZINE TABLETS",
-    composition: "LEVOCETIRIZINE 5mg. IP",
-    packaging: "Blister | 10×10",
-    mrp: "₹84.20",
-    ptr: "₹60.14",
-    pts: "₹54.13",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=11",
-  },
-  {
-    id: 12,
-    brand: "MEDICARE",
-    name: "ATORVASTATIN TABLETS",
-    composition: "ATORVASTATIN 10mg. IP",
-    packaging: "Strip | 10×1",
-    mrp: "₹112.85",
-    ptr: "₹80.61",
-    pts: "₹72.55",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=12",
-  },
-  {
-    id: 13,
-    brand: "VITACARE",
-    name: "B-COMPLEX CAPSULES",
-    composition: "VITAMIN B-COMPLEX",
-    packaging: "Strip | 10×1",
-    mrp: "₹65.40",
-    ptr: "₹46.71",
-    pts: "₹42.04",
-    type: "Capsules",
-    image: "https://picsum.photos/80/80?random=13",
-  },
-  {
-    id: 14,
-    brand: "HEALTHCO",
-    name: "CALCIUM TABLETS",
-    composition: "CALCIUM CARBONATE 500mg. + VITAMIN D3 250 I.U.",
-    packaging: "Strip | 15×1",
-    mrp: "₹76.95",
-    ptr: "₹54.97",
-    pts: "₹49.47",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=14",
-  },
-  {
-    id: 15,
-    brand: "PHARMAPLUS",
-    name: "RANITIDINE TABLETS",
-    composition: "RANITIDINE 150mg. IP",
-    packaging: "Blister | 10×10",
-    mrp: "₹58.75",
-    ptr: "₹41.96",
-    pts: "₹37.77",
-    type: "Tablets",
-    image: "https://picsum.photos/80/80?random=15",
-  },
-];
-
-// ProductCard component
-const ProductCard = ({ product }) => {
-  const truncateText = (text, maxLength = 60) => {
-    return text.length > maxLength
-      ? text.substring(0, maxLength) + "..."
-      : text;
-  };
-
-  return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-4 border border-gray-100">
-      <div className="flex items-start gap-3 mb-3">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
-        />
-        <div className="flex-1 min-w-0">
-          <div className="text-xs text-[#129349] font-medium mb-1">
-            {product.brand}
-          </div>
-          <h3 className="font-bold text-gray-900 text-sm leading-tight mb-1">
-            {product.name}
-          </h3>
-          <span
-            className={`inline-block px-2 py-1 text-xs rounded-full font-medium ${
-              product.type === "Tablets"
-                ? "bg-blue-100 text-blue-700"
-                : "bg-green-100 text-green-700"
-            }`}
-          >
-            {product.type}
-          </span>
-        </div>
-      </div>
-
-      <div className="mb-3">
-        <p className="text-xs text-gray-600 mb-2" title={product.composition}>
-          {truncateText(product.composition)}
-        </p>
-        <p className="text-xs text-gray-500">{product.packaging}</p>
-      </div>
-
-      <div className="flex justify-between space-y-1">
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-gray-500">MRP:</span>
-          <span className="text-sm font-semibold text-gray-900">
-            {product.mrp}
-          </span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-gray-500">PTR:</span>
-          <span className="text-sm font-medium text-blue-600">
-            {product.ptr}
-          </span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-gray-500">PTS:</span>
-          <span className="text-sm font-medium text-green-600">
-            {product.pts}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Pagination component
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  return (
-    <div className="flex items-center justify-center gap-4 mt-8">
-      <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-      >
-        <ChevronLeft className="w-4 h-4" />
-        Previous
-      </button>
-
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-gray-600">
-          Page {currentPage} of {totalPages}
-        </span>
-      </div>
-
-      <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-      >
-        Next
-        <ChevronRight className="w-4 h-4" />
-      </button>
-    </div>
-  );
-};
-
 // Main AllProducts component
 const AllProducts = ({
   selectedDivision,
@@ -718,9 +465,41 @@ const AllProducts = ({
   filters,
   setFilters,
 }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
   const [isModalOpen, setModalOpen] = useState(false);
+  const { products, fetchProducts } = ProductState();
+
+  useEffect(() => {
+  if (products.length === 0) fetchProducts();
+}, []);
+  // Initialize page from URL params
+  useEffect(() => {
+    const pageParam = searchParams.get("page");
+    if (pageParam && !isNaN(pageParam)) {
+      setCurrentPage(parseInt(pageParam, 10));
+    }
+  }, [searchParams]);
+
+  
+
+  // Update URL when page changes
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+
+      // Update URL with new page
+      const newParams = new URLSearchParams(searchParams);
+      if (page === 1) {
+        newParams.delete("page");
+      } else {
+        newParams.set("page", page.toString());
+      }
+      setSearchParams(newParams, { replace: true });
+    }
+  };
+
   // Handler to open/close modal
   const openFilterModal = () => setModalOpen(true);
   const closeFilterModal = () => setModalOpen(false);
@@ -729,13 +508,57 @@ const AllProducts = ({
   const applyFilters = (selectedFilters) => {
     const updatedFilters = { ...selectedFilters };
     setFilters(updatedFilters);
+
     if (
       !updatedFilters.division.includes(selectedDivision?.name) ||
       updatedFilters.division.length > 1
-    )
+    ) {
       setSelectedDivision(null);
+    }
+
     setCurrentPage(1);
     setModalOpen(false);
+
+    // Update URL params
+    updateUrlParams(updatedFilters, 1);
+  };
+
+  // Clear all filters
+  const clearAllFilters = () => {
+    const clearedFilters = {
+      form: [],
+      therapeutic: [],
+      packingType: [],
+      division: [],
+    };
+
+    setFilters(clearedFilters);
+    setSelectedDivision(null);
+    setCurrentPage(1);
+
+    // Clear URL params
+    setSearchParams({}, { replace: true });
+  };
+
+  // Helper function to update URL parameters
+  const updateUrlParams = (currentFilters, page = currentPage) => {
+    const newParams = new URLSearchParams();
+
+    // Add filter parameters
+    Object.entries(currentFilters).forEach(([key, values]) => {
+      if (Array.isArray(values) && values.length > 0) {
+        values.forEach((value) => {
+          newParams.append(key, value);
+        });
+      }
+    });
+
+    // Add page parameter (only if not page 1)
+    if (page > 1) {
+      newParams.set("page", page.toString());
+    }
+
+    setSearchParams(newParams, { replace: true });
   };
 
   // Filter products based on selected criteria
@@ -745,24 +568,25 @@ const AllProducts = ({
     let filtered = [...products];
 
     if (filters.division.length > 0) {
-      filtered = filtered.filter((p) => filters.division.includes(p.brand));
+      filtered = filtered.filter((p) => filters.division.includes(p.brand.trim().toUpperCase()));
     }
+
     // Apply form filter (handles array of selected forms)
     if (filters.form.length > 0) {
-      filtered = filtered.filter((p) => filters.form.includes(p.type));
+      filtered = filtered.filter((p) => filters.form.includes(p.category.trim()));
     }
 
     // Apply therapeutic filter
     if (filters.therapeutic.length > 0) {
       filtered = filtered.filter((p) =>
-        filters.therapeutic.includes(p.therapeutic)
+        filters.therapeutic.includes(p.therapeutic.trim().toUpperCase())
       );
     }
 
     // Apply packing type filter
     if (filters.packingType.length > 0) {
       filtered = filtered.filter((p) =>
-        filters.packingType.includes(p.packaging.split("|")[0].trim())
+        filters.packingType.includes(p.packagingType.trim().toUpperCase())
       );
     }
 
@@ -777,11 +601,12 @@ const AllProducts = ({
     startIndex + productsPerPage
   );
 
-  const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
+  // Reset to page 1 if current page exceeds total pages
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      handlePageChange(1);
     }
-  };
+  }, [totalPages, currentPage]);
 
   // Check if any filters are active
   const hasActiveFilters = Object.values(filters).some(
@@ -791,6 +616,33 @@ const AllProducts = ({
   const activeFilterCount = Object.values(filters).filter(
     (filter) => Array.isArray(filter) && filter.length > 0
   ).length;
+
+  // Get active filter labels for display
+  const getActiveFilterLabels = () => {
+    const labels = [];
+
+    Object.entries(filters).forEach(([key, values]) => {
+      if (Array.isArray(values) && values.length > 0) {
+        values.forEach((value) => {
+          labels.push({ type: key, value, label: value });
+        });
+      }
+    });
+
+    return labels;
+  };
+
+  // Remove individual filter
+  const removeFilter = (filterType, filterValue) => {
+    const updatedFilters = {
+      ...filters,
+      [filterType]: filters[filterType].filter((item) => item !== filterValue),
+    };
+    if (filterType === "division") setSelectedDivision(null);
+    setFilters(updatedFilters);
+    setCurrentPage(1);
+    updateUrlParams(updatedFilters, 1);
+  };
 
   return (
     <div className="md:max-w-[75vw] mx-auto p-6 bg-gray-50 min-h-screen">
@@ -810,7 +662,47 @@ const AllProducts = ({
               </span>
             )}
           </button>
+
+          {hasActiveFilters && (
+            <button
+              onClick={clearAllFilters}
+              className="cursor-pointer text-red-600 hover:text-red-800 font-medium px-3 py-2 rounded-lg hover:bg-red-50 transition-colors duration-200"
+            >
+              Clear All Filters
+            </button>
+          )}
         </div>
+
+        {/* Active Filters Display */}
+        {hasActiveFilters && (
+          <div className="mb-4 flex flex-wrap gap-2">
+            {getActiveFilterLabels().map((filter, index) => (
+              <span
+                key={`${filter.type}-${filter.value}-${index}`}
+                className="inline-flex items-center gap-2 bg-[#129349] text-white px-3 py-1 rounded-full text-sm"
+              >
+                <span className="capitalize">{filter.type}:</span>
+                <span>{filter.label}</span>
+                <button
+                  onClick={() => removeFilter(filter.type, filter.value)}
+                  className="cursor-pointer hover:text-black hover:bg-white hover:bg-opacity-20 rounded-full p-0.5"
+                >
+                  <svg
+                    className="w-3 h-3"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
 
         <FilterModalPanel
           isOpen={isModalOpen}
@@ -823,7 +715,7 @@ const AllProducts = ({
         {/* Products Grid */}
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           {currentProducts.map((product) => (
-            <Link key={product.id}  to={`/products/${product.id}`}>
+            <Link key={product._id} to={`/products/${product._id}`}>
               <ProductCard product={product} />
             </Link>
           ))}
@@ -892,13 +784,13 @@ const FeatureHighlights = () => {
       icon: "📈",
       title: "Fueling India's Healthcare Momentum",
       description:
-        "India's therapeutic demand curve is steep and unforgiving. Vibcare counters it with a 1,500-product catalogue spanning 11 divisions—each batch released under WHO-GMP protocols, backed by in-house QA and ISO-compliant supply chain controls. Result: consistent, quality-assured medicines that let hospitals, trade channels, and government tenders scale without supply-shock risk.",
+        "India's therapeutic demand curve is steep and unforgiving. Suave Healthcare counters it with a 1,500-product catalogue spanning 11 divisions—each batch released under WHO-GMP protocols, backed by in-house QA and ISO-compliant supply chain controls. Result: consistent, quality-assured medicines that let hospitals, trade channels, and government tenders scale without supply-shock risk.",
     },
     {
       icon: "⏱️",
       title: "Nation-Wide Distribution Edge",
       description:
-        "Market access is meaningless without bullet-proof fulfilment. Vibcare operates a digitised distribution network—real-time inventory APIs, tech-enabled cold-chain, and 72-hour dispatch to 27 Indian states. Commercial partners receive launch packs, medico-marketing assets, and regulatory dossiers that slash time-to-market and raise prescriber confidence from day one.",
+        "Market access is meaningless without bullet-proof fulfilment. Suave Healthcare operates a digitised distribution network—real-time inventory APIs, tech-enabled cold-chain, and 72-hour dispatch to 27 Indian states. Commercial partners receive launch packs, medico-marketing assets, and regulatory dossiers that slash time-to-market and raise prescriber confidence from day one.",
     },
     {
       icon: "🔖",
@@ -959,13 +851,58 @@ const FeatureHighlights = () => {
 };
 
 export default function Products() {
-  const [selectedDivision, setSelectedDivision] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedDivision, setSelectedDivision] = useState(
+    searchParams.getAll("division").length === 1
+      ? searchParams.get("division")
+      : null
+  );
   const [filters, setFilters] = useState({
     form: [],
     therapeutic: [],
     packingType: [],
     division: [],
   });
+  // Initialize filters from URL params on component mount
+  useEffect(() => {
+    const urlFilters = {
+      form: searchParams.getAll("form"),
+      therapeutic: searchParams.getAll("therapeutic"),
+      packingType: searchParams.getAll("packingType"),
+      division: searchParams.getAll("division"),
+    };
+
+    // Only update if there are actual params in URL
+    const hasUrlParams = Object.values(urlFilters).some(
+      (arr) => arr.length > 0
+    );
+    if (hasUrlParams) {
+      setFilters(urlFilters);
+    }
+  }, [searchParams]);
+
+  // Update URL when filters change
+  const updateFilters = (newFilters) => {
+    setFilters(newFilters);
+    updateUrlParams(newFilters);
+  };
+
+  // Helper function to update URL parameters
+  const updateUrlParams = (currentFilters) => {
+    const newParams = new URLSearchParams();
+
+    // Add filter parameters
+    Object.entries(currentFilters).forEach(([key, values]) => {
+      if (Array.isArray(values) && values.length > 0) {
+        values.forEach((value) => {
+          newParams.append(key, value);
+        });
+      }
+    });
+
+    // Update URL without triggering navigation
+    setSearchParams(newParams, { replace: true });
+  };
 
   return (
     <>
@@ -973,13 +910,13 @@ export default function Products() {
         selectedDivision={selectedDivision}
         setSelectedDivision={setSelectedDivision}
         filters={filters}
-        setFilters={setFilters}
+        setFilters={updateFilters}
       />
       <AllProducts
         selectedDivision={selectedDivision}
         setSelectedDivision={setSelectedDivision}
         filters={filters}
-        setFilters={setFilters}
+        setFilters={updateFilters}
       />
       <FeatureHighlights />
     </>

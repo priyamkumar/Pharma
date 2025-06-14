@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from "react";
 
 const EnquiryContext = createContext();
 
@@ -6,7 +6,9 @@ export function EnquiryProvider({ children }) {
   const [isEnquiryModalOpen, setIsEnquiryModalOpen] = useState(false);
 
   return (
-    <EnquiryContext.Provider value={{ isEnquiryModalOpen, setIsEnquiryModalOpen }}>
+    <EnquiryContext.Provider
+      value={{ isEnquiryModalOpen, setIsEnquiryModalOpen }}
+    >
       {children}
     </EnquiryContext.Provider>
   );
