@@ -21,7 +21,7 @@ import UserProvider from "../context/UserContext.jsx";
 import { Toaster } from "react-hot-toast";
 import ProductProvider from "../context/ProductsContext.jsx";
 
-export const server = "http://localhost:5005";
+export const server = "https://pharma-lovat.vercel.app";
 
 const router = createBrowserRouter([
   {
