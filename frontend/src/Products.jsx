@@ -4,6 +4,7 @@ import { X, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
 import Pagination from "./Pagination";
 import { ProductState } from "../context/ProductsContext";
+import GradientCircularProgress from "./Loader";
 
 function Divisions({
   selectedDivision,
@@ -469,11 +470,11 @@ const AllProducts = ({
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
   const [isModalOpen, setModalOpen] = useState(false);
-  const { products, fetchProducts } = ProductState();
+  const { productsLoading, products, fetchProducts } = ProductState();
 
   useEffect(() => {
-  if (products.length === 0) fetchProducts();
-}, []);
+    if (products.length === 0) fetchProducts();
+  }, []);
   // Initialize page from URL params
   useEffect(() => {
     const pageParam = searchParams.get("page");
@@ -481,8 +482,6 @@ const AllProducts = ({
       setCurrentPage(parseInt(pageParam, 10));
     }
   }, [searchParams]);
-
-  
 
   // Update URL when page changes
   const handlePageChange = (page) => {
@@ -568,12 +567,16 @@ const AllProducts = ({
     let filtered = [...products];
 
     if (filters.division.length > 0) {
-      filtered = filtered.filter((p) => filters.division.includes(p.brand.trim().toUpperCase()));
+      filtered = filtered.filter((p) =>
+        filters.division.includes(p.brand.trim().toUpperCase())
+      );
     }
 
     // Apply form filter (handles array of selected forms)
     if (filters.form.length > 0) {
-      filtered = filtered.filter((p) => filters.form.includes(p.category.trim()));
+      filtered = filtered.filter((p) =>
+        filters.form.includes(p.category.trim())
+      );
     }
 
     // Apply therapeutic filter
@@ -722,31 +725,35 @@ const AllProducts = ({
         </div>
 
         {/* No Results Message */}
-        {filteredProducts.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
-              <svg
-                className="w-16 h-16 mx-auto"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2M4 13h2m0 0V9a2 2 0 012-2h2m0 0V6a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V9a2 2 0 01-2 2h-2m0 0v2a2 2 0 002 2h2a2 2 0 002-2v-2"
-                />
-              </svg>
+        {filteredProducts.length === 0 &&
+          (productsLoading ? (
+            <GradientCircularProgress />
+          ) : (
+            <div className="text-center py-12">
+              <div className="text-gray-400 mb-4">
+                <svg
+                  className="w-16 h-16 mx-auto"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2M4 13h2m0 0V9a2 2 0 012-2h2m0 0V6a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V9a2 2 0 01-2 2h-2m0 0v2a2 2 0 002 2h2a2 2 0 002-2v-2"
+                  />
+                </svg>
+              </div>
+              <p className="text-gray-500 text-lg">
+                No products found for the selected filters.
+              </p>
+              <p className="text-gray-400 text-sm mt-2">
+                Try adjusting your filters or clearing them to see more
+                products.
+              </p>
             </div>
-            <p className="text-gray-500 text-lg">
-              No products found for the selected filters.
-            </p>
-            <p className="text-gray-400 text-sm mt-2">
-              Try adjusting your filters or clearing them to see more products.
-            </p>
-          </div>
-        )}
+          ))}
 
         {/* Pagination */}
         {totalPages > 1 && (
