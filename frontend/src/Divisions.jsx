@@ -149,7 +149,7 @@ export default function Divisions() {
                   src={division.image}
                   alt={division.name}
                   draggable={false}
-                  className="w-12 h-12 object-contain scale-250 pointer-events-none"
+                  className="w-12 h-12 object-contain scale-150 pointer-events-none"
                 />
               </div>
               <p className="text-gray-700 font-medium pointer-events-none">
