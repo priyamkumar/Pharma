@@ -10,5 +10,11 @@
       "src": "/(.*)",
       "dest": "/index.js"
     }
-  ]
+  ],
+  "git": {
+    "commitAuthor": {
+      "name": "Priyam",
+      "email": "priyamkumar976@gmail.com"
+    }
+  }
 }
