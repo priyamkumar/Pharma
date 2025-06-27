@@ -22,7 +22,7 @@ const BlogsSection = () => {
     <section className="max-w-[75vw] mx-auto py-16 px-4">
       {/* Section Title */}
       <div className="text-center mb-12">
-        <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">Blogs</h2>
+        <h2 className="text-4xl font-bold text-gray-900">Blogs</h2>
       </div>
 
       {/* Blog Grid */}

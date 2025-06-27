@@ -30,7 +30,7 @@ export default function SuaveHealthcareOverview() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         {/* Left Side - Content */}
         <div className="space-y-6">
-          <h2 className="text-4xl font-bold text-gray-700">An Overview</h2>
+          <h2 className="text-4xl font-bold text-gray-900">An Overview</h2>
           <p className="text-base text-gray-600 leading-relaxed">
             Founded in 2002, Suave Healthcare is a leading ISO 9001:2008 &
             WHO-GMP certified pharmaceutical company in India, offering a vast
