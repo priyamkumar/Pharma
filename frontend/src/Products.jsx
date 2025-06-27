@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { X, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
 import Pagination from "./Pagination";
-import { ProductState } from "../context/ProductsContext";
+import { useProductStore } from '../store/productStore';
 import GradientCircularProgress from "./Loader";
 
 function Divisions({
@@ -470,7 +470,7 @@ const AllProducts = ({
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
   const [isModalOpen, setModalOpen] = useState(false);
-  const { productsLoading, products, fetchProducts } = ProductState();
+  const { productsLoading, products, fetchProducts } = useProductStore();
 
   useEffect(() => {
     if (products.length === 0) fetchProducts();
@@ -809,7 +809,7 @@ const FeatureHighlights = () => {
 
   return (
     <div className="py-12 px-4 lg:px-24">
-      <div className="max-w-7xl mx-auto">
+      <div className="md:max-w-[75vw] mx-auto">
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">

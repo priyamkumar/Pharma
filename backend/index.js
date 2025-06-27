@@ -41,6 +41,8 @@ app.get("/", (req, res) => {
 app.use("/api/v1/user", require("./routes/userRoutes"));
 app.use("/api/v1/message", require("./routes/messageRoutes"));
 app.use("/api/v1/product", require("./routes/productRoutes"));
+app.use("/api/v1/division", require("./routes/divisionRoutes"));
+app.use("/api/v1/blog", require("./routes/blogRoutes"));
 
 app.use(errorHandler);
 

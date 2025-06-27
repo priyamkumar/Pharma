@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import Pagination from "./Pagination";
 import ProductCard from "./ProductCard";
 import { Link } from "react-router-dom";
-import { ProductState } from "../context/ProductsContext";
+import { useProductStore } from '../store/productStore';
 
 export default function NISPage() {
-  const {products, fetchProducts} = ProductState()
+  const {products, fetchProducts} = useProductStore()
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
   const totalPages = Math.ceil(products.length / productsPerPage);

@@ -54,7 +54,6 @@ const createProduct = asyncHandler(async (req, res) => {
       });
     }
     req.body.images = imagesLink;
-    req.body.user = req.user._id;
     const product = await Product.create(req.body);
     res.status(201).json({
       success: true,

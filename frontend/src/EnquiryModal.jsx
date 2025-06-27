@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useEnquiry } from "../context/EnquiryContext";
 import { server } from "../src/main";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useEnquiryStore } from "../store/enquiryStore";
 
 export default function EnquiryModal() {
-  const { isEnquiryModalOpen, setIsEnquiryModalOpen } = useEnquiry();
+  const { isEnquiryModalOpen, setIsEnquiryModalOpen } = useEnquiryStore();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -31,10 +31,9 @@ export default function EnquiryModal() {
 
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
-    } else if (!/^[\d\s\-\+\(\)]+$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid phone number";
+    } else if (!/^(\+91[\-\s]?)?[6-9]\d{9}$/.test(formData.phone)) {
+      newErrors.phone = "Please enter a valid Indian phone number";
     }
-
     return newErrors;
   };
 
@@ -95,7 +94,7 @@ export default function EnquiryModal() {
       {/* Modal */}
       {isEnquiryModalOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={closeModal}
         >
           <div

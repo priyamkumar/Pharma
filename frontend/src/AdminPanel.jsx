@@ -14,6 +14,8 @@ import {
   Eye,
   EyeOff,
   Trash2 as ImageTrash,
+  Layers,
+  FileText,
 } from "lucide-react";
 import axios from "axios";
 import { server } from "./main";
@@ -55,6 +57,17 @@ const AdminPanel = () => {
 
   const [messages, setMessages] = useState([]);
 
+  const [divisions, setDivisions] = useState([]);
+
+  const [showAddDivisionModal, setShowAddDivisionModal] = useState(false);
+
+  const [newDivision, setNewDivision] = useState({
+    name: "",
+    description: "",
+    image: null,
+  });
+  const [editingDivision, setEditingDivision] = useState(null);
+
   const [newProduct, setNewProduct] = useState({
     name: "",
     composition: "",
@@ -77,7 +90,20 @@ const AdminPanel = () => {
     indication: "",
     therapeutic: "",
   });
-  
+
+  const [blogs, setBlogs] = useState([]);
+  const [showAddBlogModal, setShowAddBlogModal] = useState(false);
+  const [editingBlog, setEditingBlog] = useState(null);
+  const [newBlog, setNewBlog] = useState({
+    title: "",
+    slug: "",
+    tags: "",
+    categories: "",
+    image: null,
+    content: [{ heading: "", body: "" }],
+    metaDescription: "",
+  });
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -133,6 +159,7 @@ const AdminPanel = () => {
       const { data } = await axios.get(`${server}/api/v1/product`);
       setProducts(data.products);
     } catch (err) {
+      toast.error("Product fetch Error.");
     } finally {
       setLoading(false);
     }
@@ -144,6 +171,7 @@ const AdminPanel = () => {
       const { data } = await axios.get(`${server}/api/v1/message`);
       setMessages(data.messages);
     } catch (err) {
+      toast.error("Message fetch Error.");
     } finally {
       setLoading(false);
     }
@@ -374,9 +402,310 @@ const AdminPanel = () => {
     return img; // Fallback
   };
 
+  const fetchDivisions = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${server}/api/v1/division`);
+      setDivisions(data.divisions);
+    } catch (err) {
+      toast.error("Error fetching divisions");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddDivision = async (e) => {
+    e.preventDefault();
+
+    if (newDivision.name && newDivision.description) {
+      try {
+        // Convert image to base64 if exists
+        let base64Image = "";
+        if (newDivision.image) {
+          base64Image = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(newDivision.image);
+            reader.onload = () => resolve(reader.result);
+          });
+        }
+
+        const divisionData = {
+          name: newDivision.name,
+          description: newDivision.description,
+          ...(base64Image && { image: base64Image }),
+        };
+
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        };
+
+        const { data } = await axios.post(
+          `${server}/api/v1/division/admin/create`,
+          divisionData,
+          config
+        );
+
+        setDivisions([...divisions, data.division]);
+        setNewDivision({ name: "", description: "", image: null });
+        setShowAddDivisionModal(false);
+        toast.success("Division added successfully");
+      } catch (err) {
+        const errorMessage =
+          err.response?.data?.message || "Error adding division";
+        toast.error(errorMessage);
+        console.error("Add Division Error:", err);
+      }
+    }
+  };
+
+  const handleEditDivision = (division) => {
+    setEditingDivision(division);
+    setNewDivision({
+      name: division.name,
+      description: division.description,
+      image: division.image,
+    });
+    setShowAddDivisionModal(true);
+  };
+
+  const handleUpdateDivision = async (e) => {
+    e.preventDefault();
+
+    try {
+      let base64Image = "";
+      if (newDivision.image) {
+        base64Image = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(newDivision.image);
+          reader.onload = () => resolve(reader.result);
+        });
+      }
+      const divisionData = {
+        name: newDivision.name,
+        description: newDivision.description,
+        ...(base64Image && { image: base64Image }),
+      };
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+      const { data } = await axios.put(
+        `${server}/api/v1/division/admin/${editingDivision._id}`,
+        divisionData,
+        config
+      );
+
+      setDivisions(
+        divisions.map((d) => (d._id === data.division._id ? data.division : d))
+      );
+      setNewDivision({ name: "", description: "", image: null });
+      setEditingDivision(null);
+      setShowAddDivisionModal(false);
+      toast.success("Division updated successfully");
+    } catch (err) {
+      toast.error("Error updating division");
+    }
+  };
+
+  const handleDeleteDivision = async (id) => {
+    try {
+      await axios.delete(`${server}/api/v1/division/admin/${id}`, {
+        withCredentials: true,
+      });
+      setDivisions(divisions.filter((d) => d._id !== id));
+      setShowDeleteModal(false);
+      setDeleteItem(null);
+      toast.success("Division deleted successfully");
+    } catch (err) {
+      toast.error("Server Error");
+    }
+  };
+
+  const handleDivisionImageUpload = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setNewDivision({ ...newDivision, image: e.target.files[0] });
+    }
+  };
+
+  const fetchBlogs = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${server}/api/v1/blog`);
+      setBlogs(data.blogs);
+    } catch (err) {
+      toast.error("Error fetching blogs");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddBlog = async (e) => {
+    e.preventDefault();
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+
+      // Convert image to base64 if exists
+      let base64Image = "";
+      if (newBlog.image) {
+        base64Image = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(newBlog.image);
+          reader.onload = () => resolve(reader.result);
+        });
+      }
+
+      const blogData = {
+        ...newBlog,
+        tags: newBlog.tags.split(",").map((tag) => tag.trim()),
+        categories: newBlog.categories.split(",").map((cat) => cat.trim()),
+        ...(base64Image && { image: base64Image }),
+      };
+
+      const { data } = await axios.post(
+        `${server}/api/v1/blog/admin/create`,
+        blogData,
+        config
+      );
+
+      setBlogs([...blogs, data.blog]);
+      setNewBlog({
+        title: "",
+        slug: "",
+        tags: "",
+        categories: "",
+        image: null,
+        content: [{ heading: "", body: "" }],
+        metaDescription: "",
+      });
+      setShowAddBlogModal(false);
+      toast.success("Blog added successfully");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Error adding blog");
+    }
+  };
+
+  const handleEditBlog = (blog) => {
+    setEditingBlog(blog);
+    setNewBlog({
+      title: blog.title,
+      slug: blog.slug,
+      tags: blog.tags.join(", "),
+      categories: blog.categories.join(", "),
+      image: blog.image,
+      content: [...blog.content],
+      metaDescription: blog.metaDescription,
+    });
+    setShowAddBlogModal(true);
+  };
+
+  const handleUpdateBlog = async (e) => {
+    e.preventDefault();
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      };
+
+      let base64Image = "";
+      if (newBlog.image) {
+        base64Image = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(newBlog.image);
+          reader.onload = () => resolve(reader.result);
+        });
+      }
+
+      const blogData = {
+        title: newBlog.title,
+        slug: newBlog.slug,
+        content: newBlog.content,
+        metaDescription: newBlog.metaDescription,
+        tags: newBlog.tags.split(",").map((tag) => tag.trim()),
+        categories: newBlog.categories.split(",").map((cat) => cat.trim()),
+        ...(base64Image && { image: base64Image }),
+      };
+
+      const { data } = await axios.put(
+        `${server}/api/v1/blog/admin/${editingBlog._id}`,
+        blogData,
+        config
+      );
+
+      setBlogs(blogs.map((b) => (b._id === data.blog._id ? data.blog : b)));
+      setNewBlog({
+        title: "",
+        slug: "",
+        tags: "",
+        categories: "",
+        image: null,
+        content: [{ heading: "", body: "" }],
+        metaDescription: "",
+      });
+      setEditingBlog(null);
+      setShowAddBlogModal(false);
+      toast.success("Blog updated successfully");
+    } catch (err) {
+      toast.error("Error updating blog");
+    }
+  };
+
+  const handleDeleteBlog = async (id) => {
+    try {
+      await axios.delete(`${server}/api/v1/blog/admin/${id}`, {
+        withCredentials: true,
+      });
+      setBlogs(blogs.filter((b) => b._id !== id));
+      setShowDeleteModal(false);
+      setDeleteItem(null);
+      toast.success("Blog deleted successfully");
+    } catch (err) {
+      toast.error("Server Error");
+    }
+  };
+
+  const handleBlogImageUpload = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setNewBlog({ ...newBlog, image: e.target.files[0] });
+    }
+  };
+
+  const addContentSection = () => {
+    setNewBlog({
+      ...newBlog,
+      content: [...newBlog.content, { heading: "", body: "" }],
+    });
+  };
+
+  const removeContentSection = (index) => {
+    const newContent = [...newBlog.content];
+    newContent.splice(index, 1);
+    setNewBlog({ ...newBlog, content: newContent });
+  };
+
+  const updateContentSection = (index, field, value) => {
+    const newContent = [...newBlog.content];
+    newContent[index][field] = value;
+    setNewBlog({ ...newBlog, content: newContent });
+  };
+
   useEffect(() => {
     fetchProducts();
     fetchMessages();
+    fetchDivisions();
+    fetchBlogs();
   }, []);
 
   if (!isAuthenticated) {
@@ -388,7 +717,7 @@ const AdminPanel = () => {
               Admin Panel Login
             </h2>
           </div>
-          <div className="mt-8 space-y-6">
+          <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             <div className="rounded-md shadow-sm -space-y-px">
               <div>
                 <input
@@ -428,13 +757,13 @@ const AdminPanel = () => {
             </div>
             <div>
               <button
-                onClick={handleLogin}
+                type="submit"
                 className="cursor-pointer group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Sign in
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );
@@ -526,6 +855,8 @@ const AdminPanel = () => {
 
   const renderProducts = () => (
     <div className="space-y-6">
+      <h1 className="text-2xl font-bold text-gray-900">Products Management</h1>
+
       <div className="bg-white shadow overflow-hidden sm:rounded-md">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -569,7 +900,8 @@ const AdminPanel = () => {
                             <img
                               src={img.url}
                               alt={`Product ${idx + 1}`}
-                              className="h-10 w-10 object-cover rounded border"
+                              className="h-10 w-10 object-cover rounded border cursor-pointer"
+                              onClick={() => openImagePreview(img.url)}
                             />
                             {idx === 2 && product.images.length > 3 && (
                               <span className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white text-xs font-bold">
@@ -740,6 +1072,209 @@ const AdminPanel = () => {
     </div>
   );
 
+  const renderDivisions = () => (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold text-gray-900">Divisions Management</h1>
+
+      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Image
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Description
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {divisions.map((division) => (
+                <tr key={division._id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    {division.image ? (
+                      <img
+                        src={division.image.url}
+                        alt={division.name}
+                        className="h-12 w-12 object-cover rounded cursor-pointer"
+                        onClick={() => openImagePreview(division.image.url)}
+                      />
+                    ) : (
+                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-12 h-12" />
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {division.name}
+                  </td>
+                  <td className="px-6 py-4 whitespace-normal text-sm text-gray-500 max-w-xs truncate">
+                    {division.description}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleEditDivision(division)}
+                        className="cursor-pointer text-indigo-600 hover:text-indigo-900"
+                        title="Edit Division"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => showConfirmDelete(division, "division")}
+                        className="cursor-pointer text-red-600 hover:text-red-900"
+                        title="Delete Division"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <button
+        onClick={() => {
+          setEditingDivision(null);
+          setNewDivision({ name: "", description: "", image: null });
+          setShowAddDivisionModal(true);
+        }}
+        className="cursor-pointer fixed bottom-6 right-6 p-4 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg transition-colors z-50"
+        title="Add Division"
+      >
+        <Plus className="h-6 w-6" />
+      </button>
+    </div>
+  );
+
+  const renderBlogs = () => (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold text-gray-900">Blog Management</h1>
+
+      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Image
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Title
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Slug
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Tags
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Categories
+                </th>
+
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {blogs.map((blog) => (
+                <tr key={blog._id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    {blog.image ? (
+                      <img
+                        src={blog.image.url}
+                        alt={blog.title}
+                        className="h-12 w-12 object-cover rounded cursor-pointer"
+                        onClick={() => openImagePreview(blog.image.url)}
+                      />
+                    ) : (
+                      <div className="bg-gray-200 border-2 border-dashed rounded-xl w-12 h-12" />
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {blog.title}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {blog.slug}
+                  </td>
+                  <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                    <div className="flex flex-wrap gap-1">
+                      {blog.tags.map((tag, idx) => (
+                        <span
+                          key={idx}
+                          className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                    <div className="flex flex-wrap gap-1">
+                      {blog.categories.map((category, idx) => (
+                        <span
+                          key={idx}
+                          className="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded"
+                        >
+                          {category}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleEditBlog(blog)}
+                        className="cursor-pointer text-indigo-600 hover:text-indigo-900"
+                        title="Edit Blog"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => showConfirmDelete(blog, "blog")}
+                        className="cursor-pointer text-red-600 hover:text-red-900"
+                        title="Delete Blog"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <button
+        onClick={() => {
+          setEditingBlog(null);
+          setNewBlog({
+            title: "",
+            slug: "",
+            tags: "",
+            categories: "",
+            image: null,
+            content: [{ heading: "", body: "" }],
+            metaDescription: "",
+          });
+          setShowAddBlogModal(true);
+        }}
+        className="cursor-pointer fixed bottom-6 right-6 p-4 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg transition-colors z-50"
+        title="Add Blog"
+      >
+        <Plus className="h-6 w-6" />
+      </button>
+    </div>
+  );
+
   const renderContent = () => {
     switch (currentPage) {
       case "dashboard":
@@ -748,6 +1283,10 @@ const AdminPanel = () => {
         return renderProducts();
       case "messages":
         return renderMessages();
+      case "divisions":
+        return renderDivisions();
+      case "blogs":
+        return renderBlogs();
       default:
         return renderDashboard();
     }
@@ -757,6 +1296,8 @@ const AdminPanel = () => {
     { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "products", label: "Products", icon: Package },
     { id: "messages", label: "Messages", icon: Mail },
+    { id: "divisions", label: "Divisions", icon: Layers },
+    { id: "blogs", label: "Blogs", icon: FileText },
   ];
 
   return (
@@ -1184,41 +1725,6 @@ const AdminPanel = () => {
               </div>
             </div>
 
-            {showImagePreview && (
-              <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[60]">
-                <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center">
-                  <img
-                    src={previewImage}
-                    alt="Preview"
-                    className="max-w-[75vh] max-h-full object-contain rounded-lg shadow-2xl"
-                  />
-                  <button
-                    onClick={closeImagePreview}
-                    className="cursor-pointer absolute top-4 right-4 bg-white bg-opacity-20 hover:bg-opacity-30 text-black rounded-full p-2 transition-all"
-                  >
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                  {/* Click outside to close */}
-                  <div
-                    className="absolute inset-0 -z-10"
-                    onClick={closeImagePreview}
-                  ></div>
-                </div>
-              </div>
-            )}
-
             <div className="flex justify-end space-x-3 pt-6">
               <button
                 type="button"
@@ -1240,7 +1746,7 @@ const AdminPanel = () => {
                     storageCondition: "",
                     inStock: true,
                     images: [],
-                    therapeutic: ""
+                    therapeutic: "",
                   });
                 }}
                 className="cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
@@ -1256,6 +1762,394 @@ const AdminPanel = () => {
                 {editingProduct ? "Update" : "Add"} Product
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {showImagePreview && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[60]">
+          <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center">
+            <img
+              src={previewImage}
+              alt="Preview"
+              className="max-w-[75vh] max-h-full object-contain rounded-lg shadow-2xl"
+            />
+            <button
+              onClick={closeImagePreview}
+              className="cursor-pointer absolute top-4 right-4 bg-white bg-opacity-20 hover:bg-opacity-30 text-black rounded-full p-2 transition-all"
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            {/* Click outside to close */}
+            <div
+              className="absolute inset-0 -z-10"
+              onClick={closeImagePreview}
+            ></div>
+          </div>
+        </div>
+      )}
+
+      {showAddDivisionModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-lg font-medium text-gray-900 mb-4">
+              {editingDivision ? "Edit Division" : "Add New Division"}
+            </h2>
+            <form
+              onSubmit={
+                editingDivision ? handleUpdateDivision : handleAddDivision
+              }
+            >
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Division Name*
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={newDivision.name}
+                    onChange={(e) =>
+                      setNewDivision({ ...newDivision, name: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Description
+                  </label>
+                  <textarea
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows="3"
+                    value={newDivision.description}
+                    onChange={(e) =>
+                      setNewDivision({
+                        ...newDivision,
+                        description: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Image
+                  </label>
+                  <div className="mt-1 flex items-center gap-4">
+                    <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-md w-24 h-24 cursor-pointer">
+                      {newDivision.image || editingDivision?.image ? (
+                        <img
+                          src={
+                            newDivision.image instanceof File
+                              ? URL.createObjectURL(newDivision.image)
+                              : newDivision.image?.url ||
+                                editingDivision?.image?.url
+                          }
+                          alt="Preview"
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <>
+                          <Plus className="h-8 w-8 text-gray-400" />
+                          <span className="mt-2 text-xs text-gray-600">
+                            Upload
+                          </span>
+                        </>
+                      )}
+                      <input
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleDivisionImageUpload}
+                      />
+                    </label>
+                    {(newDivision.image || editingDivision?.image) && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          openImagePreview(
+                            newDivision.image instanceof File
+                              ? URL.createObjectURL(newDivision.image)
+                              : newDivision.image?.url ||
+                                  editingDivision?.image?.url
+                          )
+                        }
+                        className="cursor-pointer text-xs text-blue-500 hover:text-blue-700"
+                      >
+                        View Full
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-6">
+                <button
+                  type="button"
+                  onClick={() => setShowAddDivisionModal(false)}
+                  className="cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="cursor-pointer px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
+                >
+                  {editingDivision ? "Update" : "Add"} Division
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showAddBlogModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <h2 className="text-lg font-medium text-gray-900 mb-4">
+              {editingBlog ? "Edit Blog" : "Add New Blog"}
+            </h2>
+            <form onSubmit={editingBlog ? handleUpdateBlog : handleAddBlog}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left Column */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Title*
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={newBlog.title}
+                      onChange={(e) =>
+                        setNewBlog({ ...newBlog, title: e.target.value })
+                      }
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Slug*
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={newBlog.slug}
+                      onChange={(e) =>
+                        setNewBlog({ ...newBlog, slug: e.target.value })
+                      }
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Tags (comma separated)
+                    </label>
+                    <input
+                      type="text"
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={newBlog.tags}
+                      onChange={(e) =>
+                        setNewBlog({ ...newBlog, tags: e.target.value })
+                      }
+                      placeholder="tag1, tag2, tag3"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Categories (comma separated)
+                    </label>
+                    <input
+                      type="text"
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={newBlog.categories}
+                      onChange={(e) =>
+                        setNewBlog({ ...newBlog, categories: e.target.value })
+                      }
+                      placeholder="category1, category2, category3"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Featured Image
+                    </label>
+                    <div className="mt-1 flex items-center gap-4">
+                      <label className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-md w-24 h-24 cursor-pointer">
+                        {newBlog.image || editingBlog?.image ? (
+                          <img
+                            src={
+                              newBlog.image instanceof File
+                                ? URL.createObjectURL(newBlog.image)
+                                : newBlog.image?.url || editingBlog?.image?.url
+                            }
+                            alt="Preview"
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <>
+                            <Plus className="h-8 w-8 text-gray-400" />
+                            <span className="mt-2 text-sm text-gray-600">
+                              Upload
+                            </span>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          className="hidden"
+                          accept="image/*"
+                          onChange={handleBlogImageUpload}
+                        />
+                      </label>
+                      {(newBlog.image || editingBlog?.image) && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            openImagePreview(
+                              newBlog.image instanceof File
+                                ? URL.createObjectURL(newBlog.image)
+                                : newBlog.image?.url || editingBlog?.image?.url
+                            )
+                          }
+                          className="cursor-pointer text-xs text-blue-500 hover:text-blue-700"
+                        >
+                          View Full
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Meta Description
+                    </label>
+                    <textarea
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      rows="3"
+                      value={newBlog.metaDescription}
+                      onChange={(e) =>
+                        setNewBlog({
+                          ...newBlog,
+                          metaDescription: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column - Content Sections */}
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Content Sections
+                    </label>
+                    <button
+                      type="button"
+                      onClick={addContentSection}
+                      className="cursor-pointer text-sm bg-blue-500 text-white px-2 py-1 rounded"
+                    >
+                      Add Section
+                    </button>
+                  </div>
+
+                  {newBlog.content.map((section, index) => (
+                    <div key={index} className="border p-4 rounded-md">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-medium">
+                          Section {index + 1}
+                        </span>
+                        {index > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => removeContentSection(index)}
+                            className="cursor-pointer text-red-500 hover:text-red-700"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="mb-3">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Heading
+                        </label>
+                        <input
+                          type="text"
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          value={section.heading}
+                          onChange={(e) =>
+                            updateContentSection(
+                              index,
+                              "heading",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Content
+                        </label>
+                        <textarea
+                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          rows="4"
+                          value={section.body}
+                          onChange={(e) =>
+                            updateContentSection(index, "body", e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAddBlogModal(false);
+                    setEditingBlog(null);
+                    setNewBlog({
+                      title: "",
+                      slug: "",
+                      tags: "",
+                      categories: "",
+                      image: null,
+                      content: [{ heading: "", body: "" }],
+                      metaDescription: "",
+                    });
+                  }}
+                  className="cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="cursor-pointer px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
+                >
+                  {editingBlog ? "Update" : "Add"} Blog
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
@@ -1285,8 +2179,12 @@ const AdminPanel = () => {
                 onClick={() => {
                   if (deleteItem.type === "product") {
                     handleDeleteProduct(deleteItem._id);
-                  } else {
+                  } else if (deleteItem.type === "message") {
                     handleDeleteMessage(deleteItem._id);
+                  } else if (deleteItem.type === "division") {
+                    handleDeleteDivision(deleteItem._id);
+                  } else if (deleteItem.type === "blog") {
+                    handleDeleteBlog(deleteItem._id);
                   }
                 }}
                 className="cursor-pointer px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"

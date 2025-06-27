@@ -27,7 +27,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+  const isMobile = useMediaQuery(theme.breakpoints.down(1300));
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -188,6 +188,20 @@ const Navbar = () => {
 
         <ListItem>
           <ListItemText
+            primary="Blogs"
+            sx={{
+              color: isActiveRoute("/blogs") ? "#129349" : "inherit",
+              fontWeight: isActiveRoute("/blogs") ? "600" : "normal",
+            }}
+            onClick={() => {
+              navigate("/blogs");
+              setDrawerOpen(false);
+            }}
+          />
+        </ListItem>
+
+        <ListItem>
+          <ListItemText
             primary="Contact&nbsp;Us"
             sx={{
               color: isActiveRoute("/contact") ? "#129349" : "inherit",
@@ -222,7 +236,7 @@ const Navbar = () => {
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
         {/* Logo */}
-        <Box>
+        <Box className="cursor-pointer" onClick={() => navigate("/")}>
           <img src="/logo.png" alt="Logo" className="w-40" />
         </Box>
 
@@ -269,6 +283,13 @@ const Navbar = () => {
               sx={getButtonStyle(isCompanyActive())}
             >
               Company
+            </Button>
+            <Button
+              color="inherit"
+              sx={getButtonStyle(isActiveRoute("/blogs"))}
+              onClick={() => navigate("/blogs")}
+            >
+              Blogs
             </Button>
             <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
               <MenuItem

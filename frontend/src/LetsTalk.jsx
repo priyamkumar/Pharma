@@ -1,7 +1,8 @@
 import { useEnquiry } from "../context/EnquiryContext";
+import { useEnquiryStore } from "../store/enquiryStore";
 
 export default function LetsTalk() {
-  const { setIsEnquiryModalOpen } = useEnquiry();
+const { setIsEnquiryModalOpen } = useEnquiryStore();
   return (
     <section className="py-12">
       <div className="container md:max-w-[75vw] mx-auto px-4">

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import MovingText from "./MovingText";
 import { useEnquiry } from "../context/EnquiryContext";
 import EnquiryModal from "./EnquiryModal";
+import { useEnquiryStore } from '../store/enquiryStore';
 
 function Join() {
   const navigate = useNavigate();
@@ -238,20 +239,15 @@ const WorkCultureSection = () => {
 };
 
 const CareerCTA = () => {
-  const { setIsEnquiryModalOpen } = useEnquiry();
+  const setIsEnquiryModalOpen = useEnquiryStore((state) => state.setIsEnquiryModalOpen);
 
   return (
     <section className="py-16 px-4">
       <div className="bg-[#ddfbe9] rounded-xl px-8 py-10 max-w-md mx-auto text-center shadow-md">
-        {/* Heading */}
         <h3 className="text-2xl font-bold text-gray-900">Join Our Family</h3>
-
-        {/* Subtext */}
         <p className="text-base text-gray-700 mt-2 mb-6">
           Start your journey with us today
         </p>
-
-        {/* Call-to-Action Button */}
         <button
           onClick={() => setIsEnquiryModalOpen(true)}
           className="cursor-pointer bg-[#129349] hover:bg-[#015c30] text-white px-6 py-3 rounded-lg text-sm font-medium transition-colors duration-200 hover:shadow-lg transform hover:scale-105 transition-all"

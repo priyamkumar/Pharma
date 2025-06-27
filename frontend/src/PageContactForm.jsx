@@ -29,10 +29,9 @@ export default function PageContactForm() {
 
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
-    } else if (!/^[\d\s\-\+\(\)]+$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid phone number";
+    } else if (!/^(\+91[\-\s]?)?[6-9]\d{9}$/.test(formData.phone)) {
+      newErrors.phone = "Please enter a valid Indian phone number";
     }
-
     return newErrors;
   };
 
@@ -65,7 +64,7 @@ export default function PageContactForm() {
           description: "Partnership Enquiry",
         });
       } catch (err) {
-        toast.error("Server Error");
+        toast.error(err.response.data.error);
       } finally {
         setIsSubmitted(false);
       }

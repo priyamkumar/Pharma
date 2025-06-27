@@ -1,5 +1,6 @@
 import React from "react";
 import Trusted from "./Trusted";
+import { Link } from "react-router-dom";
 
 export default function OurAdvantage() {
   return (
@@ -19,9 +20,9 @@ export default function OurAdvantage() {
               dispatch, and tracking through email, SMS, and WhatsApp, ensuring
               a smooth and hassle-free experience for our partners.
             </p>
-            <a href="#" className="text-gray-700 font-medium">
+            <Link to="/about" className="text-gray-700 font-medium">
               Know More &gt;&gt;
-            </a>
+            </Link>
           </div>
 
           <div className="border-l-4 border-[#129349] pl-6">
@@ -33,9 +34,9 @@ export default function OurAdvantage() {
               aids, pens, keychains, MR shirts, laptop bags, and doctor gifts,
               to help our partners effectively promote their business.
             </p>
-            <a href="#" className="text-gray-700 font-medium">
+            <Link to="/about" className="text-gray-700 font-medium">
               Know More &gt;&gt;
-            </a>
+            </Link>
           </div>
 
           <div className="border-l-4 border-[#129349] pl-6">
@@ -47,9 +48,9 @@ export default function OurAdvantage() {
               with all their needs, complaints, and inquiries, providing
               personalized support and ensuring complete satisfaction.
             </p>
-            <a href="#" className="text-gray-700 font-medium">
+            <Link to="/about" className="text-gray-700 font-medium">
               Know More &gt;&gt;
-            </a>
+            </Link>
           </div>
 
           <div className="border-l-4 border-[#129349] pl-6">
@@ -61,9 +62,9 @@ export default function OurAdvantage() {
               seamless transactions, allowing our partners to focus on what
               matters most – growing their business.
             </p>
-            <a href="#" className="text-gray-700 font-medium">
+            <Link to="/about" className="text-gray-700 font-medium">
               Know More &gt;&gt;
-            </a>
+            </Link>
           </div>
         </div>
         <Trusted/>

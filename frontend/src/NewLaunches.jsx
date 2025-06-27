@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ProductState } from "../context/ProductsContext";
 import GradientCircularProgress from "./Loader";
+import { useProductStore } from '../store/productStore';
 
 export default function NewLaunches() {
   const scrollContainerRef = useRef(null);
@@ -9,7 +9,7 @@ export default function NewLaunches() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const navigate = useNavigate();
-  const { productsLoading, products, fetchProducts } = ProductState();
+  const { productsLoading, products, fetchProducts } = useProductStore();
   let displayProducts = products.slice(0, 10);
   useEffect(() => {
     const container = scrollContainerRef.current;

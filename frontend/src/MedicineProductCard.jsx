@@ -1,8 +1,9 @@
 import { useEnquiry } from "../context/EnquiryContext";
+import { useEnquiryStore } from "../store/enquiryStore";
 import Loader from "./Loader";
 
 const MedicineProductCard = ({ product, loading }) => {
-  const { setIsEnquiryModalOpen } = useEnquiry();
+  const { setIsEnquiryModalOpen } = useEnquiryStore();
   return loading || !product ? (
     <Loader />
   ) : (

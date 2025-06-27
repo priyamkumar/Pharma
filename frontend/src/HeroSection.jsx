@@ -1,8 +1,9 @@
 import { useEnquiry } from "../context/EnquiryContext";
+import { useEnquiryStore } from "../store/enquiryStore";
 import DraggableCarousel from "./Carousel";
 
 export default function HeroSection() {
-  const { setIsEnquiryModalOpen } = useEnquiry();
+  const { setIsEnquiryModalOpen } = useEnquiryStore();
   return (
     <section className="py-12">
       <div className="container md:max-w-[75vw] mx-auto px-4 grid md:grid-cols-2 gap-8 items-center">

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Search, X, Package } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { ProductState } from "../context/ProductsContext";
+import { useProductStore } from '../store/productStore';
 
 export default function SearchModal() {
   const [isVisible, setIsVisible] = useState(false);
@@ -10,11 +10,11 @@ export default function SearchModal() {
   const [showResults, setShowResults] = useState(false);
   const navigate = useNavigate();
   
-  const {products, fetchProducts} = ProductState();
+  const {products, fetchProducts} = useProductStore();
 
   useEffect(() => {
-  if (products.length === 0) fetchProducts();
-}, []);
+    if (products.length === 0) fetchProducts();
+  }, []);
 
   const openSearch = () => {
     setIsVisible(true);
@@ -86,7 +86,7 @@ export default function SearchModal() {
       {/* Search Modal Overlay */}
       {isVisible && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-30 flex items-start justify-center pt-20 z-50"
+          className="fixed inset-0 backdrop-blur-sm flex items-start justify-center pt-20 z-50"
           onClick={closeSearch}
         >
           <div className="w-full max-w-2xl mx-4">

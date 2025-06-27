@@ -4,6 +4,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import ScrollToTop from "./ScrollToTop";
 import { Toaster } from "react-hot-toast";
+import SocialOverlay from "./SocialOverlay";
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Outlet />
       <Footer />
       <Toaster />
+      <SocialOverlay />
     </div>
   );
 }

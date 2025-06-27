@@ -1,8 +1,9 @@
 import React from "react";
 import { useEnquiry } from "../context/EnquiryContext";
+import { useEnquiryStore } from "../store/enquiryStore";
 
 const PharmaManufacturingCard = () => {
-  const { setIsEnquiryModalOpen } = useEnquiry();
+  const { isEnquiryModalOpen, setIsEnquiryModalOpen } = useEnquiryStore();
   return (
     <section className="py-12">
       <div className="flex justify-center items-center bg-white">

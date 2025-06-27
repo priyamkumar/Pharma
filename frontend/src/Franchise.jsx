@@ -21,11 +21,12 @@ import Testimonials from "./Testimonials";
 import Divisions from "./Divisions";
 import { useEnquiry } from "../context/EnquiryContext";
 import EnquiryModal from "./EnquiryModal";
+import { useEnquiryStore } from "../store/enquiryStore";
 
 
 function Landing() {
   const navigate = useNavigate();
-  const { setIsEnquiryModalOpen } = useEnquiry();
+  const { setIsEnquiryModalOpen } = useEnquiryStore();
   return (
     <div className="px-4">
       {/* Main Content Section */}

@@ -32,10 +32,9 @@ export default function Footer() {
 
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
-    } else if (!/^[\d\s\-\+\(\)]+$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid phone number";
+    } else if (!/^(\+91[\-\s]?)?[6-9]\d{9}$/.test(formData.phone)) {
+      newErrors.phone = "Please enter a valid Indian phone number";
     }
-
     return newErrors;
   };
 
@@ -211,9 +210,17 @@ export default function Footer() {
               <div>
                 <p className="text-gray-300 text-sm">
                   <span className="font-medium">Phone:</span>{" "}
-                  <Link to="tel:9215262669" className="hover:text-white">9215262669</Link>,{" "}
-                  <Link to="tel:9056888801" className="hover:text-white">9056888801</Link>,{" "}
-                  <Link to="tel:9218563669" className="hover:text-white">9218563669</Link>
+                  <Link to="tel:9215262669" className="hover:text-white">
+                    9215262669
+                  </Link>
+                  ,{" "}
+                  <Link to="tel:9056888801" className="hover:text-white">
+                    9056888801
+                  </Link>
+                  ,{" "}
+                  <Link to="tel:9218563669" className="hover:text-white">
+                    9218563669
+                  </Link>
                 </p>
               </div>
               <div>

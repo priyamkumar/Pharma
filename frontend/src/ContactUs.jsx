@@ -32,10 +32,9 @@ export default function ContactUs() {
 
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
-    } else if (!/^[\d\s\-\+\(\)]+$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid phone number";
+    } else if (!/^(\+91[\-\s]?)?[6-9]\d{9}$/.test(formData.phone)) {
+      newErrors.phone = "Please enter a valid Indian phone number";
     }
-
     return newErrors;
   };
 
@@ -68,12 +67,14 @@ export default function ContactUs() {
           description: "",
         });
       } catch (err) {
-        toast.error("Server Error");
+        toast.error(err.response.data.message);
+        console.log(err);
       } finally {
         setIsSubmitted(false);
       }
     } else {
       setErrors(newErrors);
+      toast.error(newErrors.name || newErrors.email || newErrors.phone);
     }
   };
 
@@ -193,7 +194,7 @@ export default function ContactUs() {
             <div className="pt-4">
               <button
                 onClick={handleSubmit}
-                className="w-full bg-[#129349] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#015c30] transition duration-200 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-[#129349] focus:ring-offset-2"
+                className="cursor-pointer w-full bg-[#129349] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#015c30] transition duration-200 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-[#129349] focus:ring-offset-2"
               >
                 Send Enquiry
               </button>
@@ -276,6 +277,17 @@ export default function ContactUs() {
                 Distt. Solan (HP)- 173220
               </p>
             </div>
+          </div>
+        </div>
+        <div className="my-10">
+          <div className="shadow-lg rounded-2xl overflow-hidden">
+            <iframe
+              title="Office Location"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3425.32335283011!2d76.95781031183913!3d30.849620774421826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f8ee0ec900069%3A0xc28b067267e5e8b6!2sBci%20Bearing%20Compound!5e0!3m2!1sen!2sin!4v1750163811235!5m2!1sen!2sin"
+              className="w-full h-64 md:h-96"
+              allowFullScreen
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
       </div>

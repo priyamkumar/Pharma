@@ -63,12 +63,12 @@ const logoutUser = asyncHandler(async (req, res) => {
 const loadUser = asyncHandler(async (req, res) => {
   let user = req.user;
   let token = req.token;
-  res.json({ user, token });
+  res.json({ success: true, user, token });
 });
 
 module.exports = {
   registerUser,
   loginUser,
   logoutUser,
-  loadUser
+  loadUser,
 };

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ProductState } from "../context/ProductsContext";
+import { useProductStore } from '../store/productStore';
 import GradientCircularProgress from "./Loader";
 
 export default function ProductScrollableList() {
@@ -9,7 +9,7 @@ export default function ProductScrollableList() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const navigate = useNavigate();
-  const { productsLoading, products, fetchProducts } = ProductState();
+  const { productsLoading, products, fetchProducts } = useProductStore();
   let displayProducts = products
     ? products.filter((a) => a.inStock === true).slice(0, 10)
     : [];

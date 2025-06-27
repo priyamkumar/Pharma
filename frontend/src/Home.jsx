@@ -17,29 +17,35 @@ import Testimonials from "./Testimonials";
 import PageContactForm from "./PageContactForm";
 import MovingText from "./MovingText";
 import EnquiryModal from "./EnquiryModal";
+import HeroSection2 from "./HeroSection2";
+import OfferingSection from "./OurOffering";
+import SuaveHealthcareOverview from "./Overview";
+import BlogsSection from "./BlogSection";
+import ProductsSample from "./ProductsSample";
 
 export default function Home() {
   return (
     <>
-      <HeroSection />
-      <MovingText />
-      <Divisions />
-      <NowInStock />
-      <Discover />
-      <NewLaunches />
+      <HeroSection2 />
+      <OfferingSection />
+      {/* <NowInStock /> */}
+      <SuaveHealthcareOverview />
+      <ProductsSample />
+      {/* <NewLaunches /> */}
       <WhyUs />
-      <PromotionalInputs />
-      <Directors />
+      {/* <PromotionalInputs /> */}
+      {/* <Directors /> */}
       <LetsTalk />
       <OurAdvantage />
       <Calculators />
-      <FranchiseOwners />
+      {/* <FranchiseOwners /> */}
+      <BlogsSection />
       <PharmaManufacturingCard />
       <Benefits />
-      <FeaturedIn />
-      <Testimonials />
+      {/* <FeaturedIn />
+      <Testimonials /> */}
       <PageContactForm />
-      <EnquiryModal />
+      {/* <EnquiryModal /> */}
     </>
   );
 }
