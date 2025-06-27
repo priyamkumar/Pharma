@@ -73,7 +73,7 @@ const Carousel = () => {
   };
 
   return (
-    <div className="relative w-full h-[85vh] overflow-hidden bg-gray-900">
+    <div className="relative w-full h-[90vh] overflow-hidden bg-gray-900">
       {/* Slides Container */}
       <div className="relative w-full h-full">
         {slides.map((slide, index) => (
@@ -190,7 +190,7 @@ const Carousel = () => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`cursor-pointer w-3 h-3 rounded-full transition-all duration-300 ${
                 index === currentSlide
                   ? "bg-white scale-125"
                   : "bg-white bg-opacity-50 hover:bg-opacity-75"

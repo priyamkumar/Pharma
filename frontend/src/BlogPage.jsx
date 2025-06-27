@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { server } from "./main";
 import GradientCircularProgress from "./Loader";
+import { useBlogStore } from "../store/blogStore";
 
 const Blog = () => {
   const capitalizeWords = (str) => {
-  return str.replace(/\b\w/g, (char) => char.toUpperCase());
-};
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+  const { blogs, blogsLoading, fetchBlogs } = useBlogStore();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -19,22 +21,10 @@ const Blog = () => {
 
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedTag, setSelectedTag] = useState(initialTag);
-  const [blogData, setBlogData] = useState(null);
   const [loading, setLoading] = useState(false);
-  
-  async function fetchBlogs() {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(`${server}/api/v1/blog`);
-      setBlogData(data.blogs);
-    } catch (err) {
-    } finally {
-      setLoading(false);
-    }
-  }
 
   useEffect(() => {
-    fetchBlogs();
+    if (blogs.length === 0) fetchBlogs();
   }, []);
 
   useEffect(() => {
@@ -47,8 +37,8 @@ const Blog = () => {
   }, [selectedCategory, selectedTag, setSearchParams]);
   let filteredPosts = [];
   // Filter posts based on selections
-  if (blogData)
-    filteredPosts = blogData.filter((post) => {
+  if (blogs)
+    filteredPosts = blogs.filter((post) => {
       const categoryMatch = selectedCategory
         ? post.categories.includes(selectedCategory.toLowerCase())
         : true;
@@ -108,8 +98,11 @@ const Blog = () => {
             <h1 className="text-center text-3xl font-bold mb-6 text-gray-800">
               Blog
             </h1>
-
-            {filteredPosts.length === 0 ? (
+            {blogs.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-lg text-gray-600">No posts found.</p>
+              </div>
+            ) : filteredPosts.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-lg text-gray-600">
                   No posts found with the selected filters.

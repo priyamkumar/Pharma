@@ -21,7 +21,7 @@ import { Toaster } from "react-hot-toast";
 import BlogPage from "./BlogPage.jsx";
 import SingleBlogPage from "./SingleBlog.jsx";
 
-export const server = "http://localhost:5005";
+export const server = "https://pharma-lovat.vercel.app";
 
 const router = createBrowserRouter([
   {
