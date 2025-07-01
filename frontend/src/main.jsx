@@ -22,7 +22,7 @@ import BlogPage from "./BlogPage.jsx";
 import SingleBlogPage from "./SingleBlog.jsx";
 import { HelmetProvider } from "react-helmet-async";
 
-export const server = "http://localhost:5005";
+export const server = "https://pharma-lovat.vercel.app";
 
 const router = createBrowserRouter([
   {
