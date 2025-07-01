@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "./main";
 import toast from "react-hot-toast";
+import SEO from "./SEO";
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -80,6 +81,7 @@ export default function ContactUs() {
 
   return (
     <div className="min-h-screen py-8 px-4">
+      <SEO slug="contact" />
       <div className="md:max-w-[75vw] mx-auto">
         {/* Header Section */}
         <div className="mb-8">
@@ -223,9 +225,13 @@ export default function ContactUs() {
               </div>
               <h3 className="font-semibold text-gray-800 mb-2">Phone</h3>
               <p className="text-gray-600">
-                <Link to="tel:9215262669" className="hover:text-[#129349]">9215262669</Link>,{" "}
-                <Link to="tel:9056888801" className="hover:text-[#129349]">9056888801</Link>,{" "}
-                <Link to="tel:9218563669" className="hover:text-[#129349]">9218563669</Link>
+                <Link to="tel:7009676112" className="hover:text-[#129349]">
+                  7009676112
+                </Link>
+                ,{" "}
+                <Link to="tel:7719529291" className="hover:text-[#129349]">
+                  7719529291
+                </Link>
               </p>
             </div>
 
@@ -246,7 +252,14 @@ export default function ContactUs() {
                 </svg>
               </div>
               <h3 className="font-semibold text-gray-800 mb-2">Email</h3>
-              <p className="text-gray-600"><Link to="mailTo:suavehealthcare1@gmail.com" className="hover:text-[#129349]">suavehealthcare1@gmail.com</Link></p>
+              <p className="text-gray-600">
+                <Link
+                  to="mailTo:suavehealthcare1@gmail.com"
+                  className="hover:text-[#129349]"
+                >
+                  suavehealthcare1@gmail.com
+                </Link>
+              </p>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md">

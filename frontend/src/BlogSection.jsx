@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import { Calendar, Plus } from "lucide-react";
 import GradientCircularProgress from "./Loader";
 import { Link } from "react-router-dom";
-import { useBlogStore } from '../store/blogStore';
+import { useBlogStore } from "../store/blogStore";
 
 const BlogsSection = () => {
   const { blogs, blogsLoading, fetchBlogs } = useBlogStore();
-  const blogData = (blogs.length > 0 ? blogs.slice(0, 3) : []);
+  const blogData = blogs.length > 0 ? blogs.slice(0, 3) : [];
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -16,7 +16,9 @@ const BlogsSection = () => {
     if (blogs.length === 0) fetchBlogs();
   }, []);
 
-  return blogs.length && (
+  return blogsLoading ? (
+    <GradientCircularProgress />
+  ) : (
     <section className="max-w-[75vw] mx-auto py-16 px-4">
       {/* Section Title */}
       <div className="text-center mb-12">

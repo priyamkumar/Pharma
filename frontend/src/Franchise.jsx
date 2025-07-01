@@ -22,7 +22,7 @@ import Divisions from "./Divisions";
 import { useEnquiry } from "../context/EnquiryContext";
 import EnquiryModal from "./EnquiryModal";
 import { useEnquiryStore } from "../store/enquiryStore";
-
+import SEO from "./SEO";
 
 function Landing() {
   const navigate = useNavigate();
@@ -543,6 +543,7 @@ function PharmaOffering() {
 export default function Franchise() {
   return (
     <>
+      <SEO slug="franchise" />
       <Landing />
       <MovingText />
       <PCD />
@@ -551,7 +552,7 @@ export default function Franchise() {
       <PharmaOffering />
       <Testimonials />
       <Divisions />
-      <EnquiryModal/>
+      <EnquiryModal />
     </>
   );
 }

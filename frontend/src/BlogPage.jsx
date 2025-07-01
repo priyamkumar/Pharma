@@ -1,16 +1,18 @@
-import axios from "axios";
 import { ChevronRight, FolderOpen, Tag } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { server } from "./main";
 import GradientCircularProgress from "./Loader";
 import { useBlogStore } from "../store/blogStore";
+import { Box } from "@mui/material";
+import { useKeywordStore } from "../store/keywordStore";
+import SEO from "./SEO";
 
 const Blog = () => {
   const capitalizeWords = (str) => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
   };
   const { blogs, blogsLoading, fetchBlogs } = useBlogStore();
+  const { tags, keywordsLoading, fetchKeywords } = useKeywordStore();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -21,10 +23,10 @@ const Blog = () => {
 
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedTag, setSelectedTag] = useState(initialTag);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (blogs.length === 0) fetchBlogs();
+    if (tags.length === 0) fetchKeywords();
   }, []);
 
   useEffect(() => {
@@ -54,20 +56,6 @@ const Blog = () => {
     { name: "CSS", count: 10 },
     { name: "Design", count: 6 },
   ];
-  const tags = [
-    "react",
-    "javascript",
-    "css",
-    "html",
-    "nodejs",
-    "mongodb",
-    "express",
-    "tailwind",
-    "typescript",
-    "hooks",
-    "components",
-    "api",
-  ];
 
   const clearFilters = () => {
     setSelectedCategory(null);
@@ -75,10 +63,18 @@ const Blog = () => {
     setSearchParams({});
   };
 
-  return loading ? (
-    <GradientCircularProgress />
+  return blogsLoading ? (
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      height="91vh"
+    >
+      <GradientCircularProgress />
+    </Box>
   ) : (
     <div className="min-h-screen py-8 px-4">
+      <SEO slug="blogs"/>
       <div className="md:max-w-[75vw] mx-auto">
         <div className="mb-8">
           <nav className="flex items-center space-x-2 text-sm text-gray-600">
@@ -143,7 +139,7 @@ const Blog = () => {
                           <span
                             key={category}
                             className={`px-3 py-1 rounded-full text-sm cursor-pointer transition-colors ${
-                              selectedCategory === category
+                              selectedCategory?.toLowerCase() === category
                                 ? "bg-blue-500 text-white"
                                 : "bg-blue-100 text-blue-800 hover:bg-blue-200"
                             }`}
@@ -208,7 +204,7 @@ const Blog = () => {
                 {categories.map((category) => (
                   <li key={category.name}>
                     <button
-                      className={`w-full text-left px-3 py-2 rounded flex justify-between items-center transition-colors ${
+                      className={`cursor-pointer w-full text-left px-3 py-2 rounded flex justify-between items-center transition-colors ${
                         selectedCategory === category.name
                           ? "bg-blue-500 text-white"
                           : "hover:bg-gray-100"
@@ -228,29 +224,33 @@ const Blog = () => {
               </ul>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <Tag className="w-5 h-5" />
-                Tags
-              </h3>{" "}
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag) => (
-                  <button
-                    key={tag}
-                    className={`px-3 py-1 rounded-full text-sm transition-colors flex items-center ${
-                      selectedTag === tag
-                        ? "bg-[#129349] text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                    onClick={() =>
-                      setSelectedTag(selectedTag === tag ? null : tag)
-                    }
-                  >
-                    {tag}
-                  </button>
-                ))}
+            {keywordsLoading ? (
+              <GradientCircularProgress />
+            ) : (
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                  <Tag className="w-5 h-5" />
+                  Tags
+                </h3>{" "}
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <button
+                      key={tag}
+                      className={`cursor-pointer px-3 py-1 rounded-full text-sm transition-colors flex items-center ${
+                        selectedTag === tag
+                          ? "bg-[#129349] text-white"
+                          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                      }`}
+                      onClick={() =>
+                        setSelectedTag(selectedTag === tag ? null : tag)
+                      }
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {(selectedCategory || selectedTag) && (
               <div className="mt-6 text-center">

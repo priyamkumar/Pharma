@@ -11,7 +11,7 @@ const socialLinks = [
   {
     id: "whatsapp",
     name: "WhatsApp",
-    url: "https://wa.me/919999999999",
+    url: "https://web.whatsapp.com/send?phone=917009676112&text=http://www.suavehealthcare.in/ Hello",
     icon: WhatsAppIcon,
     bgColor: "bg-green-500",
     hoverColor: "hover:bg-green-600",
@@ -20,7 +20,7 @@ const socialLinks = [
   {
     id: "phone",
     name: "Call Us",
-    url: "tel:+919999999999",
+    url: "tel:+917009676112",
     icon: Phone,
     bgColor: "bg-blue-600",
     hoverColor: "hover:bg-blue-700",
@@ -29,7 +29,7 @@ const socialLinks = [
   {
     id: "email",
     name: "Email Us",
-    url: "mailto:contact@example.com",
+    url: "mailto:suavehealthcare1@gmail.com",
     icon: Mail,
     bgColor: "bg-red-500",
     hoverColor: "hover:bg-red-600",

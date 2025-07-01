@@ -1,11 +1,13 @@
 import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Directors from "./Directors";
+import SEO from "./SEO";
 
 function Objective() {
   const navigate = useNavigate();
   return (
     <div className="py-8 px-4">
+      <SEO slug="about" />
       <div className="md:max-w-[75vw] mx-auto">
         {/* Header Section */}
         <div className="mb-8">

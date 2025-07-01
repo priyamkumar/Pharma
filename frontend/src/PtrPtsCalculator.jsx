@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import PageContactForm from "./PageContactForm";
 import { Calculator, TrendingUp, Target } from "lucide-react";
+import SEO from "./SEO";
 
 function PtrPtsCalculator() {
   const [mrp, setMrp] = useState("");
@@ -36,6 +37,7 @@ function PtrPtsCalculator() {
   }, [mrp, gst, retailerMargin, stockistMargin]);
   return (
     <div className="py-8 px-4">
+      <SEO slug="ptrptscalculator" />
       <div className="md:max-w-[75vw] mx-auto">
         {/* Header Section */}
         <div className="mb-8">
@@ -303,7 +305,7 @@ function PCDCalculatorSection() {
                 new heights.
               </p>
             </div>
-          </div>         
+          </div>
         </div>
       </div>
     </div>
@@ -314,7 +316,7 @@ export default function PTRPTSPage() {
   return (
     <>
       <PtrPtsCalculator />
-      <PCDCalculatorSection/>
+      <PCDCalculatorSection />
       <PageContactForm />
     </>
   );

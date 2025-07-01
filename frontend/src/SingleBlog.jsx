@@ -5,6 +5,8 @@ import GradientCircularProgress from "./Loader";
 import { useEffect } from "react";
 import axios from "axios";
 import { server } from "./main";
+import { Box } from "@mui/material";
+import { useKeywordStore } from "../store/keywordStore";
 
 // Helper function to capitalize words
 const capitalizeWords = (str) => {
@@ -21,58 +23,6 @@ const categories = [
   { name: "design", count: 6 },
 ];
 
-// Sample data for tags
-const tags = [
-  "react",
-  "javascript",
-  "css",
-  "html",
-  "nodejs",
-  "mongodb",
-  "express",
-  "tailwind",
-  "typescript",
-  "hooks",
-  "components",
-  "api",
-];
-
-// Sample data for recent blogs
-const recentBlogs = [
-  {
-    id: "665d35f981f91c1e23f4f7d4",
-    title: "Getting Started with TypeScript in React",
-    createdAt: "2025-06-12T10:15:00Z",
-    image: {
-      url: "https://via.placeholder.com/100x100/06b6d4/ffffff?text=TS",
-    },
-  },
-  {
-    id: "665d35f981f91c1e23f4f7d5",
-    title: "CSS Grid vs Flexbox: When to Use Which",
-    createdAt: "2025-06-10T14:20:00Z",
-    image: {
-      url: "https://via.placeholder.com/100x100/10b981/ffffff?text=CSS",
-    },
-  },
-  {
-    id: "665d35f981f91c1e23f4f7d6",
-    title: "Building RESTful APIs with Node.js",
-    createdAt: "2025-06-08T09:45:00Z",
-    image: {
-      url: "https://via.placeholder.com/100x100/f59e0b/ffffff?text=API",
-    },
-  },
-  {
-    id: "665d35f981f91c1e23f4f7d7",
-    title: "Modern JavaScript ES6+ Features",
-    createdAt: "2025-06-05T11:30:00Z",
-    image: {
-      url: "https://via.placeholder.com/100x100/ef4444/ffffff?text=JS",
-    },
-  },
-];
-
 const SingleBlogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [currentBlogPost, setCurrentBlogPost] = useState(null);
@@ -80,6 +30,7 @@ const SingleBlogPage = () => {
   const [loading, setLoading] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
+  const { tags, keywordsLoading, fetchKeywords } = useKeywordStore();
 
   useEffect(() => {
     async function fetchData() {
@@ -105,6 +56,7 @@ const SingleBlogPage = () => {
     }
 
     fetchData();
+    if (tags.length === 0) fetchKeywords();
   }, [params.name]);
 
   const handleCategoryClick = (categoryName) => {
@@ -126,7 +78,14 @@ const SingleBlogPage = () => {
   };
 
   return loading || !currentBlogPost ? (
-    <GradientCircularProgress />
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      height="91vh"
+    >
+      <GradientCircularProgress />
+    </Box>
   ) : (
     <div className="min-h-screen py-8 px-4">
       <div className="md:max-w-[75vw] mx-auto">
@@ -229,7 +188,7 @@ const SingleBlogPage = () => {
                 {categories.map((category) => (
                   <li key={category.name}>
                     <button
-                      className={`w-full text-left px-3 py-2 rounded flex justify-between items-center transition-colors ${
+                      className={`cursor-pointer w-full text-left px-3 py-2 rounded flex justify-between items-center transition-colors ${
                         selectedCategory === category.name
                           ? "bg-blue-500 text-white"
                           : "hover:bg-gray-100"
@@ -252,7 +211,7 @@ const SingleBlogPage = () => {
                 {tags.map((tag) => (
                   <button
                     key={tag}
-                    className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-blue-100 hover:text-blue-800 transition-colors"
+                    className="cursor-pointer px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-blue-100 hover:text-blue-800 transition-colors"
                     onClick={() => handleTagClick(tag)}
                   >
                     {tag}

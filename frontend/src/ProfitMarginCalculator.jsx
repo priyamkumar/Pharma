@@ -2,6 +2,7 @@ import { ChevronRight } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageContactForm from "./PageContactForm";
+import SEO from "./SEO";
 
 function ProfitMarginCalculator() {
   const [saleValue, setSaleValue] = useState("");
@@ -25,6 +26,7 @@ function ProfitMarginCalculator() {
 
   return (
     <div className="pt-8 px-4">
+      <SEO slug="profitmargincalculator" />
       <div className="md:max-w-[75vw] mx-auto">
         {/* Header Section */}
         <div className="mb-8">

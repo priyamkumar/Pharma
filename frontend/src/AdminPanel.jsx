@@ -16,6 +16,10 @@ import {
   Trash2 as ImageTrash,
   Layers,
   FileText,
+  Search,
+  FileTextIcon,
+  Tag,
+  LayoutGridIcon,
 } from "lucide-react";
 import axios from "axios";
 import { server } from "./main";
@@ -103,6 +107,22 @@ const AdminPanel = () => {
     content: [{ heading: "", body: "" }],
     metaDescription: "",
   });
+
+  const [seoData, setSeoData] = useState([]);
+  const [showAddSeoModal, setShowAddSeoModal] = useState(false);
+  const [editingSeo, setEditingSeo] = useState(null);
+  const [newSeo, setNewSeo] = useState({
+    slug: "",
+    title: "",
+    description: "",
+    keywords: "",
+  });
+
+  const [keywords, setKeywords] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const filteredKeywords = keywords.filter((keyword) =>
+    keyword.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -701,11 +721,109 @@ const AdminPanel = () => {
     setNewBlog({ ...newBlog, content: newContent });
   };
 
+  const fetchSeo = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${server}/api/v1/seo`);
+      setSeoData(data.seos);
+    } catch (err) {
+      toast.error("Error fetching SEO data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddSeo = async (e) => {
+    e.preventDefault();
+    try {
+      const config = {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      };
+
+      const { data } = await axios.post(
+        `${server}/api/v1/seo/admin`,
+        newSeo,
+        config
+      );
+
+      setSeoData([...seoData, data.seo]);
+      setNewSeo({ slug: "", title: "", description: "", keywords: "" });
+      setShowAddSeoModal(false);
+      toast.success("SEO entry added successfully");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Error adding SEO");
+    }
+  };
+
+  const handleEditSeo = (seo) => {
+    setEditingSeo(seo);
+    setNewSeo({
+      slug: seo.slug,
+      title: seo.title,
+      description: seo.description,
+      keywords: seo.keywords,
+    });
+    setShowAddSeoModal(true);
+  };
+
+  const handleUpdateSeo = async (e) => {
+    e.preventDefault();
+    try {
+      const config = {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      };
+
+      const { data } = await axios.put(
+        `${server}/api/v1/seo/admin/${editingSeo.slug}`,
+        newSeo,
+        config
+      );
+      console.log(data);
+      setSeoData(seoData.map((s) => (s._id === data.seo._id ? data.seo : s)));
+      setNewSeo({ slug: "", title: "", description: "", keywords: "" });
+      setEditingSeo(null);
+      setShowAddSeoModal(false);
+      toast.success("SEO updated successfully");
+    } catch (err) {
+      toast.error("Error updating SEO");
+    }
+  };
+
+  const handleDeleteSeo = async (slug) => {
+    try {
+      await axios.delete(`${server}/api/v1/seo/admin/${slug}`, {
+        withCredentials: true,
+      });
+      setSeoData(seoData.filter((s) => s.slug !== slug));
+      setShowDeleteModal(false);
+      setDeleteItem(null);
+      toast.success("SEO entry deleted successfully");
+    } catch (err) {
+      toast.error("Server Error");
+    }
+  };
+
+  const fetchKeywords = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`${server}/api/v1/seo/keywords`);
+      setKeywords(data.keywords);
+    } catch (err) {
+      toast.error("Error fetching Keywords");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
     fetchMessages();
     fetchDivisions();
     fetchBlogs();
+    fetchSeo();
+    fetchKeywords();
   }, []);
 
   if (!isAuthenticated) {
@@ -773,7 +891,7 @@ const AdminPanel = () => {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("products")}>
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -792,11 +910,11 @@ const AdminPanel = () => {
             </div>
           </div>
         </div>
-        <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("messages")}>
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <Mail className="h-6 w-6 text-gray-400" />
+                <Mail className="h-6 w-6 text-black-400" />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
@@ -811,7 +929,7 @@ const AdminPanel = () => {
             </div>
           </div>
         </div>
-        <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("products")}>
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -830,7 +948,7 @@ const AdminPanel = () => {
             </div>
           </div>
         </div>
-        <div className="bg-white overflow-hidden shadow rounded-lg">
+        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("messages")}>
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -843,6 +961,91 @@ const AdminPanel = () => {
                   </dt>
                   <dd className="text-lg font-medium text-gray-900">
                     {messages.filter((m) => m.read === false).length}
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("divisions")}>
+          <div className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <LayoutGridIcon className="h-6 w-6 text-indigo-400" />{" "}
+                {/* Division icon */}
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">
+                    Total Divisions
+                  </dt>
+                  <dd className="text-lg font-medium text-gray-900">
+                    {divisions.length}
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Total Blogs Card */}
+        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("blogs")}>
+          <div className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <FileTextIcon className="h-6 w-6 text-blue-400" />{" "}
+                {/* Blog icon */}
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">
+                    Total Blogs
+                  </dt>
+                  <dd className="text-lg font-medium text-gray-900">
+                    {blogs.length}
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Keywords Card */}
+        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("seo")}>
+          <div className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <Search className="h-6 w-6 text-green-600" />{" "}
+                {/* Keyword icon */}
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">
+                    SEO Slugs
+                  </dt>
+                  <dd className="text-lg font-medium text-gray-900">
+                    {seoData.length}
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("keywords")}>
+          <div className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <Tag className="h-6 w-6 text-orange-400" /> {/* Keyword icon */}
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">
+                    Keywords
+                  </dt>
+                  <dd className="text-lg font-medium text-gray-900">
+                    {keywords.length}
                   </dd>
                 </dl>
               </div>
@@ -1275,6 +1478,131 @@ const AdminPanel = () => {
     </div>
   );
 
+  const renderSeo = () => (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold text-gray-900">SEO Management</h1>
+
+      <div className="bg-white shadow overflow-hidden sm:rounded-md">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Slug
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Title
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Description
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Keywords
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {seoData.map((seo) => (
+                <tr key={seo._id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {seo.slug}
+                  </td>
+                  <td className="px-6 py-4 whitespace-normal text-sm text-gray-500 max-w-xs">
+                    {seo.title}
+                  </td>
+                  <td className="px-6 py-4 whitespace-normal text-sm text-gray-500 max-w-xs">
+                    {seo.description}
+                  </td>
+                  <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                    <div className="flex flex-wrap gap-1">
+                      {seo.keywords.split(",").map((keyword, idx) => (
+                        <span
+                          key={idx}
+                          className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded"
+                        >
+                          {keyword.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleEditSeo(seo)}
+                        className="cursor-pointer text-indigo-600 hover:text-indigo-900"
+                        title="Edit SEO"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => showConfirmDelete(seo, "seo")}
+                        className="cursor-pointer text-red-600 hover:text-red-900"
+                        title="Delete SEO"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <button
+        onClick={() => {
+          setEditingSeo(null);
+          setNewSeo({ slug: "", title: "", description: "", keywords: "" });
+          setShowAddSeoModal(true);
+        }}
+        className="cursor-pointer fixed bottom-6 right-6 p-4 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg transition-colors z-50"
+        title="Add SEO"
+      >
+        <Plus className="h-6 w-6" />
+      </button>
+    </div>
+  );
+
+  const renderKeywords = () => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-900">
+          SEO Keywords ({filteredKeywords.length})
+        </h1>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search keywords..."
+            className="pl-10 pr-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Search className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
+        </div>
+      </div>
+
+      <div className="bg-white shadow rounded-md p-6">
+        {filteredKeywords.length > 0 ? (
+          <div className="flex flex-wrap gap-3 max-h-[400px] overflow-y-auto">
+            {filteredKeywords.map((keyword, idx) => (
+              <span
+                key={idx}
+                className="bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full shadow-sm transition"
+              >
+                {keyword.trim()}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No keywords found.</p>
+        )}
+      </div>
+    </div>
+  );
+
   const renderContent = () => {
     switch (currentPage) {
       case "dashboard":
@@ -1287,6 +1615,10 @@ const AdminPanel = () => {
         return renderDivisions();
       case "blogs":
         return renderBlogs();
+      case "seo":
+        return renderSeo();
+      case "keywords":
+        return renderKeywords();
       default:
         return renderDashboard();
     }
@@ -1298,6 +1630,8 @@ const AdminPanel = () => {
     { id: "messages", label: "Messages", icon: Mail },
     { id: "divisions", label: "Divisions", icon: Layers },
     { id: "blogs", label: "Blogs", icon: FileText },
+    { id: "seo", label: "SEO", icon: Search },
+    { id: "keywords", label: "Keywords", icon: Tag },
   ];
 
   return (
@@ -1351,7 +1685,9 @@ const AdminPanel = () => {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <User className="h-5 w-5 text-gray-400" />
-                <span className="text-sm text-gray-700">Admin User</span>
+                <span className="text-sm text-gray-700">
+                  Welcome {user.name}
+                </span>
               </div>
               <button
                 onClick={handleLogout}
@@ -2154,6 +2490,95 @@ const AdminPanel = () => {
         </div>
       )}
 
+      {showAddSeoModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-lg font-medium text-gray-900 mb-4">
+              {editingSeo ? "Edit SEO Entry" : "Add New SEO Entry"}
+            </h2>
+            <form onSubmit={editingSeo ? handleUpdateSeo : handleAddSeo}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Slug*
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={newSeo.slug}
+                    onChange={(e) =>
+                      setNewSeo({ ...newSeo, slug: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Title*
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={newSeo.title}
+                    onChange={(e) =>
+                      setNewSeo({ ...newSeo, title: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Description*
+                  </label>
+                  <textarea
+                    required
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows="3"
+                    value={newSeo.description}
+                    onChange={(e) =>
+                      setNewSeo({ ...newSeo, description: e.target.value })
+                    }
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Keywords (comma separated)
+                  </label>
+                  <input
+                    type="text"
+                    className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={newSeo.keywords}
+                    onChange={(e) =>
+                      setNewSeo({ ...newSeo, keywords: e.target.value })
+                    }
+                    placeholder="keyword1, keyword2, keyword3"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3 pt-6">
+                <button
+                  type="button"
+                  onClick={() => setShowAddSeoModal(false)}
+                  className="cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="cursor-pointer px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
+                >
+                  {editingSeo ? "Update" : "Add"} SEO
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Delete Confirmation Modal */}
       {showDeleteModal && deleteItem && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -2185,6 +2610,8 @@ const AdminPanel = () => {
                     handleDeleteDivision(deleteItem._id);
                   } else if (deleteItem.type === "blog") {
                     handleDeleteBlog(deleteItem._id);
+                  } else if (deleteItem.type === "seo") {
+                    handleDeleteSeo(deleteItem.slug);
                   }
                 }}
                 className="cursor-pointer px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"

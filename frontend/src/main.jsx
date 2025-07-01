@@ -20,8 +20,9 @@ import UserProvider from "../context/UserContext.jsx";
 import { Toaster } from "react-hot-toast";
 import BlogPage from "./BlogPage.jsx";
 import SingleBlogPage from "./SingleBlog.jsx";
+import { HelmetProvider } from "react-helmet-async";
 
-export const server = "https://pharma-lovat.vercel.app";
+export const server = "http://localhost:5005";
 
 const router = createBrowserRouter([
   {
@@ -100,6 +101,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <HelmetProvider>
       <RouterProvider router={router} />
+    </HelmetProvider>
   </StrictMode>
 );

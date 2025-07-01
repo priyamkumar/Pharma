@@ -210,16 +210,12 @@ export default function Footer() {
               <div>
                 <p className="text-gray-300 text-sm">
                   <span className="font-medium">Phone:</span>{" "}
-                  <Link to="tel:9215262669" className="hover:text-white">
-                    9215262669
+                  <Link to="tel:7009676112" className="hover:text-white">
+                    7009676112
                   </Link>
                   ,{" "}
-                  <Link to="tel:9056888801" className="hover:text-white">
-                    9056888801
-                  </Link>
-                  ,{" "}
-                  <Link to="tel:9218563669" className="hover:text-white">
-                    9218563669
+                  <Link to="tel:7719529291" className="hover:text-white">
+                    7719529291
                   </Link>
                 </p>
               </div>

@@ -136,7 +136,7 @@ const deleteBlog = asyncHandler(async (req, res) => {
 const getRecentBlogs = asyncHandler(async (req, res) => {
   const blogs = await BlogPost.find({})
     .sort({ createdAt: -1 })
-    .limit(3)
+    .limit(4)
   res.status(200).json({ success: true, blogs });
 });
 
