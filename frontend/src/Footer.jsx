@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { server } from "../src/main";
 import axios from "axios";
 import toast from "react-hot-toast";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Footer() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,8 @@ export default function Footer() {
 
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
   const validateForm = () => {
     const newErrors = {};
@@ -48,16 +51,20 @@ export default function Footer() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!captchaToken) {
+      toast.error("Please complete the CAPTCHA");
+      return;
+    }
     const newErrors = validateForm();
 
     if (Object.keys(newErrors).length === 0) {
       // Simulate form submission
       setIsSubmitted(true);
       try {
-        const { data } = await axios.post(
-          `${server}/api/v1/message/`,
-          formData
-        );
+        const { data } = await axios.post(`${server}/api/v1/message/`, {
+          ...formData,
+          captchaToken,
+        });
         toast.success(data.message);
         setFormData({
           name: "",
@@ -68,6 +75,7 @@ export default function Footer() {
         });
       } catch (err) {
         toast.error("Server Error");
+        console.log(err);
       } finally {
         setIsSubmitted(false);
       }
@@ -105,9 +113,12 @@ export default function Footer() {
               <div className="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 cursor-pointer transition-colors">
                 <Instagram size={16} className="text-white" />
               </div>
-              <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700 cursor-pointer transition-colors">
+              <a
+                className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center hover:bg-gray-700 cursor-pointer transition-colors"
+                href="mailTo:suavehealthcare1@gmail.com"
+              >
                 <Mail size={16} className="text-white" />
-              </div>
+              </a>
             </div>
           </div>
 
@@ -137,6 +148,14 @@ export default function Footer() {
                   className="text-gray-300 hover:text-white transition-colors text-sm"
                 >
                   Careers
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/blogs"
+                  className="text-gray-300 hover:text-white transition-colors text-sm"
+                >
+                  Blogs
                 </Link>
               </li>
               <li>
@@ -210,13 +229,13 @@ export default function Footer() {
               <div>
                 <p className="text-gray-300 text-sm">
                   <span className="font-medium">Phone:</span>{" "}
-                  <Link to="tel:7009676112" className="hover:text-white">
+                  <a href="tel:7009676112" className="hover:text-white">
                     7009676112
-                  </Link>
+                  </a>
                   ,{" "}
-                  <Link to="tel:7719529291" className="hover:text-white">
+                  <a href="tel:7719529291" className="hover:text-white">
                     7719529291
-                  </Link>
+                  </a>
                 </p>
               </div>
               <div>
@@ -263,6 +282,11 @@ export default function Footer() {
                 value={formData.phone}
                 onChange={handleInputChange}
                 className="w-full px-3 py-2 bg-gray-100 text-gray-900 rounded text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#129349]"
+              />
+              <ReCAPTCHA
+                sitekey={siteKey} // replace with your actual key
+                onChange={(token) => setCaptchaToken(token)}
+                className="mx-auto mb-6"
               />
               <button
                 onClick={handleSubmit}

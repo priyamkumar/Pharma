@@ -1,21 +1,9 @@
-import { Box } from "@mui/material";
-import { useEnquiry } from "../context/EnquiryContext";
 import { useEnquiryStore } from "../store/enquiryStore";
-import GradientCircularProgress from "./Loader";
 
-const MedicineProductCard = ({ product, loading }) => {
+const MedicineProductCard = ({ product }) => {
   const { setIsEnquiryModalOpen } = useEnquiryStore();
-  return loading || !product ? (
-     <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      height="91vh"
-    >
-      <GradientCircularProgress />
-    </Box>
-  ) : (
-    <div className="my-20 md:max-w-[75vw] mx-auto bg-white rounded-lg overflow-hidden">
+  return (
+    <div className="my-20 bg-white rounded-lg overflow-hidden">
       <div className="flex flex-col lg:flex-row">
         {/* Image Section */}
         <div className="lg:w-1/3 p-6 flex items-center justify-center">
@@ -112,9 +100,6 @@ const MedicineProductCard = ({ product, loading }) => {
             <div className="mb-4">
               <p className="text-gray-700 text-sm leading-relaxed">
                 {product.shortDescription}
-                <span className="text-blue-600 cursor-pointer hover:underline ml-1">
-                  Read More
-                </span>
               </p>
             </div>
           )}

@@ -1,11 +1,6 @@
-import React from "react";
-import Loader from "./Loader";
-
-const ProductInfoLayout = ({ product, loading }) => {
-  return loading || !product ? (
-    <Loader />
-  ) : (
-    <div className="md:max-w-[75vw] mx-auto bg-white p-6 font-sans">
+const ProductInfoLayout = ({ product }) => {
+  return (
+    <div className="bg-white font-sans">
       <div className="my-10 grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Column */}
         <div className="space-y-6">

@@ -1,18 +1,20 @@
 import { ChevronRight, FolderOpen, Tag } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import GradientCircularProgress from "./Loader";
 import { useBlogStore } from "../store/blogStore";
 import { Box } from "@mui/material";
-import { useKeywordStore } from "../store/keywordStore";
 import SEO from "./SEO";
+import SubscribeNewsletter from "./SubscribeNewsletter";
+
+const capitalizeWords = (str) => {
+  if (!str) return "";
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
+};
 
 const Blog = () => {
-  const capitalizeWords = (str) => {
-    return str.replace(/\b\w/g, (char) => char.toUpperCase());
-  };
-  const { blogs, blogsLoading, fetchBlogs } = useBlogStore();
-  const { tags, keywordsLoading, fetchKeywords } = useKeywordStore();
+  const { blogs, blogsLoading, fetchBlogs, allTags, allCategories } =
+    useBlogStore();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -26,7 +28,6 @@ const Blog = () => {
 
   useEffect(() => {
     if (blogs.length === 0) fetchBlogs();
-    if (tags.length === 0) fetchKeywords();
   }, []);
 
   useEffect(() => {
@@ -37,25 +38,19 @@ const Blog = () => {
 
     setSearchParams(params);
   }, [selectedCategory, selectedTag, setSearchParams]);
+
   let filteredPosts = [];
   // Filter posts based on selections
   if (blogs)
     filteredPosts = blogs.filter((post) => {
       const categoryMatch = selectedCategory
-        ? post.categories.includes(selectedCategory.toLowerCase())
+        ? post.categories
+            .map((c) => c.toLowerCase())
+            .includes(selectedCategory.toLowerCase())
         : true;
       const tagMatch = selectedTag ? post.tags.includes(selectedTag) : true;
       return categoryMatch && tagMatch;
     });
-
-  const categories = [
-    { name: "Technology", count: 12 },
-    { name: "Web Development", count: 18 },
-    { name: "Frontend", count: 15 },
-    { name: "Backend", count: 8 },
-    { name: "CSS", count: 10 },
-    { name: "Design", count: 6 },
-  ];
 
   const clearFilters = () => {
     setSelectedCategory(null);
@@ -74,7 +69,7 @@ const Blog = () => {
     </Box>
   ) : (
     <div className="min-h-screen py-8 px-4">
-      <SEO slug="blogs"/>
+      <SEO slug="blogs" />
       <div className="md:max-w-[75vw] mx-auto">
         <div className="mb-8">
           <nav className="flex items-center space-x-2 text-sm text-gray-600">
@@ -85,14 +80,14 @@ const Blog = () => {
               Home
             </span>
             <ChevronRight className="w-4 h-4" />
-            <span className="font-bold text-blue-800">Blog</span>
+            <span className="font-bold text-blue-800">Blogs</span>
           </nav>
         </div>
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content */}
           <div className="lg:w-3/4">
             <h1 className="text-center text-3xl font-bold mb-6 text-gray-800">
-              Blog
+              Blogs
             </h1>
             {blogs.length === 0 ? (
               <div className="text-center py-12">
@@ -139,7 +134,8 @@ const Blog = () => {
                           <span
                             key={category}
                             className={`px-3 py-1 rounded-full text-sm cursor-pointer transition-colors ${
-                              selectedCategory?.toLowerCase() === category
+                              selectedCategory?.toLowerCase() ===
+                              category.toLowerCase()
                                 ? "bg-blue-500 text-white"
                                 : "bg-blue-100 text-blue-800 hover:bg-blue-200"
                             }`}
@@ -201,56 +197,55 @@ const Blog = () => {
                 Categories
               </h3>
               <ul className="space-y-2">
-                {categories.map((category) => (
-                  <li key={category.name}>
+                {allCategories.map((category) => (
+                  <li key={category.rawName}>
                     <button
                       className={`cursor-pointer w-full text-left px-3 py-2 rounded flex justify-between items-center transition-colors ${
-                        selectedCategory === category.name
+                        selectedCategory === category.rawName
                           ? "bg-blue-500 text-white"
                           : "hover:bg-gray-100"
                       }`}
                       onClick={() =>
                         setSelectedCategory(
-                          selectedCategory === category.name
+                          selectedCategory === category.rawName
                             ? null
-                            : category.name
+                            : category.rawName
                         )
                       }
                     >
                       <span>{category.name}</span>
+                      <span className="text-xs text-black bg-gray-200 rounded-full px-2 py-1">
+                        {category.count}
+                      </span>
                     </button>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {keywordsLoading ? (
-              <GradientCircularProgress />
-            ) : (
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <Tag className="w-5 h-5" />
-                  Tags
-                </h3>{" "}
-                <div className="flex flex-wrap gap-2">
-                  {tags.map((tag) => (
-                    <button
-                      key={tag}
-                      className={`cursor-pointer px-3 py-1 rounded-full text-sm transition-colors flex items-center ${
-                        selectedTag === tag
-                          ? "bg-[#129349] text-white"
-                          : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                      }`}
-                      onClick={() =>
-                        setSelectedTag(selectedTag === tag ? null : tag)
-                      }
-                    >
-                      {tag}
-                    </button>
-                  ))}
-                </div>
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Tag className="w-5 h-5" />
+                Tags
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {allTags.map((tag) => (
+                  <button
+                    key={tag}
+                    className={`cursor-pointer px-3 py-1 rounded-full text-sm transition-colors flex items-center ${
+                      selectedTag === tag
+                        ? "bg-[#129349] text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                    onClick={() =>
+                      setSelectedTag(selectedTag === tag ? null : tag)
+                    }
+                  >
+                    {tag}
+                  </button>
+                ))}
               </div>
-            )}
+            </div>
 
             {(selectedCategory || selectedTag) && (
               <div className="mt-6 text-center">
@@ -262,6 +257,7 @@ const Blog = () => {
                 </button>
               </div>
             )}
+            <SubscribeNewsletter />
           </div>
         </div>
       </div>

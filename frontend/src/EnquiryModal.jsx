@@ -3,6 +3,7 @@ import { server } from "../src/main";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useEnquiryStore } from "../store/enquiryStore";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function EnquiryModal() {
   const { isEnquiryModalOpen, setIsEnquiryModalOpen } = useEnquiryStore();
@@ -15,6 +16,8 @@ export default function EnquiryModal() {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
   const validateForm = () => {
     const newErrors = {};
@@ -39,16 +42,20 @@ export default function EnquiryModal() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!captchaToken) {
+      toast.error("Please complete the CAPTCHA");
+      return;
+    }
     const newErrors = validateForm();
 
     if (Object.keys(newErrors).length === 0) {
       // Simulate form submission
       setIsSubmitted(true);
       try {
-        const { data } = await axios.post(
-          `${server}/api/v1/message/`,
-          formData
-        );
+        const { data } = await axios.post(`${server}/api/v1/message/`, {
+          ...formData,
+          captchaToken,
+        });
         toast.success(data.message);
         setFormData({
           name: "",
@@ -222,7 +229,11 @@ export default function EnquiryModal() {
                       </p>
                     )}
                   </div>
-
+<ReCAPTCHA
+              sitekey={siteKey}
+              onChange={(token) => setCaptchaToken(token)}
+              className="mx-auto"
+            />
                   {/* Submit Button */}
                   <button
                     onClick={handleSubmit}

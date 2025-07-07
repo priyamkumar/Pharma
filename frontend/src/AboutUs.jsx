@@ -31,31 +31,40 @@ function Objective() {
 
               <div className="space-y-4 text-gray-600 leading-relaxed">
                 <p className="text-lg">
-                  Suave Healthcare stands as a pioneering force in the
-                  pharmaceutical industry, dedicated to transforming healthcare
-                  through innovative solutions and unwavering commitment to
-                  quality. With over a decade of excellence, we have established
-                  ourselves as a trusted partner for healthcare professionals
-                  and patients alike, delivering cutting-edge pharmaceutical
-                  products that meet the highest industry standards.
+                  Suave Healthcare Private Limited is a trusted pharmaceutical
+                  company located in Solan, Himachal Pradesh. We offer PCD
+                  franchise and third-party manufacturing services across India.
+                  Renowned for maintaining high standards, we provide a wide
+                  range of quality medicines including tablets, capsules,
+                  syrups, and injections. All our products are manufactured in
+                  certified units that follow strict safety and care protocols.
+                  Our core values include quality assurance, timely delivery,
+                  and client satisfaction, making us a reliable partner in the
+                  pharmaceutical industry.
                 </p>
 
                 <p className="text-lg">
-                  Our comprehensive approach encompasses research and
-                  development, manufacturing, and distribution of premium
-                  pharmaceutical formulations. We specialize in franchise
-                  partnerships that empower healthcare entrepreneurs to build
-                  successful businesses while maintaining our core values of
-                  integrity, innovation, and patient-centric care.
+                  We aim to maintain transparent, smooth, and long-lasting
+                  relationships with all our partners, regardless of their size.
+                  Suave Healthcare provides full marketing support and
+                  promotional materials to help clients grow. Our vision is to
+                  build strong, long-term associations that foster mutual
+                  development. We strive to make affordable and effective
+                  medicines accessible to everyone, thereby promoting overall
+                  health and well-being across the country. Our skilled and
+                  experienced team is always ready to support clients and ensure
+                  the best outcomes.
                 </p>
 
                 <p className="text-lg">
-                  Through strategic collaborations and continuous investment in
-                  technology, Suave Healthcare continues to expand its footprint
-                  across diverse therapeutic segments, ensuring accessible and
-                  affordable healthcare solutions for communities worldwide. Our
-                  commitment to excellence drives us to push boundaries and set
-                  new benchmarks in pharmaceutical care.
+                  Every aspect of our manufacturing process undergoes strict
+                  quality checks, and our packaging is safe, attractive, and
+                  leak-proof. We comply with all government norms and
+                  pharmaceutical regulations, ensuring trust and safety. Over
+                  time, Suave Healthcare has earned a strong reputation, thanks
+                  to the continued support of our clients. We welcome all pharma
+                  professionals to collaborate with us and grow together in this
+                  journey of excellence.
                 </p>
               </div>
             </div>
@@ -156,7 +165,12 @@ const TeamSuaveHealthcare = () => {
           <div className="relative w-80 h-80 flex justify-center items-center">
             {/* Central Company Logo */}
             <div className="absolute z-10 w-25 h-25 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg">
-              <div className="text-white font-bold text-lg"><img className="w-25 h-25 rounded-full" src="logoWithoutText.png"/></div>
+              <div className="text-white font-bold text-lg">
+                <img
+                  className="w-25 h-25 rounded-full"
+                  src="logoWithoutText.png"
+                />
+              </div>
             </div>
 
             {/* Team Member Avatars */}
@@ -181,7 +195,10 @@ const TeamSuaveHealthcare = () => {
                     hover:shadow-lg group-hover:border-gray-300
                   `}
                   >
-                    <img className="rounded-full h-16 w-16" src="https://randomuser.me/api/portraits/men/44.jpg"/>
+                    <img
+                      className="rounded-full h-16 w-16"
+                      src="https://randomuser.me/api/portraits/men/44.jpg"
+                    />
                   </div>
                 </div>
               );

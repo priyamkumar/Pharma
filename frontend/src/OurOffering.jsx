@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const OfferingSection = () => {
   const offerings = [
@@ -59,8 +60,8 @@ const OfferingSection = () => {
               </p>
 
               {/* Learn More Link */}
-              <a
-                href={offering.link}
+              <Link
+                to={offering.link}
                 className="inline-flex items-center justify-center bg-[#129349] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-[#015c30] transition-colors duration-200 mt-auto"
               >
                 Learn more
@@ -78,7 +79,7 @@ const OfferingSection = () => {
                     d="M9 5l7 7-7 7"
                   />
                 </svg>
-              </a>
+              </Link>
             </div>
           ))}
         </div>

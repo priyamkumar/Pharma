@@ -21,8 +21,9 @@ import { Toaster } from "react-hot-toast";
 import BlogPage from "./BlogPage.jsx";
 import SingleBlogPage from "./SingleBlog.jsx";
 import { HelmetProvider } from "react-helmet-async";
+import Unsubscribe from "./Unsubscribe.jsx";
 
-export const server = "https://pharma-lovat.vercel.app";
+export const server = "http://localhost:5005";
 
 const router = createBrowserRouter([
   {
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: "/blogs/:name",
         element: <SingleBlogPage />,
+      },
+      {
+        path: "/unsubscribe/:email",
+        element: <Unsubscribe />,
       },
     ],
   },

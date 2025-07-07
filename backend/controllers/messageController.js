@@ -1,10 +1,14 @@
 const asyncHandler = require("express-async-handler");
 const Message = require("../models/messageModel.js");
+const { verifyCaptcha } = require("../middleware/verifyCaptcha.js");
 
 const sendMessage = asyncHandler(async (req, res) => {
   try {
     const { name, email, phone, description, formType } = req.body;
-
+    const isHuman = await verifyCaptcha(req.body.captchaToken);
+    if (!isHuman) {
+      return res.status(400).json({ message: "CAPTCHA verification failed" });
+    }
     if (!name || !email || !phone || !description || !formType) {
       return res.status(400).json({
         success: false,
@@ -38,15 +42,17 @@ const sendMessage = asyncHandler(async (req, res) => {
 const getAllMessages = asyncHandler(async (req, res) => {
   try {
     const messageCount = await Message.countDocuments();
-    const unreadMessages = await Message.find({read: false}).countDocuments();
+    const unreadMessages = await Message.find({ read: false }).countDocuments();
     const messages = await Message.find().sort({ createdAt: -1 });
-    res.status(200).json({ success: true, messages, messageCount, unreadMessages });
+    res
+      .status(200)
+      .json({ success: true, messages, messageCount, unreadMessages });
   } catch (error) {
     console.error("Error fetching messages:", error);
     res.status(500).json({
       success: false,
       message: "Server Error",
-      error: error.message
+      error: error.message,
     });
   }
 });
@@ -90,5 +96,5 @@ module.exports = {
   sendMessage,
   getAllMessages,
   readMessage,
-  deleteMessage
+  deleteMessage,
 };

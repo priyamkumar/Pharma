@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { server } from "../src/main";
 import axios from "axios";
 import toast from "react-hot-toast";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function PageContactForm() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,8 @@ export default function PageContactForm() {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
   const validateForm = () => {
     const newErrors = {};
@@ -45,16 +48,20 @@ export default function PageContactForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!captchaToken) {
+      toast.error("Please complete the CAPTCHA");
+      return;
+    }
     const newErrors = validateForm();
 
     if (Object.keys(newErrors).length === 0) {
       // Simulate form submission
       setIsSubmitted(true);
       try {
-        const { data } = await axios.post(
-          `${server}/api/v1/message/`,
-          formData
-        );
+        const { data } = await axios.post(`${server}/api/v1/message/`, {
+          ...formData,
+          captchaToken,
+        });
         toast.success(data.message);
         setFormData({
           name: "",
@@ -134,6 +141,11 @@ export default function PageContactForm() {
             </div>
           </div>
 
+          <ReCAPTCHA
+            sitekey={siteKey} // replace with your actual key
+            onChange={(token) => setCaptchaToken(token)}
+            className="mx-auto mb-6"
+          />
           <button
             onClick={handleSubmit}
             className="cursor-pointer bg-[#129349] hover:bg-[#015c30] text-white font-medium py-2 px-8 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-[#129349] focus:ring-offset-2"

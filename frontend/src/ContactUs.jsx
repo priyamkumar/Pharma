@@ -1,10 +1,11 @@
 import { ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "./main";
 import toast from "react-hot-toast";
 import SEO from "./SEO";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,8 @@ export default function ContactUs() {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
   const navigate = useNavigate();
 
   const validateForm = () => {
@@ -49,16 +52,19 @@ export default function ContactUs() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!captchaToken) {
+      toast.error("Please complete the CAPTCHA");
+      return;
+    }
     const newErrors = validateForm();
 
     if (Object.keys(newErrors).length === 0) {
-      // Simulate form submission
       setIsSubmitted(true);
       try {
-        const { data } = await axios.post(
-          `${server}/api/v1/message/`,
-          formData
-        );
+        const { data } = await axios.post(`${server}/api/v1/message/`, {
+          ...formData,
+          captchaToken,
+        });
         toast.success(data.message);
         setFormData({
           name: "",
@@ -192,6 +198,11 @@ export default function ContactUs() {
               />
             </div>
 
+            <ReCAPTCHA
+              sitekey={siteKey}
+              onChange={(token) => setCaptchaToken(token)}
+              className="mx-auto"
+            />
             {/* Submit Button */}
             <div className="pt-4">
               <button
@@ -225,13 +236,13 @@ export default function ContactUs() {
               </div>
               <h3 className="font-semibold text-gray-800 mb-2">Phone</h3>
               <p className="text-gray-600">
-                <Link to="tel:7009676112" className="hover:text-[#129349]">
+                <a href="tel:7009676112" className="hover:text-[#129349]">
                   7009676112
-                </Link>
+                </a>
                 ,{" "}
-                <Link to="tel:7719529291" className="hover:text-[#129349]">
+                <a href="tel:7719529291" className="hover:text-[#129349]">
                   7719529291
-                </Link>
+                </a>
               </p>
             </div>
 
@@ -253,12 +264,12 @@ export default function ContactUs() {
               </div>
               <h3 className="font-semibold text-gray-800 mb-2">Email</h3>
               <p className="text-gray-600">
-                <Link
-                  to="mailTo:suavehealthcare1@gmail.com"
+                <a
+                  href="mailTo:suavehealthcare1@gmail.com"
                   className="hover:text-[#129349]"
                 >
                   suavehealthcare1@gmail.com
-                </Link>
+                </a>
               </p>
             </div>
 

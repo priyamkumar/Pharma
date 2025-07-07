@@ -598,7 +598,7 @@ const AdminPanel = () => {
         config
       );
 
-      setBlogs([...blogs, data.blog]);
+      setBlogs([data.blog, ...blogs]);
       setNewBlog({
         title: "",
         slug: "",

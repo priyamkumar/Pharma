@@ -44,6 +44,7 @@ app.use("/api/v1/product", require("./routes/productRoutes"));
 app.use("/api/v1/division", require("./routes/divisionRoutes"));
 app.use("/api/v1/blog", require("./routes/blogRoutes"));
 app.use("/api/v1/seo", require("./routes/seoRoutes"));
+app.use('/api/v1/subscribe', require('./routes/subscribe'));
 
 app.use(errorHandler);
 
