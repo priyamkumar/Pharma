@@ -56,7 +56,7 @@ const createBlog = asyncHandler(async (req, res) => {
       const result = await cloudinary.v2.uploader.upload(req.body.image, {
         folder: "blogs",
       });
-      blogData.image = { public_id: result.public_id, url: result.url };
+      blogData.image = { public_id: result.public_id, url: result.secure_url };
     }
 
     if (blogData.tags) {
@@ -91,7 +91,7 @@ const createBlog = asyncHandler(async (req, res) => {
       return sendEmail(
         sub.email,
         `New Blog: ${req.body.title}`,
-        req.body.metaDesciption,
+        req.body.metaDescription,
         htmlWithUnsubscribe
       );
     });
@@ -119,7 +119,7 @@ const updateBlog = asyncHandler(async (req, res) => {
       const result = await cloudinary.v2.uploader.upload(req.body.image, {
         folder: "blogs",
       });
-      req.body.image = { public_id: result.public_id, url: result.url };
+      req.body.image = { public_id: result.public_id, url: result.secure_url };
     }
     blog = await BlogPost.findByIdAndUpdate(req.params.id, req.body, {
       new: true,

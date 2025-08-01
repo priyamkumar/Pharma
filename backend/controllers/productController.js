@@ -50,7 +50,7 @@ const createProduct = asyncHandler(async (req, res) => {
       });
       imagesLink.push({
         public_id: result.public_id,
-        url: result.url,
+        url: result.secure_url,
       });
     }
     req.body.images = imagesLink;
@@ -133,7 +133,7 @@ const updateProduct = asyncHandler(async (req, res) => {
           });
           uploadedImages.push({
             public_id: result.public_id,
-            url: result.url,
+            url: result.secure_url,
           });
         } catch (uploadError) {
           console.log(`Failed to upload image ${i}:`, uploadError);

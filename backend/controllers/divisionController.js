@@ -16,7 +16,7 @@ const createDivision = asyncHandler(async (req, res) => {
       const result = await cloudinary.v2.uploader.upload(req.body.image, {
         folder: "divisions",
       });
-      req.body.image = { public_id: result.public_id, url: result.url };
+      req.body.image = { public_id: result.public_id, url: result.secure_url };
     }
 
     const division = await Division.create(req.body);
@@ -43,7 +43,7 @@ const updateDivision = asyncHandler(async (req, res) => {
       const result = await cloudinary.v2.uploader.upload(req.body.image, {
         folder: "divisions",
       });
-      req.body.image = { public_id: result.public_id, url: result.url };
+      req.body.image = { public_id: result.public_id, url: result.secure_url };
     }
     division = await Division.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
