@@ -222,8 +222,8 @@ export default function Footer() {
             <div className="space-y-3">
               <div>
                 <p className="text-gray-300 text-sm leading-relaxed">
-                  Bci Bearing, Vill. Lower Ambota Sector-5 Parwanoo Teh. Kasauli
-                  Distt. Solan (HP)- 173220{" "}
+                  SCO-10, Marigold Spaces, Sector-5, Peer Muchalla, Zirakpur,
+                  Sanauli, Punjab 160104
                 </p>
               </div>
               <div>

@@ -297,8 +297,8 @@ export default function ContactUs() {
               </div>
               <h3 className="font-semibold text-gray-800 mb-2">Address</h3>
               <p className="text-gray-600">
-                Bci Bearing, Vill. Lower Ambota Sector-5 Parwanoo Teh. Kasauli
-                Distt. Solan (HP)- 173220
+                SCO-10, Marigold Spaces, Sector-5, Peer Muchalla, Zirakpur,
+                Sanauli, Punjab 160104
               </p>
             </div>
           </div>
@@ -307,7 +307,7 @@ export default function ContactUs() {
           <div className="shadow-lg rounded-2xl overflow-hidden">
             <iframe
               title="Office Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3425.32335283011!2d76.95781031183913!3d30.849620774421826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f8ee0ec900069%3A0xc28b067267e5e8b6!2sBci%20Bearing%20Compound!5e0!3m2!1sen!2sin!4v1750163811235!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d214.5121248657682!2d76.85561523583624!3d30.656665227833457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390f9567be5c6a15%3A0x61c441907ad3f0bb!2sSuave%20Healthcare%20Pvt%20Ltd!5e0!3m2!1sen!2sin!4v1754040248159!5m2!1sen!2sin"
               className="w-full h-64 md:h-96"
               allowFullScreen
               loading="lazy"
