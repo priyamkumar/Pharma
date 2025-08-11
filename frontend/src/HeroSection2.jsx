@@ -1,44 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useEnquiryStore } from "../store/enquiryStore";
 
 const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const navigate = useNavigate();
+  const { setIsEnquiryModalOpen } = useEnquiryStore();
 
   const slides = [
     {
       id: 1,
       image: "https://picsum.photos/1920/1080?random=1",
-      highlight: "Trust.",
-      heading: "Built over decades.",
+      highlight: "Why Choose Us",
+      heading:
+        "Suave Healthcare: Trusted by Over 1,000 Healthcare Entrepreneurs",
       subtext:
-        "Earning confidence through consistent quality and patient-first values.",
-      textPosition: "right", // Text on left
+        "With 20+ years of excellence, Suave Healthcare is your trusted pharma partner. ISO & WHO-GMP certified, we offer top-quality products and unmatched support.",
+      textPosition: "right",
+      cta: {
+        text: "Partner With Us Today",
+        action: () => setIsEnquiryModalOpen(true),
+      },
     },
     {
       id: 2,
       image: "https://picsum.photos/1920/1080?random=2",
-      highlight: "Care.",
-      heading: "Empowering patients.",
-      subtext: "Dedicated to delivering compassionate healthcare globally.",
-      textPosition: "left", // Text on right
+      highlight: "Pharma Products",
+      heading: "Explore Our WHO-GMP Certified Pharma Products",
+      subtext:
+        "Over 850 premium pharma products, including tablets, capsules, syrups, and injections, all manufactured in certified GMP facilities to ensure the highest standards of quality.",
+      textPosition: "left",
+      cta: {
+        text: "Explore Our Product Portfolio",
+        action: () => navigate("/products"),
+      },
     },
     {
       id: 3,
       image: "https://picsum.photos/1920/1080?random=3",
-      highlight: "Innovation.",
-      heading: "Driven by science.",
-      subtext: "Transforming treatment through cutting-edge research.",
-      textPosition: "right", // Text on left
+      highlight: "PCD Pharma Franchise",
+      heading: "Partner with India's Leading PCD Pharma Company",
+      subtext:
+        "Start your pharma franchise with Suave Healthcare. Get full support, a wide product range, and access to an extensive network for business growth.",
+      textPosition: "right",
+      cta: {
+        text: "Start Your Franchise Journey",
+        action: () => navigate("/franchise"),
+      },
     },
     {
       id: 4,
       image: "https://picsum.photos/1920/1080?random=4",
-      highlight: "Excellence.",
-      heading: "Global standards, local impact.",
+      highlight: "Third-Party Manufacturing",
+      heading: "Reliable Third-Party Manufacturing Solutions",
       subtext:
-        "Combining international expertise with deep regional understanding.",
-      textPosition: "left", // Text on right
+        "We offer tailored contract manufacturing services, ensuring high-quality tablets, capsules, syrups, and injections with on-time delivery.",
+      textPosition: "left",
+      cta: {
+        text: "Request a Manufacturing Quote",
+        action: () => setIsEnquiryModalOpen(true),
+      },
     },
   ];
 
@@ -56,7 +79,6 @@ const Carousel = () => {
   const goToSlide = (index) => {
     setCurrentSlide(index);
     setIsAutoPlaying(false);
-    // Resume auto-play after 10 seconds of inactivity
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
@@ -73,7 +95,7 @@ const Carousel = () => {
   };
 
   return (
-    <div className="relative w-full h-[90vh] overflow-hidden bg-gray-900">
+    <div className="relative w-full h-screen sm:h-[90vh] overflow-hidden bg-gray-900">
       {/* Slides Container */}
       <div className="relative w-full h-full">
         {slides.map((slide, index) => (
@@ -88,77 +110,61 @@ const Carousel = () => {
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url(${slide.image})`,
-                backgroundColor: "#4a5568", // Fallback color
+                backgroundColor: "#4a5568",
               }}
             >
-              {/* Dynamic overlay based on text position */}
+              {/* Mobile-first overlay - always dark on mobile, position-based on desktop */}
               <div
-                className={`absolute inset-0 ${
+                className={`absolute inset-0 bg-black/70 sm:bg-black/60 ${
                   slide.textPosition === "left"
-                    ? "bg-gradient-to-r from-black/80 via-black/60 to-transparent"
-                    : "bg-gradient-to-l from-black/80 via-black/60 to-transparent"
+                    ? "lg:bg-gradient-to-r lg:from-black/80 lg:via-black/60 lg:to-transparent"
+                    : "lg:bg-gradient-to-l lg:from-black/80 lg:via-black/60 lg:to-transparent"
                 }`}
               ></div>
             </div>
 
             {/* Content Overlay */}
             <div className="relative z-20 h-full flex items-center">
-              <div className="w-full max-w-[75vw] mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                  {/* Dynamic content positioning */}
-                  {slide.textPosition === "left" ? (
-                    <>
-                      {/* Left side - Content */}
-                      <div className="lg:pr-8 text-white">
-                        <div className="space-y-6">
-                          {/* Highlighted Word */}
-                          <div className="inline-block">
-                            <span className="bg-[#129349] text-white font-bold text-2xl sm:text-3xl lg:text-4xl px-4 py-2 rounded-lg shadow-lg">
-                              {slide.highlight}
-                            </span>
-                          </div>
-
-                          {/* Main Heading */}
-                          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-white drop-shadow-2xl">
-                            {slide.heading}
-                          </h1>
-
-                          {/* Subtext */}
-                          <p className="text-lg sm:text-xl lg:text-2xl text-gray-100 leading-relaxed max-w-2xl drop-shadow">
-                            {slide.subtext}
-                          </p>
-                        </div>
+              <div className="w-full max-w-7xl mx-auto px-16 sm:px-20 lg:px-24">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center min-h-full lg:min-h-0">
+                  {/* Mobile: Always center content with arrow clearance, Desktop: Position based on textPosition */}
+                  <div
+                    className={`text-white text-center sm:text-left ${
+                      slide.textPosition === "left"
+                        ? "lg:col-start-1 lg:pr-12"
+                        : "lg:col-start-2 lg:pl-12"
+                    }`}
+                  >
+                    <div className="space-y-4 sm:space-y-6">
+                      {/* Highlighted Word */}
+                      <div className="inline-block">
+                        <span className="bg-[#129349] text-white font-bold text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl px-2 py-1 sm:px-3 sm:py-2 lg:px-4 lg:py-2 rounded-lg shadow-lg leading-tight">
+                          {slide.highlight}
+                        </span>
                       </div>
-                      {/* Right side - empty */}
-                      <div className="hidden lg:block"></div>
-                    </>
-                  ) : (
-                    <>
-                      {/* Left side - empty */}
-                      <div className="hidden lg:block"></div>
-                      {/* Right side - Content */}
-                      <div className="lg:pl-8 text-white">
-                        <div className="space-y-6">
-                          {/* Highlighted Word */}
-                          <div className="inline-block">
-                            <span className="bg-[#129349] text-white font-bold text-2xl sm:text-3xl lg:text-4xl px-4 py-2 rounded-lg shadow-lg">
-                              {slide.highlight}
-                            </span>
-                          </div>
 
-                          {/* Main Heading */}
-                          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-white drop-shadow-2xl">
-                            {slide.heading}
-                          </h1>
+                      {/* Main Heading */}
+                      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight text-white drop-shadow-2xl">
+                        {slide.heading}
+                      </h1>
 
-                          {/* Subtext */}
-                          <p className="text-lg sm:text-xl lg:text-2xl text-gray-100 leading-relaxed max-w-2xl drop-shadow">
-                            {slide.subtext}
-                          </p>
-                        </div>
+                      {/* Subtext */}
+                      <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-100 leading-relaxed max-w-2xl mx-auto sm:mx-0 drop-shadow">
+                        {slide.subtext}
+                      </p>
+
+                      {/* Call to Action Button */}
+                      <div className="pt-2 sm:pt-4">
+                        <button
+                          onClick={slide.cta.action}
+                          className="cursor-pointer bg-[#129349] hover:bg-[#0f7a3a] text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-lg transition-all duration-300 inline-flex items-center gap-2 hover:shadow-lg transform hover:scale-105"
+                        >
+                          {slide.cta.text}
+                          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                        </button>
                       </div>
-                    </>
-                  )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -166,31 +172,49 @@ const Carousel = () => {
         ))}
       </div>
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - Positioned with more clearance */}
       <button
         onClick={prevSlide}
-        className="cursor-pointer absolute left-4 sm:left-8 top-1/2 transform -translate-y-1/2 z-30 bg-white bg-opacity-20 hover:bg-gray-300 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm"
+        className="hidden sm:block cursor-pointer absolute left-4 sm:left-6 lg:left-8 top-1/2 transform -translate-y-1/2 z-30 bg-white bg-opacity-20 hover:bg-white hover:bg-opacity-30 text-white p-2 sm:p-3 rounded-full transition-all duration-300 backdrop-blur-sm"
         aria-label="Previous slide"
       >
-        <ChevronLeft className="w-6 h-6 text-black" />
+        <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-black" />
       </button>
 
       <button
         onClick={nextSlide}
-        className="cursor-pointer absolute right-4 sm:right-8 top-1/2 transform -translate-y-1/2 z-30 bg-white bg-opacity-20 hover:bg-gray-300 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm"
+        className="hidden sm:block cursor-pointer absolute right-4 sm:right-6 lg:right-8 top-1/2 transform -translate-y-1/2 z-30 bg-white bg-opacity-20 hover:bg-white hover:bg-opacity-30 text-white p-2 sm:p-3 rounded-full transition-all duration-300 backdrop-blur-sm"
         aria-label="Next slide"
       >
-        <ChevronRight className="w-6 h-6 text-black" />
+        <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-black" />
       </button>
 
+      {/* Mobile Navigation Arrows - Only visible on mobile, positioned at bottom */}
+      <div className="absolute bottom-16 sm:hidden left-1/2 transform -translate-x-1/2 z-30 flex gap-4">
+        <button
+          onClick={prevSlide}
+          className="cursor-pointer bg-white bg-opacity-20 hover:bg-white hover:bg-opacity-30 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm"
+          aria-label="Previous slide"
+        >
+          <ChevronLeft className="w-5 h-5 text-black" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="cursor-pointer bg-white bg-opacity-20 hover:bg-white hover:bg-opacity-30 text-white p-3 rounded-full transition-all duration-300 backdrop-blur-sm"
+          aria-label="Next slide"
+        >
+          <ChevronRight className="w-5 h-5 text-black" />
+        </button>
+      </div>
+
       {/* Pagination Indicators */}
-      <div className="absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-30">
-        <div className="flex space-x-3">
+      <div className="absolute bottom-4 sm:bottom-6 lg:bottom-8 left-1/2 transform -translate-x-1/2 z-30">
+        <div className="flex space-x-2 sm:space-x-3">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`cursor-pointer w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`cursor-pointer w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
                 index === currentSlide
                   ? "bg-white scale-125"
                   : "bg-white bg-opacity-50 hover:bg-opacity-75"

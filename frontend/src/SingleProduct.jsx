@@ -71,7 +71,7 @@ export default function SingleProduct() {
         <Trusted />
         <ProductInfoLayout product={product} />
         <SimilarProducts currentProduct={product} loading={loading} />
-        <EnquiryModal />
+        {/* <EnquiryModal /> */}
       </div>
     </div>
   );

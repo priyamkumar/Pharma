@@ -1,73 +1,65 @@
 import React from "react";
 import Trusted from "./Trusted";
 import { Link } from "react-router-dom";
+import { useEnquiryStore } from "../store/enquiryStore";
 
 export default function OurAdvantage() {
+  const { setIsEnquiryModalOpen } = useEnquiryStore();
   return (
     <section className="py-12">
-      <div className="container md:max-w-[75vw] mx-auto px-4">
+      <div className="container max-w-[75vw] mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-700 mb-8">
-          Suave Healthcare Advantage
+          Start or Expand Your Pharma Business with Confidence
         </h2>
-
+        <p className="text-base text-gray-600 leading-relaxed mb-8">
+          Suave Healthcare offers outstanding opportunities for entrepreneurs to
+          establish or expand their pharma business through:{" "}
+        </p>
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <div className="border-l-4 border-[#129349] pl-6">
             <h3 className="font-bold text-gray-800 mb-2">
-              Fast & Reliable Order Processing
+              Monopoly-Based PCD Pharma Franchise Opportunities
             </h3>
             <p className="text-gray-600 mb-2">
-              Experience same-day order dispatch and instant updates on billing,
-              dispatch, and tracking through email, SMS, and WhatsApp, ensuring
-              a smooth and hassle-free experience for our partners.
+              Build your pharma business with minimal investment, high returns,
+              and exclusive access to our diverse product range.
             </p>
-            <Link to="/about" className="text-gray-700 font-medium">
-              Know More &gt;&gt;
-            </Link>
           </div>
 
           <div className="border-l-4 border-[#129349] pl-6">
             <h3 className="font-bold text-gray-800 mb-2">
-              Wide Range of Promotional Inputs
+              Customized Third-Party Manufacturing Services
             </h3>
             <p className="text-gray-600 mb-2">
-              We offer a variety of promotional materials, such as LBL, visual
-              aids, pens, keychains, MR shirts, laptop bags, and doctor gifts,
-              to help our partners effectively promote their business.
+              Tailored contract manufacturing solutions, ensuring top-quality
+              products and timely delivery. Benefit from our expertise in
+              product development and production efficiency.
             </p>
-            <Link to="/about" className="text-gray-700 font-medium">
-              Know More &gt;&gt;
-            </Link>
-          </div>
-
-          <div className="border-l-4 border-[#129349] pl-6">
-            <h3 className="font-bold text-gray-800 mb-2">
-              Dedicated Account Management
-            </h3>
-            <p className="text-gray-600 mb-2">
-              Each partner benefits from a dedicated account manager who assists
-              with all their needs, complaints, and inquiries, providing
-              personalized support and ensuring complete satisfaction.
-            </p>
-            <Link to="/about" className="text-gray-700 font-medium">
-              Know More &gt;&gt;
-            </Link>
-          </div>
-
-          <div className="border-l-4 border-[#129349] pl-6">
-            <h3 className="font-bold text-gray-800 mb-2">
-              Automatic Payment System
-            </h3>
-            <p className="text-gray-600 mb-2">
-              Our automatic payment system enables faster order dispatch and
-              seamless transactions, allowing our partners to focus on what
-              matters most – growing their business.
-            </p>
-            <Link to="/about" className="text-gray-700 font-medium">
-              Know More &gt;&gt;
-            </Link>
           </div>
         </div>
-        <Trusted/>
+        <p className="text-base text-gray-600 leading-relaxed mb-8">
+          Partner with Suave Healthcare to leverage our established network,
+          high-quality products, and full support for long-term business
+          success.
+        </p>
+
+        {/* Dual CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-6 mt-10 mb-12">
+          <Link
+            to="/franchise"
+            className="flex-1 bg-[#129349] hover:bg-[#0d7a3a] text-white font-bold py-4 px-8 rounded-lg shadow-lg transition-all duration-300 text-center"
+          >
+            Become a Franchise Partner
+          </Link>
+          <button
+            onClick={() => setIsEnquiryModalOpen(true)}
+            className="cursor-pointer flex-1 bg-white text-[#129349] border-2 border-[#129349] font-bold py-4 px-8 rounded-lg shadow-lg transition-all duration-300 hover:bg-[#f0fdf4] text-center"
+          >
+            Request a Manufacturing Quote
+          </button>
+        </div>
+
+        {/* <Trusted /> */}
       </div>
     </section>
   );

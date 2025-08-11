@@ -552,7 +552,7 @@ export default function Franchise() {
       <PharmaOffering />
       <Testimonials />
       <Divisions />
-      <EnquiryModal />
+      {/* <EnquiryModal /> */}
     </>
   );
 }

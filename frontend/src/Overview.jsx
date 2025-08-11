@@ -30,15 +30,23 @@ export default function SuaveHealthcareOverview() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         {/* Left Side - Content */}
         <div className="space-y-6">
-          <h2 className="text-4xl font-bold text-gray-900">An Overview</h2>
+          <h2 className="text-4xl font-bold text-gray-900">Best Pharma Company with 20+ Years of Excellence</h2>
           <p className="text-base text-gray-600 leading-relaxed">
-            Founded in 2002, Suave Healthcare is a leading ISO 9001:2008 &
-            WHO-GMP certified pharmaceutical company in India, offering a vast
-            range of affordable pharma products through PCD franchise
-            opportunities and third-party manufacturing services. We’re
-            committed to ethical practices and quality innovation.{" "}
+            Founded in 2002, Suave Healthcare is a trusted ISO 9001:2008 &
+            WHO-GMP certified pharmaceutical company. We specialize in providing
+            high-quality, affordable pharma products and services through PCD
+            franchise opportunities and third-party manufacturing solutions.
+            Over the years, we’ve built enduring relationships with more than
+            1,000 healthcare partners across India. When it comes to trusted,
+            reliable, and high-quality pharmaceuticals, Suave Healthcare is the
+            partner you can count on.
           </p>
-            <Link to="/about" className="cursor-pointer text-[#129349] hover:text-[#015c30] font-medium">Read More About Our Journey</Link>
+          <Link
+            to="/about"
+            className="cursor-pointer text-[#129349] hover:text-[#015c30] font-medium"
+          >
+            Read More About Our Journey
+          </Link>
         </div>
 
         {/* Right Side - Stats Grid */}

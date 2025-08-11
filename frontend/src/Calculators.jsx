@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function Calculators() {
   return (
     <section className="py-12 bg-[#ddfbe9]">
-      <div className="md:max-w-[75vw] mx-auto container px-4">
+      <div className="max-w-[75vw] mx-auto container px-4">
         <h2 className="text-2xl font-bold text-gray-700 mb-2">Calculators</h2>
         <p className="text-gray-600 mb-8">
           You can easily use the profit margin using below calculator

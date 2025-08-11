@@ -3,11 +3,14 @@ import React from "react";
 export default function WhyUs() {
   return (
     <section className="py-12">
-      <div className="container md:max-w-[75vw] mx-auto px-4">
+      <div className="container max-w-[75vw] mx-auto px-4">
         <h2 className="text-3xl font-bold text-gray-700 mb-8">
-          Why Choose Suave Healthcare
+          Why Suave Healthcare is the Preferred Choice for 1,000+ Healthcare
+          Entrepreneurs
         </h2>
-
+        <p className="text-base text-gray-600 leading-relaxed mb-8">
+          Suave Healthcare is committed to providing exceptional value through:
+        </p>
         <div className="grid md:grid-cols-2 gap-8">
           <div className="border-l-4 border-[#129349] pl-6 mb-8">
             <div className="flex items-start gap-4">
@@ -29,13 +32,11 @@ export default function WhyUs() {
               </div>
               <div>
                 <h3 className="font-bold text-gray-800 mb-2">
-                  Unmatched Quality & Compliance
+                  WHO-GMP & ISO 9001:2008 Certified
                 </h3>
                 <p className="text-gray-600">
-                  Our state-of-the-art manufacturing plant, compliant with EU
-                  PICS and UKMHRA GMP standards, ensures the highest quality
-                  products, meeting rigorous industry requirements and
-                  safeguarding our customers' well-being.
+                  We adhere to the highest standards of quality manufacturing
+                  and assurance.
                 </p>
               </div>
             </div>
@@ -61,13 +62,11 @@ export default function WhyUs() {
               </div>
               <div>
                 <h3 className="font-bold text-gray-800 mb-2">
-                  Comprehensive Product Portfolio
+                  Over 850 Formulations
                 </h3>
                 <p className="text-gray-600">
-                  With over 1500 products spanning 11+ divisions, our diverse
-                  portfolio caters to a wide range of therapeutic segments,
-                  providing ample opportunities for our pharma franchise, PCD
-                  franchise, and pharma PCD franchise partners.
+                  A diverse product range covering general health, cardiac,
+                  diabetic, and dermatological solutions.
                 </p>
               </div>
             </div>
@@ -78,28 +77,28 @@ export default function WhyUs() {
               <div className="bg-[#ddfbe9] p-2 rounded-full text-[#129349]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
+                  width="24"
+                  height="24"
                   viewBox="0 0 24 24"
+                  fill="none"
                   stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-timer-icon lucide-timer"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
+                  <line x1="10" x2="14" y1="2" y2="2" />
+                  <line x1="12" x2="15" y1="14" y2="11" />
+                  <circle cx="12" cy="14" r="8" />
                 </svg>
               </div>
               <div>
                 <h3 className="font-bold text-gray-800 mb-2">
-                  Competitive Pricing & Support
+                  PAN-India Timely Delivery
                 </h3>
                 <p className="text-gray-600">
-                  Our in-house manufacturing capability allows us to offer
-                  competitive pricing, ensuring our distributors stay ahead of
-                  the competition. We also provide extensive marketing support
-                  through promotional materials and dedicated account managers.
+                  Ensuring our products reach your location on time, maintaining
+                  product integrity.
                 </p>
               </div>
             </div>
@@ -125,13 +124,44 @@ export default function WhyUs() {
               </div>
               <div>
                 <h3 className="font-bold text-gray-800 mb-2">
-                  Cutting-Edge Digital Solutions
+                  Marketing & Franchise Support
                 </h3>
                 <p className="text-gray-600">
-                  Our advanced mobile application streamlines the ordering
-                  process, payments, ledger access, complaint resolution, and
-                  more, empowering our partners to manage their business with
-                  ease and efficiency.
+                  Providing partners with robust support, including promotional
+                  materials and product training for success.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-l-4 border-[#129349] pl-6 mb-8">
+            <div className="flex items-start gap-4">
+              <div className="bg-[#ddfbe9] p-2 rounded-full text-[#129349]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-factory-icon lucide-factory"
+                >
+                  <path d="M12 16h.01" />
+                  <path d="M16 16h.01" />
+                  <path d="M3 19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a.5.5 0 0 0-.769-.422l-4.462 2.844A.5.5 0 0 1 15 10.5v-2a.5.5 0 0 0-.769-.422L9.77 10.922A.5.5 0 0 1 9 10.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z" />
+                  <path d="M8 16h.01" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-800 mb-2">
+                  Dedicated Manufacturing Facilities
+                </h3>
+                <p className="text-gray-600">
+                  State-of-the-art, GMP-certified manufacturing units focused on
+                  the highest quality and efficiency.
                 </p>
               </div>
             </div>

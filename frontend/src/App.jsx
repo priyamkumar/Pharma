@@ -6,6 +6,7 @@ import ScrollToTop from "./ScrollToTop";
 import { Toaster } from "react-hot-toast";
 import SocialOverlay from "./SocialOverlay";
 import SEO from "./SEO";
+import EnquiryModal from "./EnquiryModal";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       <Outlet />
       <Footer />
       <Toaster />
+      <EnquiryModal />
       <SocialOverlay />
     </div>
   );

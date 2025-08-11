@@ -84,7 +84,7 @@ export default function PageContactForm() {
   return (
     <section className="py-12">
       <div className="bg-[#ddfbe9] py-8 px-4 md:px-8">
-        <div className="md:max-w-[75vw] mx-auto">
+        <div className="max-w-[75vw] mx-auto">
           <h2 className="text-3xl font-bold text-gray-800 mb-2">
             Partner with Suave Healthcare Today
           </h2>

@@ -70,7 +70,11 @@ const ProductsSample = () => {
     <GradientCircularProgress />
   ) : (
     <div className="py-12 bg-[#ddfbe9] prevent-select">
-      <div className="md:max-w-[75vw] mx-auto px-4">
+      <div className="max-w-[75vw] mx-auto px-4">
+        <h2 className="text-4xl font-bold text-gray-900 mb-10">
+          Explore Our Wide Range of Pharmaceutical Products
+        </h2>
+
         {/* Product Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-12">
           {displayProducts.map((product) => (
@@ -186,7 +190,7 @@ const ProductsSample = () => {
                   hoveredViewAll ? "rotate-12 scale-110" : ""
                 }`}
               />
-              <span>View All Products</span>
+              <span>View All Pharma Products</span>
               <ArrowRight
                 size={20}
                 className={`transition-all duration-300 ${
