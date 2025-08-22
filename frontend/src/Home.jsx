@@ -18,7 +18,7 @@ import PageContactForm from "./PageContactForm";
 import MovingText from "./MovingText";
 import EnquiryModal from "./EnquiryModal";
 import HeroSection2 from "./HeroSection2";
-import OfferingSection from "./OurOffering";
+import ComprehensivePharmaSolutions from "./comprehensivePharmaSolutions";
 import SuaveHealthcareOverview from "./Overview";
 import BlogsSection from "./BlogSection";
 import ProductsSample from "./ProductsSample";
@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <>
       <HeroSection2 />
-      <OfferingSection />
+      <ComprehensivePharmaSolutions />
       {/* <NowInStock /> */}
       <SuaveHealthcareOverview />
       <ProductsSample />
@@ -35,13 +35,13 @@ export default function Home() {
       <WhyUs />
       {/* <PromotionalInputs /> */}
       {/* <Directors /> */}
-      <LetsTalk />
+      {/* <LetsTalk /> */}
       <OurAdvantage />
       <Calculators />
       {/* <FranchiseOwners /> */}
       <BlogsSection />
-      <PharmaManufacturingCard />
-      <Benefits />
+      {/* <PharmaManufacturingCard /> */}
+      {/* <Benefits /> */}
       {/* <FeaturedIn />
       <Testimonials /> */}
       <PageContactForm />

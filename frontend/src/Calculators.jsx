@@ -4,9 +4,12 @@ export default function Calculators() {
   return (
     <section className="py-12 bg-[#ddfbe9]">
       <div className="max-w-[75vw] mx-auto container px-4">
-        <h2 className="text-2xl font-bold text-gray-700 mb-2">Calculators</h2>
+        <h2 className="text-2xl font-bold text-gray-700 mb-2">
+          Franchise Profit Calculator
+        </h2>
         <p className="text-gray-600 mb-8">
-          You can easily use the profit margin using below calculator
+          Want to know your earning potential? Use our simple calculator to
+          estimate profit margins based on your sales.
         </p>
 
         <div className="grid md:grid-cols-2 gap-8">
@@ -23,11 +26,7 @@ export default function Calculators() {
                 Calculator <span className="ml-1">→</span>
               </Link>
             </div>
-            <img
-              src="/calculator.png"
-              alt="Calculator"
-              className="w-24"
-            />
+            <img src="/calculator.png" alt="Calculator" className="w-24" />
           </div>
 
           <div className="bg-white rounded-lg p-6 flex items-center justify-between">
@@ -41,11 +40,7 @@ export default function Calculators() {
                 Calculator <span className="ml-1">→</span>
               </Link>
             </div>
-            <img
-              src="/calculator.png"
-              alt="Calculator"
-              className="w-24"
-            />
+            <img src="/calculator.png" alt="Calculator" className="w-24" />
           </div>
         </div>
       </div>

@@ -1,30 +1,32 @@
 import React from "react";
-import { Pill, Handshake, Factory } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const OfferingSection = () => {
+const OurOffering = () => {
   const offerings = [
     {
-      icon: Pill,
-      title: "Pharma Products",
+      title: "Products",
       description:
-        "Explore our WHO-GMP certified portfolio, including high-quality tablets, capsules, syrups, injections, and more. Whether for general, cardiac, diabetic, or dermatological needs, our range covers all your healthcare requirements.",
+        "Browse our wide range of innovative and reliable products tailored to meet the needs of customers across various industries.",
       link: "products",
     },
     {
-      icon: Handshake,
-      title: "PCD Pharma Franchise",
+      title: "Franchise",
       description:
-        " Partner with Suave Healthcare, India's leading PCD pharma company. We offer exclusive franchise opportunities with full support, including marketing tools and a diverse product range to guarantee your success.",
+        "Join our growing network and become a part of a trusted brand. Learn how our franchise model empowers partners for mutual success.",
       link: "franchise",
     },
     {
-      icon: Factory,
-      title: "Third-Party Manufacturing",
+      title: "About Us",
       description:
-        "Trust Suave Healthcare for third-party manufacturing solutions. Our contract manufacturing services include tablets, capsules, syrups, and injections. Our GMP-certified units ensure the highest quality and timely delivery.",
+        "Discover our journey, mission, and the values that drive us to deliver excellence in everything we do.",
+      link: "about",
+    },
+    {
+      title: "Contact Us",
+      description:
+        "Have questions or need support? Reach out to our team—we're here to help you with anything you need.",
       link: "contact",
-    }
+    },
   ];
 
   return (
@@ -33,36 +35,33 @@ const OfferingSection = () => {
         {/* Section Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Our Comprehensive Pharma Solutions
+            Our Offering
           </h2>
-          <p className="text-base text-gray-600 leading-relaxed">
-            Discover our WHO-GMP certified products, PCD franchise
-            opportunities, and trusted third-party manufacturing services.{" "}
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Explore the pillars of our services and what we stand for
           </p>
         </div>
+
         {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {offerings.map((offering, index) => (
             <div
               key={index}
               className="bg-white rounded-lg shadow-md border-t-4 border-[#129349] p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col h-full"
             >
-              {/* Icon and Title */}
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#129349] to-[#0f7a3a] rounded-xl flex items-center justify-center shadow-lg mr-4">
-                  <offering.icon className="w-6 h-6 text-white" strokeWidth={1.5} />
-                </div>
-                <h3 className="font-semibold text-xl text-gray-900">
-                  {offering.title}
-                </h3>
-              </div>
+              {/* Card Title */}
+              <h3 className="font-semibold text-xl text-gray-900 mb-4">
+                {offering.title}
+              </h3>
+
               {/* Card Description */}
               <p className="text-base text-gray-600 mb-6 flex-grow leading-relaxed">
                 {offering.description}
               </p>
+
               {/* Learn More Link */}
               <Link
-                to={`/${offering.link}`}
+                to={offering.link}
                 className="inline-flex items-center justify-center bg-[#129349] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-[#015c30] transition-colors duration-200 mt-auto"
               >
                 Learn more
@@ -89,4 +88,4 @@ const OfferingSection = () => {
   );
 };
 
-export default OfferingSection;
+export default OurOffering;
