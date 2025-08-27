@@ -512,7 +512,7 @@ const JoinUsSection = () => {
               `}
             >
               <button
-                onClick={() => navigate(`/franchise`)}
+                onClick={() => navigate(`/pcd-pharma-franchise`)}
                 className="
     relative group px-8 py-4 w-full sm:w-auto
     rounded-full font-semibold text-base sm:text-lg

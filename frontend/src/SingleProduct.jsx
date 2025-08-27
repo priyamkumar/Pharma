@@ -57,7 +57,7 @@ export default function SingleProduct() {
             <ChevronRight className="w-4 h-4" />
             <span
               className="hover:text-blue-600 transition-colors cursor-pointer"
-              onClick={() => navigate("/products")}
+              onClick={() => navigate("/pharma-products")}
             >
               Products
             </span>

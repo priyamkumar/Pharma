@@ -47,8 +47,12 @@ const Navbar = () => {
   };
 
   // Helper function to check if company routes are active
-  const isCompanyActive = () => {
-    return location.pathname === "/about" || location.pathname === "/careers";
+  const isResourceActive = () => {
+    return (
+      location.pathname === "/blogs" ||
+      location.pathname === "/careers" ||
+      location.pathname === "/profit-margin-calculator"
+    );
   };
 
   const handleMenuOpen = (event) => {
@@ -112,17 +116,22 @@ const Navbar = () => {
             }}
           />
         </ListItem>
+
         <ListItem
+          sx={{
+            color: isActiveRoute("/about") ? "#129349" : "inherit",
+            fontWeight: isActiveRoute("/about") ? "600" : "normal",
+          }}
           onClick={() => {
-            navigate("/franchise");
+            navigate("/about");
             setDrawerOpen(false);
           }}
         >
           <ListItemText
-            primary="Franchise"
+            primary="About"
             sx={{
-              color: isActiveRoute("/franchise") ? "#129349" : "inherit",
-              fontWeight: isActiveRoute("/franchise") ? "600" : "normal",
+              color: isActiveRoute("/about") ? "#129349" : "inherit",
+              fontWeight: isActiveRoute("/about") ? "600" : "normal",
             }}
           />
         </ListItem>
@@ -130,22 +139,70 @@ const Navbar = () => {
           <ListItemText
             primary="Products"
             sx={{
-              color: isActiveRoute("/products") ? "#129349" : "inherit",
-              fontWeight: isActiveRoute("/products") ? "600" : "normal",
+              color: isActiveRoute("/pharma-products") ? "#129349" : "inherit",
+              fontWeight: isActiveRoute("/pharma-products") ? "600" : "normal",
             }}
             onClick={() => {
-              navigate("/products");
+              navigate("/pharma-products");
               setDrawerOpen(false);
             }}
           />
         </ListItem>
-
+        <ListItem
+          onClick={() => {
+            navigate("/pcd-pharma-franchise");
+            setDrawerOpen(false);
+          }}
+        >
+          <ListItemText
+            primary="Franchise"
+            sx={{
+              color: isActiveRoute("/pcd-pharma-franchise")
+                ? "#129349"
+                : "inherit",
+              fontWeight: isActiveRoute("/pcd-pharma-franchise")
+                ? "600"
+                : "normal",
+            }}
+          />
+        </ListItem>
+        <ListItem
+          onClick={() => {
+            navigate("/third-party-manufacturing");
+            setDrawerOpen(false);
+          }}
+        >
+          <ListItemText
+            primary="Manufacturing"
+            sx={{
+              color: isActiveRoute("/third-party-manufacturing")
+                ? "#129349"
+                : "inherit",
+              fontWeight: isActiveRoute("/third-party-manufacturing")
+                ? "600"
+                : "normal",
+            }}
+          />
+        </ListItem>
+        <ListItem>
+          <ListItemText
+            primary="Contact"
+            sx={{
+              color: isActiveRoute("/contact") ? "#129349" : "inherit",
+              fontWeight: isActiveRoute("/contact") ? "600" : "normal",
+            }}
+            onClick={() => {
+              navigate("/contact");
+              setDrawerOpen(false);
+            }}
+          />
+        </ListItem>
         <ListItem onClick={toggleCompanyMenu}>
           <ListItemText
-            primary="Company"
+            primary="Resource"
             sx={{
-              color: isCompanyActive() ? "#129349" : "inherit",
-              fontWeight: isCompanyActive() ? "600" : "normal",
+              color: isResourceActive() ? "#129349" : "inherit",
+              fontWeight: isResourceActive() ? "600" : "normal",
             }}
           />
           {companyOpen ? <ExpandLess /> : <ExpandMore />}
@@ -156,15 +213,30 @@ const Navbar = () => {
             <ListItem
               sx={{ pl: 4 }}
               onClick={() => {
-                navigate("/about");
+                navigate("/blogs");
                 setDrawerOpen(false);
               }}
             >
               <ListItemText
-                primary="About Us"
+                primary="Blogs"
                 sx={{
-                  color: isActiveRoute("/about") ? "#129349" : "inherit",
-                  fontWeight: isActiveRoute("/about") ? "600" : "normal",
+                  color: isActiveRoute("/blogs") ? "#129349" : "inherit",
+                  fontWeight: isActiveRoute("/blogs") ? "600" : "normal",
+                }}
+              />
+            </ListItem>
+            <ListItem
+              sx={{ pl: 4 }}
+              onClick={() => {
+                navigate("/profit-margin-calculator");
+                setDrawerOpen(false);
+              }}
+            >
+              <ListItemText
+                primary="Calculator"
+                sx={{
+                  color: isActiveRoute("/profit-margin-calculator") ? "#129349" : "inherit",
+                  fontWeight: isActiveRoute("/profit-margin-calculator") ? "600" : "normal",
                 }}
               />
             </ListItem>
@@ -176,7 +248,7 @@ const Navbar = () => {
               }}
             >
               <ListItemText
-                primary="Team"
+                primary="Careers"
                 sx={{
                   color: isActiveRoute("/careers") ? "#129349" : "inherit",
                   fontWeight: isActiveRoute("/careers") ? "600" : "normal",
@@ -186,33 +258,6 @@ const Navbar = () => {
           </List>
         </Collapse>
 
-        <ListItem>
-          <ListItemText
-            primary="Blogs"
-            sx={{
-              color: isActiveRoute("/blogs") ? "#129349" : "inherit",
-              fontWeight: isActiveRoute("/blogs") ? "600" : "normal",
-            }}
-            onClick={() => {
-              navigate("/blogs");
-              setDrawerOpen(false);
-            }}
-          />
-        </ListItem>
-
-        <ListItem>
-          <ListItemText
-            primary="Contact&nbsp;Us"
-            sx={{
-              color: isActiveRoute("/contact") ? "#129349" : "inherit",
-              fontWeight: isActiveRoute("/contact") ? "600" : "normal",
-            }}
-            onClick={() => {
-              navigate("/contact");
-              setDrawerOpen(false);
-            }}
-          />
-        </ListItem>
         <ListItem
           component="a"
           href="https://payments-test.cashfree.com/forms/suave-healthcare"
@@ -262,47 +307,76 @@ const Navbar = () => {
             </Button>
             <Button
               color="inherit"
-              sx={getButtonStyle(isActiveRoute("/franchise"))}
-              onClick={() => navigate("/franchise")}
+              sx={getButtonStyle(isActiveRoute("/about"))}
+              onClick={() => navigate("/about")}
+            >
+              About
+            </Button>
+            <Button
+              color="inherit"
+              sx={getButtonStyle(isActiveRoute("/pharma-products"))}
+              onClick={() => navigate("/pharma-products")}
+            >
+              Products
+            </Button>
+            <Button
+              color="inherit"
+              sx={getButtonStyle(isActiveRoute("/pcd-pharma-franchise"))}
+              onClick={() => navigate("/pcd-pharma-franchise")}
             >
               Franchise
             </Button>
             <Button
               color="inherit"
-              sx={getButtonStyle(isActiveRoute("/products"))}
-              onClick={() => navigate("/products")}
+              sx={getButtonStyle(isActiveRoute("/third-party-manufacturing"))}
+              onClick={() => navigate("/third-party-manufacturing")}
             >
-              Products
+              Manufacturing
             </Button>
-
+            <Button
+              color="inherit"
+              sx={getButtonStyle(isActiveRoute("/contact"))}
+              onClick={() => navigate("/contact")}
+            >
+              Contact
+            </Button>
             {/* Dropdown for "Company" */}
             <Button
               color="inherit"
               endIcon={<ArrowDropDown />}
               onClick={handleMenuOpen}
-              sx={getButtonStyle(isCompanyActive())}
+              sx={getButtonStyle(isResourceActive())}
             >
-              Company
-            </Button>
-            <Button
-              color="inherit"
-              sx={getButtonStyle(isActiveRoute("/blogs"))}
-              onClick={() => navigate("/blogs")}
-            >
-              Blogs
+              Resource
             </Button>
             <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
               <MenuItem
                 onClick={() => {
-                  navigate("/about");
+                  navigate("/blogs");
                   handleMenuClose();
                 }}
                 sx={{
-                  color: isActiveRoute("/about") ? "#129349" : "inherit",
-                  fontWeight: isActiveRoute("/about") ? "600" : "normal",
+                  color: isActiveRoute("/blogs") ? "#129349" : "inherit",
+                  fontWeight: isActiveRoute("/blogs") ? "600" : "normal",
                 }}
               >
-                About Us
+                Blogs
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/profit-margin-calculator");
+                  handleMenuClose();
+                }}
+                sx={{
+                  color: isActiveRoute("/profit-margin-calculator")
+                    ? "#129349"
+                    : "inherit",
+                  fontWeight: isActiveRoute("/profit-margin-calculator")
+                    ? "600"
+                    : "normal",
+                }}
+              >
+                Calculator
               </MenuItem>
               <MenuItem
                 onClick={() => {
@@ -318,13 +392,6 @@ const Navbar = () => {
               </MenuItem>
             </Menu>
 
-            <Button
-              color="inherit"
-              sx={getButtonStyle(isActiveRoute("/contact"))}
-              onClick={() => navigate("/contact")}
-            >
-              Contact&nbsp;Us
-            </Button>
             <Button
               color="inherit"
               variant="outlined"

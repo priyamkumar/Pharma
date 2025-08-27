@@ -7,13 +7,13 @@ const OurOffering = () => {
       title: "Products",
       description:
         "Browse our wide range of innovative and reliable products tailored to meet the needs of customers across various industries.",
-      link: "products",
+      link: "pharma-products",
     },
     {
       title: "Franchise",
       description:
         "Join our growing network and become a part of a trusted brand. Learn how our franchise model empowers partners for mutual success.",
-      link: "franchise",
+      link: "pcd-pharma-franchise",
     },
     {
       title: "About Us",

@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import MovingText from "./MovingText";
 import { useEnquiry } from "../context/EnquiryContext";
 import EnquiryModal from "./EnquiryModal";
-import { useEnquiryStore } from '../store/enquiryStore';
+import { useEnquiryStore } from "../store/enquiryStore";
+import SEO from "./SEO";
 
 function Join() {
   const navigate = useNavigate();
@@ -138,11 +139,11 @@ const WorkCultureSection = () => {
           {/* Placeholder image with meaningful content */}
           <div className="w-full h-96 bg-gradient-to-br from-green-200 via-green-300 to-green-400 flex items-center justify-center relative">
             {/* Decorative elements to simulate a workplace photo */}
-           <img 
-                src="https://cdn.pixabay.com/photo/2020/07/08/04/12/work-5382501_640.jpg"
-                alt="Healthcare professionals collaborating"
-                className="w-full h-96 object-cover transition-transform duration-700 group-hover:scale-110"
-              />
+            <img
+              src="https://cdn.pixabay.com/photo/2020/07/08/04/12/work-5382501_640.jpg"
+              alt="Healthcare professionals collaborating"
+              className="w-full h-96 object-cover transition-transform duration-700 group-hover:scale-110"
+            />
             {/* Decorative geometric shapes */}
             <div className="absolute top-6 left-6 w-3 h-3 bg-white/30 rounded-full"></div>
             <div className="absolute top-12 right-8 w-2 h-2 bg-white/40 rounded-full"></div>
@@ -239,7 +240,9 @@ const WorkCultureSection = () => {
 };
 
 const CareerCTA = () => {
-  const setIsEnquiryModalOpen = useEnquiryStore((state) => state.setIsEnquiryModalOpen);
+  const setIsEnquiryModalOpen = useEnquiryStore(
+    (state) => state.setIsEnquiryModalOpen
+  );
 
   return (
     <section className="py-16 px-4">
@@ -262,6 +265,7 @@ const CareerCTA = () => {
 export default function Careers() {
   return (
     <>
+      <SEO slug="careers" />
       <Join />
       <MovingText />
       <WorkCultureSection />

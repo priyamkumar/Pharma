@@ -92,7 +92,7 @@ export default function ProductScrollableList() {
             <div
               key={product._id}
               className="cursor-pointer min-w-[280px] flex-shrink-0 bg-[#ddfbe9] rounded-lg p-6"
-              onClick={() => navigate(`/products/${product._id}`)}
+              onClick={() => navigate(`/pharma-products/${product._id}`)}
             >
               <div className="h-48 flex items-center justify-center mb-4">
                 <img

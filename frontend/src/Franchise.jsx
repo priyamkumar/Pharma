@@ -1064,7 +1064,7 @@ function PharmaCTASection() {
 export default function Franchise() {
   return (
     <>
-      <SEO slug="franchise" />
+      <SEO slug="pcd-pharma-franchise" />
       <Landing />
       <PharmaHero />
       <WhyUs />

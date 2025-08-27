@@ -169,7 +169,7 @@ const SingleBlogPage = () => {
                         className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 cursor-pointer transition-colors"
                         onClick={() => handleTagClick(tag)}
                       >
-                        #{tag}
+                        {tag}
                       </span>
                     ))}
                   </div>

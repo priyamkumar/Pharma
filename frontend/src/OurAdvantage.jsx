@@ -46,7 +46,7 @@ export default function OurAdvantage() {
         {/* Dual CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 mt-10 mb-12">
           <Link
-            to="/franchise"
+            to="/pcd-pharma-franchise"
             className="flex-1 bg-[#129349] hover:bg-[#0d7a3a] text-white font-bold py-4 px-8 rounded-lg shadow-lg transition-all duration-300 text-center"
           >
             Become a Franchise Partner

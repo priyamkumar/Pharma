@@ -59,7 +59,7 @@ export default function NewLaunches() {
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-gray-700">New Launches</h2>
           <Link
-            to="/products"
+            to="/pharma-products"
             className="text-[#129349] font-medium text-xl hover:text-[#015c30]"
           >
             View All
@@ -91,7 +91,7 @@ export default function NewLaunches() {
               <div
                 key={index}
                 className="cursor-pointer flex-shrink-0 bg-[#ddfbe9] rounded-lg p-6"
-                onClick={() => navigate(`/products/${product._id}`)}
+                onClick={() => navigate(`/pharma-products/${product._id}`)}
               >
                 <div className="bg-[#ddfbe9] p-6 flex justify-center">
                   <img

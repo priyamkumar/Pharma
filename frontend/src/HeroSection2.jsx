@@ -34,7 +34,7 @@ const Carousel = () => {
       textPosition: "left",
       cta: {
         text: "Explore Our Product Portfolio",
-        action: () => navigate("/products"),
+        action: () => navigate("/pharma-products"),
       },
     },
     {
@@ -47,7 +47,7 @@ const Carousel = () => {
       textPosition: "right",
       cta: {
         text: "Start Your Franchise Journey",
-        action: () => navigate("/franchise"),
+        action: () => navigate("/pcd-pharma-franchise"),
       },
     },
     {

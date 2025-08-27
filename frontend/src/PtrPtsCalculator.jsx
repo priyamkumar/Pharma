@@ -37,7 +37,7 @@ function PtrPtsCalculator() {
   }, [mrp, gst, retailerMargin, stockistMargin]);
   return (
     <div className="py-8 px-4">
-      <SEO slug="ptrptscalculator" />
+      <SEO slug="ptr-pts-calculator" />
       <div className="md:max-w-[75vw] mx-auto">
         {/* Header Section */}
         <div className="mb-8">

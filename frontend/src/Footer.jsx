@@ -128,7 +128,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  to="/products"
+                  to="/pharma-products"
                   className="text-gray-300 hover:text-white transition-colors text-sm"
                 >
                   Products
@@ -136,7 +136,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/franchise"
+                  to="/pcd-pharma-franchise"
                   className="text-gray-300 hover:text-white transition-colors text-sm"
                 >
                   Become Partner

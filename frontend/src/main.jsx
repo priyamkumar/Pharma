@@ -37,7 +37,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/franchise",
+        path: "/pcd-pharma-franchise",
         element: <Franchise />,
       },
       {
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
         element: <Careers />,
       },
       {
-        path: "/products",
+        path: "/pharma-products",
         element: <Products />,
       },
       {
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
         element: <PtrPtsCalculator />,
       },
       {
-        path: "/products/:id",
+        path: "/pharma-products/:id",
         element: <MedicineProductCard />,
       },
       {

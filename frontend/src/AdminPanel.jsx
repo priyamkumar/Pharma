@@ -640,7 +640,7 @@ const AdminPanel = () => {
       };
 
       let base64Image = "";
-      if (newBlog.image) {
+      if (newBlog.image && newBlog.image instanceof File) {
         base64Image = await new Promise((resolve) => {
           const reader = new FileReader();
           reader.readAsDataURL(newBlog.image);
@@ -655,8 +655,11 @@ const AdminPanel = () => {
         metaDescription: newBlog.metaDescription,
         tags: newBlog.tags.split(",").map((tag) => tag.trim()),
         categories: newBlog.categories.split(",").map((cat) => cat.trim()),
-        ...(base64Image && { image: base64Image }),
       };
+
+      if (base64Image) {
+        blogData.image = base64Image;
+      }
 
       const { data } = await axios.put(
         `${server}/api/v1/blog/admin/${editingBlog._id}`,
@@ -678,6 +681,7 @@ const AdminPanel = () => {
       setShowAddBlogModal(false);
       toast.success("Blog updated successfully");
     } catch (err) {
+      console.log(err)
       toast.error("Error updating blog");
     }
   };
@@ -780,7 +784,6 @@ const AdminPanel = () => {
         newSeo,
         config
       );
-      console.log(data);
       setSeoData(seoData.map((s) => (s._id === data.seo._id ? data.seo : s)));
       setNewSeo({ slug: "", title: "", description: "", keywords: "" });
       setEditingSeo(null);

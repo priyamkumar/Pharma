@@ -57,6 +57,11 @@ const createBlog = asyncHandler(async (req, res) => {
         folder: "blogs",
       });
       blogData.image = { public_id: result.public_id, url: result.secure_url };
+    } else {
+      blogData.image = {
+        public_id: process.env.DEFAULT_BLOG_IMAGE_PUBLIC_ID,
+        url: process.env.DEFAULT_BLOG_IMAGE_URL,
+      };
     }
 
     if (blogData.tags) {

@@ -35,7 +35,7 @@ export default function NISPage() {
         {/* Products Grid - Display only current page products */}
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           {currentProducts.map((product) => (
-            <Link key={product._id} to={`/products/${product._id}`}>
+            <Link key={product._id} to={`/pharma-products/${product._id}`}>
               <ProductCard product={product} />
             </Link>
           ))}

@@ -118,7 +118,7 @@ export default function Divisions() {
             <p className="text-gray-600">11+ division with 1500+ products</p>
           </div>
           <Link
-            to="/products"
+            to="/pharma-products"
             className="text-[#129349] font-medium text-xl hover:text-[#015c30]"
           >
             View All
@@ -147,7 +147,7 @@ export default function Divisions() {
             <div
               key={division._id}
               className="cursor-pointer flex flex-col items-center justify-center group mr-4"
-              onClick={() => navigate(`/products?division=${division.name}`)}
+              onClick={() => navigate(`/pharma-products?division=${division.name}`)}
             >
               <div
                 className={`w-32 h-32 rounded-full border border-gray-200 

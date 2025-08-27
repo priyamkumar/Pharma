@@ -9,14 +9,14 @@ const ComprehensivePharmaSolutions = () => {
       title: "Pharma Products",
       description:
         "Explore our WHO-GMP certified portfolio, including high-quality tablets, capsules, syrups, injections, and more. Whether for general, cardiac, diabetic, or dermatological needs, our range covers all your healthcare requirements.",
-      link: "products",
+      link: "pharma-products",
     },
     {
       icon: Handshake,
       title: "PCD Pharma Franchise",
       description:
         " Partner with Suave Healthcare, India's leading PCD pharma company. We offer exclusive franchise opportunities with full support, including marketing tools and a diverse product range to guarantee your success.",
-      link: "franchise",
+      link: "pcd-pharma-franchise",
     },
     {
       icon: Factory,

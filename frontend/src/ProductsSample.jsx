@@ -59,7 +59,7 @@ const ProductsSample = () => {
   };
 
   const handleViewAllClick = () => {
-    navigate("/products");
+    navigate("/pharma-products");
   };
 
   useEffect(() => {
@@ -145,7 +145,7 @@ const ProductsSample = () => {
                       ? "transform rotate-12 translate-x-2 scale-110 bg-white/30"
                       : ""
                   }`}
-                  onClick={() => navigate(`/products/${product._id}`)}
+                  onClick={() => navigate(`/pharma-products/${product._id}`)}
                 >
                   <ArrowRight size={24} className="text-white" />
                 </button>

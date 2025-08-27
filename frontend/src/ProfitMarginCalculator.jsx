@@ -26,7 +26,7 @@ function ProfitMarginCalculator() {
 
   return (
     <div className="pt-8 px-4">
-      <SEO slug="profitmargincalculator" />
+      <SEO slug="profit-margin-calculator" />
       <div className="md:max-w-[75vw] mx-auto">
         {/* Header Section */}
         <div className="mb-8">

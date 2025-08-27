@@ -74,7 +74,7 @@ const blogPostSchema = new mongoose.Schema(
     metaDescription: {
       type: String,
       trim: true,
-      maxLength: [160, "Meta description cannot exceed 160 characters"],
+      maxLength: [500, "Meta description cannot exceed 500 characters"],
     },
   },
   {

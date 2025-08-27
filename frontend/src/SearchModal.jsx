@@ -133,7 +133,7 @@ export default function SearchModal() {
                           <div
                             key={product._id}
                             onClick={() => {
-                              navigate(`/products/${product._id}`);
+                              navigate(`/pharma-products/${product._id}`);
                               closeSearch();
                             }}
                             className="cursor-pointer flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors duration-150 border border-gray-100"

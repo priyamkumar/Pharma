@@ -91,7 +91,7 @@ export default function SimilarProducts({ currentProduct }) {
               <div
                 key={product._id}
                 className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => navigate(`/products/${product._id}`)}
+                onClick={() => navigate(`/pharma-products/${product._id}`)}
               >
                 <div className="aspect-square bg-gray-100 flex items-center justify-center">
                   <img

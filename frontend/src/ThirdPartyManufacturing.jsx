@@ -295,7 +295,7 @@ const ManufacturingCapabilities = () => {
         {/* CTA Section */}
         <div className="text-center">
           <button
-            onClick={() => navigate("/products")}
+            onClick={() => navigate("/pharma-products")}
             className="cursor-pointer px-8 py-4 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-out focus:outline-none focus:ring-4 focus:ring-opacity-50 text-lg"
             style={{
               backgroundColor: "#129349",
@@ -849,7 +849,7 @@ function SuaveHealthcareCTA() {
 export default function ThirdParty() {
   return (
     <>
-      <SEO slug="franchise" />
+      <SEO slug="third-party-manufacturing" />
       <Landing />
       <WhyUs />
       <ManufacturingCapabilities />

@@ -728,7 +728,7 @@ const AllProducts = ({
         {/* Products Grid */}
         <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           {currentProducts.map((product) => (
-            <Link key={product._id} to={`/products/${product._id}`}>
+            <Link key={product._id} to={`/pharma-products/${product._id}`}>
               <ProductCard product={product} />
             </Link>
           ))}
@@ -923,7 +923,7 @@ export default function Products() {
 
   return (
     <>
-      <SEO slug="products" />
+      <SEO slug="pharma-products" />
       <Divisions
         selectedDivision={selectedDivision}
         setSelectedDivision={setSelectedDivision}
