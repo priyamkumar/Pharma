@@ -316,8 +316,12 @@ const FilterModalPanel = ({
       title: "Packing Type",
       options: [
         { id: "BLISTER", label: "BLISTER" },
-        { id: "ALU ALU", label: "ALU ALU" },
-        { id: "ALU STRIP", label: "ALU STRIP" },
+        { id: "ALU-ALU", label: "ALU-ALU" },
+        { id: "ALU-STRIP", label: "ALU-STRIP" },
+        { id: "DISPO-PACK", label: "DISPO-PACK" },
+        { id: "VIAL", label: "VIAL" },
+        { id: "AMPOULE", label: "AMPOULE" },
+        { id: "BOTTLE", label: "BOTTLE" },
       ],
     },
   ];

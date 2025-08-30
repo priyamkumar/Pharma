@@ -71,6 +71,10 @@ const blogPostSchema = new mongoose.Schema(
         message: "Blog post must have at least one content section",
       },
     },
+    metaTitle: {
+      type: String,
+      required: true,
+    },
     metaDescription: {
       type: String,
       trim: true,

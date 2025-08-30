@@ -105,6 +105,7 @@ const AdminPanel = () => {
     categories: "",
     image: null,
     content: [{ heading: "", body: "" }],
+    metaTitle: "",
     metaDescription: "",
   });
 
@@ -274,7 +275,7 @@ const AdminPanel = () => {
 
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
-    if (newProduct.name && newProduct.category && newProduct.pricing.mrp) {
+    if (newProduct.name && newProduct.category) {
       try {
         const config = {
           headers: {
@@ -606,6 +607,7 @@ const AdminPanel = () => {
         categories: "",
         image: null,
         content: [{ heading: "", body: "" }],
+        metaTitle: "",
         metaDescription: "",
       });
       setShowAddBlogModal(false);
@@ -624,6 +626,7 @@ const AdminPanel = () => {
       categories: blog.categories.join(", "),
       image: blog.image,
       content: [...blog.content],
+      metaTitle: blog.metaTitle,
       metaDescription: blog.metaDescription,
     });
     setShowAddBlogModal(true);
@@ -652,6 +655,7 @@ const AdminPanel = () => {
         title: newBlog.title,
         slug: newBlog.slug,
         content: newBlog.content,
+        metaTitle: newBlog.metaTitle,
         metaDescription: newBlog.metaDescription,
         tags: newBlog.tags.split(",").map((tag) => tag.trim()),
         categories: newBlog.categories.split(",").map((cat) => cat.trim()),
@@ -675,13 +679,14 @@ const AdminPanel = () => {
         categories: "",
         image: null,
         content: [{ heading: "", body: "" }],
+        metaTitle: "",
         metaDescription: "",
       });
       setEditingBlog(null);
       setShowAddBlogModal(false);
       toast.success("Blog updated successfully");
     } catch (err) {
-      console.log(err)
+      console.log(err);
       toast.error("Error updating blog");
     }
   };
@@ -894,7 +899,10 @@ const AdminPanel = () => {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("products")}>
+        <div
+          className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50"
+          onClick={() => setCurrentPage("products")}
+        >
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -913,7 +921,10 @@ const AdminPanel = () => {
             </div>
           </div>
         </div>
-        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("messages")}>
+        <div
+          className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50"
+          onClick={() => setCurrentPage("messages")}
+        >
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -932,7 +943,10 @@ const AdminPanel = () => {
             </div>
           </div>
         </div>
-        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("products")}>
+        <div
+          className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50"
+          onClick={() => setCurrentPage("products")}
+        >
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -951,7 +965,10 @@ const AdminPanel = () => {
             </div>
           </div>
         </div>
-        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("messages")}>
+        <div
+          className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50"
+          onClick={() => setCurrentPage("messages")}
+        >
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -971,7 +988,10 @@ const AdminPanel = () => {
           </div>
         </div>
 
-        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("divisions")}>
+        <div
+          className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50"
+          onClick={() => setCurrentPage("divisions")}
+        >
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -993,7 +1013,10 @@ const AdminPanel = () => {
         </div>
 
         {/* Total Blogs Card */}
-        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("blogs")}>
+        <div
+          className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50"
+          onClick={() => setCurrentPage("blogs")}
+        >
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -1015,7 +1038,10 @@ const AdminPanel = () => {
         </div>
 
         {/* Keywords Card */}
-        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("seo")}>
+        <div
+          className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50"
+          onClick={() => setCurrentPage("seo")}
+        >
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -1036,7 +1062,10 @@ const AdminPanel = () => {
           </div>
         </div>
 
-        <div className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50" onClick={() => setCurrentPage("keywords")}>
+        <div
+          className="cursor-pointer bg-white overflow-hidden shadow rounded-lg transform transition hover:shadow-lg hover:-translate-y-1 hover:bg-gray-50"
+          onClick={() => setCurrentPage("keywords")}
+        >
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
@@ -1469,6 +1498,7 @@ const AdminPanel = () => {
             categories: "",
             image: null,
             content: [{ heading: "", body: "" }],
+            metaTitle: "",
             metaDescription: "",
           });
           setShowAddBlogModal(true);
@@ -1782,6 +1812,27 @@ const AdminPanel = () => {
                     <option value="Tablets">Tablets</option>
                     <option value="Syrup">Syrup</option>
                     <option value="Injection">Injection</option>
+                    <option value="Powder">Powder</option>
+                    <option value="Soap">Soap</option>
+                    <option value="Infusion">Infusion</option>
+                    <option value="Suspension">Suspension</option>
+                    <option value="Cream">Cream</option>
+                    <option value="Ointment">Ointment</option>
+                    <option value="Gel">Gel</option>
+                    <option value="Drops">Drops</option>
+                    <option value="Oil">Oil</option>
+                    <option value="Lotion">Lotion</option>
+                    <option value="Inhaler">Inhaler</option>
+                    <option value="Nasal spray">Nasal spray</option>
+                    <option value="Suppository">Suppository</option>
+                    <option value="Liquid">Liquid</option>
+                    <option value="Face wash">Face wash</option>
+                    <option value="Shampoo">Shampoo</option>
+                    <option value="Churan">Churan</option>
+                    <option value="Ras">Ras</option>
+                    <option value="Respules">Respules</option>
+                    <option value="Paste">Paste</option>
+                    <option value="Spray">Spray</option>
                   </select>
                 </div>
 
@@ -1819,7 +1870,7 @@ const AdminPanel = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Therapeutic*
+                    Therapeutic
                   </label>
                   <input
                     type="text"
@@ -2374,7 +2425,22 @@ const AdminPanel = () => {
                       )}
                     </div>
                   </div>
-
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Meta Title
+                    </label>
+                    <input
+                      type="text"
+                      className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={newBlog.metaTitle}
+                      onChange={(e) =>
+                        setNewBlog({
+                          ...newBlog,
+                          metaTitle: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Meta Description
@@ -2474,6 +2540,7 @@ const AdminPanel = () => {
                       categories: "",
                       image: null,
                       content: [{ heading: "", body: "" }],
+                      metaTitle: "",
                       metaDescription: "",
                     });
                   }}

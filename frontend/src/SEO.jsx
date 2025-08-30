@@ -10,7 +10,6 @@ const SEO = ({ slug }) => {
       const { data } = await axios.get(`${server}/api/v1/seo/admin/${slug}`);
       setSeo(data.seo);
     } catch (err) {
-      console.error("SEO fetch error", err);
     }
   };
   useEffect(() => {

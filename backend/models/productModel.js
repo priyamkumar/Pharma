@@ -16,7 +16,6 @@ const productSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["Capsules", "Tablets", "Syrup", "Injection"],
       required: true,
     },
     packagingType: {
@@ -29,7 +28,6 @@ const productSchema = new mongoose.Schema(
     },
     therapeutic: {
       type: String,
-      required: true,
     },
     images: [
       {

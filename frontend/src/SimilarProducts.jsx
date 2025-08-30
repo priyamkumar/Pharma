@@ -100,7 +100,7 @@ export default function SimilarProducts({ currentProduct }) {
                       "https://via.placeholder.com/300?text=No+Image"
                     }
                     alt={product.name}
-                    className="w-full h-full object-contain p-4"
+                    className="w-full h-full object-fit p-4"
                   />
                 </div>
                 <div className="p-4">

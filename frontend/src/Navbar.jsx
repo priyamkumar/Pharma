@@ -27,7 +27,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down(1300));
+  const isMobile = useMediaQuery(theme.breakpoints.down(1450));
   const navigate = useNavigate();
   const location = useLocation();
 
