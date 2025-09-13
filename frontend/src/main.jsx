@@ -24,7 +24,7 @@ import { HelmetProvider } from "react-helmet-async";
 import Unsubscribe from "./Unsubscribe.jsx";
 import ThirdParty from "./ThirdPartyManufacturing.jsx";
 
-export const server = "https://pharma-lovat.vercel.app";
+export const server = import.meta.env.VITE_SERVER;
 
 const router = createBrowserRouter([
   {
