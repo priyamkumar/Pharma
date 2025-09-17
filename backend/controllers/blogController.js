@@ -156,7 +156,6 @@ const deleteBlog = asyncHandler(async (req, res) => {
       res.status(404);
       throw new Error("Blog not found");
     }
-    await cloudinary.v2.uploader.destroy(blog.image.public_id);
     blog = await BlogPost.findByIdAndDelete(req.params.id, req.body);
     res.status(200).json({
       success: true,
