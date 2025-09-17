@@ -11,7 +11,7 @@ const socialLinks = [
   {
     id: "whatsapp",
     name: "WhatsApp",
-    url: "https://web.whatsapp.com/send?phone=917009676112&text=http://www.suavehealthcare.in/ Hello",
+    url: "https://web.whatsapp.com/send?phone=917009676112&text=http://www.suavehealthcare.com/ Hello",
     icon: WhatsAppIcon,
     bgColor: "bg-green-500",
     hoverColor: "hover:bg-green-600",
