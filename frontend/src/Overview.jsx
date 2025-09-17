@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function SuaveHealthcareOverview() {
   const stats = [
     {
-      number: "8",
+      number: "2",
       label: "Manufacturing Plants",
       icon: <Factory className="w-6 h-6 text-[#129349]" />,
     },
@@ -18,11 +18,11 @@ export default function SuaveHealthcareOverview() {
       label: "Years of Excellence",
       icon: <Award className="w-6 h-6 text-[#129349]" />,
     },
-    {
-      number: "50+",
-      label: "Countries Served",
-      icon: <MapPin className="w-6 h-6 text-[#129349]" />,
-    },
+    // {
+    //   number: "50+",
+    //   label: "Countries Served",
+    //   icon: <MapPin className="w-6 h-6 text-[#129349]" />,
+    // },
   ];
 
   return (
