@@ -258,14 +258,14 @@ const Navbar = () => {
           </List>
         </Collapse>
 
-        <ListItem
+        {/* <ListItem
           component="a"
           href="https://payments-test.cashfree.com/forms/suave-healthcare"
           target="_blank"
           rel="noopener noreferrer"
         >
           <ListItemText primary="Pay Now" sx={{ fontWeight: "bold" }} />
-        </ListItem>
+        </ListItem> */}
       </List>
 
       <Box sx={{ mt: 2, px: 2 }}>
@@ -392,7 +392,7 @@ const Navbar = () => {
               </MenuItem>
             </Menu>
 
-            <Button
+            {/* <Button
               color="inherit"
               variant="outlined"
               href="https://payments-test.cashfree.com/forms/suave-healthcare"
@@ -410,7 +410,7 @@ const Navbar = () => {
               }}
             >
               Pay&nbsp;Now
-            </Button>
+            </Button> */}
             <SearchModal />
           </Box>
         )}
