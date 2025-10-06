@@ -23,7 +23,8 @@ function Divisions({
 
   useEffect(() => {
     const container = scrollContainerRef.current;
-
+    if (!container) return;
+    
     const onMouseDown = (e) => {
       setIsDragging(true);
       setStartX(e.pageX - container.offsetLeft);
